@@ -1,0 +1,46 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-daleel-staging-200553-authRole",
+      "UnauthRoleArn": "arn:aws:iam::433255485869:role/amplify-daleel-staging-200553-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::433255485869:role/amplify-daleel-staging-200553-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-daleel-staging-200553-deployment",
+      "UnauthRoleName": "amplify-daleel-staging-200553-unauthRole",
+      "StackName": "amplify-daleel-staging-200553",
+      "StackId": "arn:aws:cloudformation:us-east-2:433255485869:stack/amplify-daleel-staging-200553/5c8a2440-fecd-11eb-9c8e-0a04953e1c5a",
+      "AmplifyAppId": "d2p03yz3422itl"
+    }
+  },
+  "api": {
+    "Daleel": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        },
+        "GraphQLAPIIdOutput": "w57gzppmw5bkljyamynz7occu4",
+        "GraphQLAPIEndpointOutput": "https://a6qepksfyffcdopwwfovcn2abm.appsync-api.us-east-2.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-4v7ai6ergrhtrn2s2mifhk35we"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-daleel-staging-200553-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiDaleel"
+      },
+      "lastPushTimeStamp": "2021-09-17T21:12:57.834Z",
+      "lastPushDirHash": "139lRqTCSroX2fZLCvgF0T2goXM="
+    }
+  }
+}

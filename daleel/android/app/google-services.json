@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "578275999694",
+    "firebase_url": "https://daleel-75eed-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "daleel-75eed",
+    "storage_bucket": "daleel-75eed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578275999694:android:39df56bd650ab5fecd359f",
+        "android_client_info": {
+          "package_name": "com.example.daleel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "578275999694-19v102euqvb9d54vak856tn5629ncpol.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJHkI7Pdv0KNIYox2AeaqLV_oE2fgzafs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "578275999694-19v102euqvb9d54vak856tn5629ncpol.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
