@@ -5,7 +5,7 @@ import 'package:daleel/screens/login_screen.dart';
 import 'package:daleel/screens/preferences_screen.dart';
 import 'package:daleel/screens/capital_places.dart';
 import 'package:daleel/screens/test_screen.dart';
-import 'package:daleel/widgets/admin-page_widgets/admin_form.dart';
+import 'package:daleel/widgets/admin-page-widgets/admin_form.dart';
 import 'package:daleel/widgets/home_widgets/filter_chip_widget.dart';
 import 'package:daleel/widgets/explore_widgets/category_detail_item.dart';
 import 'package:flutter/material.dart';

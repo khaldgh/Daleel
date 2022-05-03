@@ -1,8 +1,8 @@
 import 'package:daleel/models/category.dart';
 import 'package:daleel/models/neighborhood.dart';
 import 'package:daleel/providers/places.dart';
-import 'package:daleel/widgets/admin-page_widgets/admin_text_form_field.dart';
-import 'package:daleel/widgets/admin-page_widgets/optional_text_form_field.dart';
+import 'package:daleel/widgets/admin-page-widgets/admin_text_form_field.dart';
+import 'package:daleel/widgets/admin-page-widgets/optional_text_form_field.dart';
 import 'package:flutter/material.dart';
 
 import 'package:daleel/models/place.dart';
