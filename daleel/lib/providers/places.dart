@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:daleel/models/category.dart';
 import 'package:daleel/models/city.dart';
+import 'package:daleel/models/neighborhood.dart';
 import 'package:daleel/screens/settings_screen.dart';
 import 'package:daleel/screens/explore_screen.dart';
 import 'package:daleel/screens/home_screen.dart';
@@ -73,25 +74,18 @@ class Places with ChangeNotifier {
   }
 
   Future<List<Place>> getPlaces() async {
+    FlutterSecureStorage fStorage = FlutterSecureStorage();
+    String? header = await fStorage.read(key: 'cookie');
+    String url = 'http://localhost:3000/places/places';
     try {
-      String url = 'http://localhost:3000/places/places';
       dioo.Dio dio = dioo.Dio();
-      dioo.Response<dynamic> response = await dio.get(url);
+      dioo.Response<dynamic> response = await dio.get(url,
+          options: dioo.Options(headers: {'cookie': header}));
       List places = response.data as List;
       List<Place> list = places.map((place) => Place.fromJson(place)).toList();
-      for (int i = 0; i < places.length; i++) {
-        if (_favoritePlaces
-            .any((element) => element.place_id == list[i].place_id)) {
-        } else {
-          _favoritePlaces.add(list[i]);
-        }
-      }
       print(list);
 
       return list;
-
-      // return places;
-
     } catch (e) {
       print(e);
       throw e;
@@ -143,17 +137,18 @@ class Places with ChangeNotifier {
       var response =
           await dio.post(url, data: {'email': username, 'password': password});
       List<String>? cookies = response.headers['set-cookie'];
-      for (int i = 0; i <= cookies!.length - 1; i++) {
-        var cokIndex = cookies[i].indexOf(';');
-        var subCookies = cookies[i].substring(0, cokIndex + 1);
+      for (int i = 0; i <= 1; i++) {
+        int cokIndex = cookies![i].indexOf(';');
+        String subCookies = cookies[i].substring(0, cokIndex + 1);
         cookie += subCookies + ' ';
       }
       var subbedCookie = cookie.substring(0, cookie.length - 2);
-      print(subbedCookie);
+      // print(subbedCookie);
 
-      storage.write(key: 'cookie', value: subbedCookie);
+      var write = await storage.write(key: 'cookie', value: subbedCookie);
+      var storedCookie = await storage.read(key: 'cookie');
       loggedIn = true;
-      // print(response.headers['set-cookie']);
+      print('${cookie} THE COOKIE');
       // [express:sess=eyJ1c2VySWQiOjU1fQ==; path=/; httponly, express:sess.sig=Zy_Lc7kXM1BqZKIZRRt7ygpCTrM; path=/; httponly]
       Navigator.of(context).pushNamed(HomeScreen.routeName);
     } catch (err) {
@@ -165,11 +160,13 @@ class Places with ChangeNotifier {
   Future<void> signup(
       String username, String password, BuildContext context) async {
     try {
-      var url = 'https://daleel-app.herokuapp.com/users/signup';
+      var url = 'http://localhost:3000/users/signup';
       var dio = dioo.Dio();
-      var response = await dio.post(url,
-          data: {'email': username, 'password': password},
-          options: dioo.Options(headers: {'Accept': 'application/json'}));
+      var response = await dio.post(
+        url,
+        data: {'email': username, 'password': password},
+        // options: dioo.Options(headers: {'Accept': 'application/json'})
+      );
       response;
       loggedIn = true;
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
@@ -181,7 +178,7 @@ class Places with ChangeNotifier {
 
   Future<void> whoami() async {
     try {
-      var url = 'https://daleel-app.herokuapp.com/users/whoami';
+      var url = 'http://localhost:3000/users/whoami';
       var dio = dioo.Dio();
       var fStorage = FlutterSecureStorage();
       var header = await fStorage.read(key: 'cookie');
@@ -196,14 +193,14 @@ class Places with ChangeNotifier {
 
   Future<void> signout(BuildContext context) async {
     try {
-      var url = 'https://daleel-app.herokuapp.com/users/signout';
+      var url = 'http://localhost:3000/users/signout';
       var dio = dioo.Dio();
       var fStorage = FlutterSecureStorage();
       var header = await fStorage.read(key: 'cookie');
       await dio.post(url, options: dioo.Options(headers: {'cookie': header}));
       fStorage.delete(key: 'cookie');
       Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
-      print('you reached here');
+      print(header);
     } catch (err) {
       print(err);
       throw err;
@@ -218,29 +215,47 @@ class Places with ChangeNotifier {
 
   String cookie = '';
 
-  Place userPlace = Place(
-    // id: 0,
-    title: '',
-    description: '',
-    category: Category(categoryId: 1,category: ''),
-    approved: false,
-    phone: 0,
-    instagram: '',
-    website: '',
-    neighborhoods: [],
-    weekdays: [],
-    images: [],
-    // isFavorite: null,
-    // time: null
-  );
-
-  List<String> cities = ['الدمام', 'الظهران', 'الخبر', 'الجبيل'];
-
-  Future<void> postPlace(Place place) async {
+  Future<List<Place>> getPreApprovedPlaces() async {
+    String url = 'http://localhost:3000/places/pre-approved-places';
     try {
       dioo.Dio dio = dioo.Dio();
-      // dioo.Response response =
-      await dio.post('http://localhost:3000/places', data: place.toJson());
+      dioo.Response response = await dio.get(url);
+      List<dynamic> places = response.data;
+      List<Place> preApprovedList =
+          places.map((place) => Place.fromJson(place)).toList();
+      return preApprovedList;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> changeApprovalStatus(Place place) async {
+    String url = 'http://localhost:3000/places/${place.place_id}';
+    try {
+      dioo.Dio dio = dioo.Dio();
+      await dio.patch(url, data: place);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> postPlace(Place place) async {
+    String url = 'http://localhost:3000/places';
+    var jsonObj = place.toJson();
+    // print('${place.category!.categoryId} the function');
+    try {
+      dioo.Dio dio = dioo.Dio();
+      await dio.post(url, data: jsonObj);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> deletePlace(int id) async {
+    String url = 'http://localhost:3000/places/$id';
+    try {
+      dioo.Dio dio = dioo.Dio();
+      dioo.Response response = await dio.delete(url);
     } catch (e) {
       throw e;
     }
@@ -251,14 +266,19 @@ class Places with ChangeNotifier {
     dioo.Dio dio = dioo.Dio();
     List<City> cities = [];
     try {
-      dioo.Response response = await dio.get(url);
+      var fStorage = FlutterSecureStorage();
+      var header = await fStorage.read(key: 'cookie');
+      dioo.Response response = await dio.get(url,
+          options: dioo.Options(headers: {
+            'cookie':
+                'express:sess=eyJ1c2VySWQiOjF9; express:sess.sig=q___YW3lYFRdEZV-e_hYwoc_-s0;'
+          }));
       List<dynamic> data = response.data;
       data.forEach((key) {
         City jsonCity = City().fromJson(key);
         cities.add(jsonCity);
       });
-      print(data);
-      print(cities);
+      print(header);
       return cities.reversed.toList();
     } catch (e) {
       throw e;
@@ -275,7 +295,7 @@ class Places with ChangeNotifier {
       List<dynamic> data = response.data;
       data.forEach((cat) => categories.add(category.fromJson(cat)));
       categories.forEach((element) {
-        print(element.category);
+        print(data);
       });
       return categories.reversed.toList();
     } catch (e) {
@@ -283,18 +303,16 @@ class Places with ChangeNotifier {
     }
   }
 
-  List<String>? neighborhoods = [];
-  Future<List<String>> neighborhoodQuery(int city) async {
+  List<Neighborhood>? neighborhoods = [];
+  Future<List<Neighborhood>> neighborhoodQuery(int city) async {
     String url = 'http://localhost:3000/neighborhoods?city_id=$city';
     dioo.Dio dio = dioo.Dio();
     try {
-      if (neighborhoods!.isNotEmpty)
-        // neighborhoods!.removeRange(0, neighborhoods!.length);
-        neighborhoods!.clear();
+      if (neighborhoods!.isNotEmpty) neighborhoods!.clear();
       dioo.Response response = await dio.get(url);
       List<dynamic> data = response.data;
-      data.forEach((key) => neighborhoods!.add(key['neighborhood']!));
-      print('neighborhoods query');
+      data.forEach((key) => neighborhoods!.add(Neighborhood().fromJson(key)));
+      print(data);
       notifyListeners();
       return neighborhoods!.reversed.toList();
     } catch (e) {

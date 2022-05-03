@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:daleel/models/category.dart';
-import 'package:daleel/widgets/details_widgets/rating.dart';
-import 'package:daleel/widgets/details_widgets/working_hours_card.dart';
+import 'package:daleel/widgets/details-widgets/rating.dart';
+import 'package:daleel/widgets/details-widgets/working_hours_card.dart';
 import 'package:daleel/widgets/explore_widgets/horz_list.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 

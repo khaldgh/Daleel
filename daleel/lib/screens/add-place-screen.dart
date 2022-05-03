@@ -1,5 +1,5 @@
 import 'package:daleel/models/place.dart';
-import 'package:daleel/widgets/add-place-widgets/place_form_field.dart';
+import 'package:daleel/widgets/add-place-widgets/add_place_form.dart';
 import 'package:flutter/material.dart';
 
 class AddPlaceScreen extends StatefulWidget {
@@ -19,7 +19,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     return Scaffold(
       appBar: AppBar(title: Text('اضف مكان جديد')),
       body: SafeArea(
-        child: PlaceFormField(),
+        child: AddPlaceForm(),
       ),
     );
   }

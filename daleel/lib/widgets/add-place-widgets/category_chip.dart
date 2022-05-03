@@ -15,13 +15,15 @@ class CategoryChip extends StatefulWidget {
       @required this.title,
       this.isCityChip = false,
       this.place,
+      this.addValue,
       @required this.futureFunction})
       : super(key: key);
   final String? title;
   final bool? isCityChip;
   final Function? categorySelected;
   final Future<List<Object>>? futureFunction;
-  Place? place;
+  final Place? place;
+  final Function? addValue;
 
   @override
   State<CategoryChip> createState() => _CategoryChipState();
@@ -33,7 +35,6 @@ class _CategoryChipState extends State<CategoryChip> {
   @override
   Widget build(BuildContext context) {
     Places places = Provider.of<Places>(context);
-    Place userPlace = places.userPlace;
     return FutureBuilder(
       future: widget.futureFunction,
       builder: (BuildContext context, AsyncSnapshot snapshot) => Column(
@@ -65,20 +66,12 @@ class _CategoryChipState extends State<CategoryChip> {
                         setState(() {
                           noSelection = false;
                           choiceIndex = isSelected ? choice : Category();
-                          // userPlace.category = choiceIndex;
-                          print('category!!!!!! ${choiceIndex.categoryId}');
-                          widget.place = Place(
-                              title: widget.place!.title,
-                              description: widget.place!.description,
-                              category: choiceIndex,
-                              approved: widget.place!.approved,
-                              images: widget.place!.images,
-                              instagram: widget.place!.instagram,
-                              phone: widget.place!.phone,
-                              website: widget.place!.website,
-                              neighborhoods: widget.place!.neighborhoods,
-                              weekdays: widget.place!.weekdays);
+                          widget.addValue!(
+                              choiceIndex
+                              );
                         });
+
+                        // print(choiceIndex.categoryId);
                       }),
                 );
               }).toList()),

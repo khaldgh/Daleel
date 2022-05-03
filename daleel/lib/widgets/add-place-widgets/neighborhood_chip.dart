@@ -10,61 +10,53 @@ import 'package:provider/provider.dart';
 class NeighborhoodChip extends StatefulWidget {
   NeighborhoodChip({
     Key? key,
+    this.addValue,
   }) : super(key: key);
+  final Function? addValue;
 
   @override
   State<NeighborhoodChip> createState() => _NeighborhoodChipState();
 }
 
 class _NeighborhoodChipState extends State<NeighborhoodChip> {
-  String choiceIndex = '';
+  Neighborhood choiceIndex = Neighborhood();
   @override
   Widget build(BuildContext context) {
     Places places = Provider.of<Places>(context);
-    Place userPlace = places.userPlace;
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Container(
-            margin: EdgeInsets.only(
-              right: 15.0,
-              top: 15.0,
-            ),
-            child: Text('الحي',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Container(
+          margin: EdgeInsets.only(
+            right: 15.0,
+            top: 15.0,
           ),
-          Wrap(
-              // you can try GridView.builder in the future if Wrap doesn't satisfy your needs here
-              alignment: WrapAlignment.end,
-              children: places.neighborhoods!.map((String neighborhood) {
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    right: 2.0,
-                  ),
-                  child: ChoiceChip(
-                      label: Text(neighborhood),
-                      selectedColor: Colors.blue,
-                      selected: choiceIndex == neighborhood,
-                      onSelected: (bool isSelected) {
-                        setState(() {
-                          choiceIndex = isSelected ? neighborhood : '';
-                          userPlace = Place(
-                            title: userPlace.title,
-                            description: userPlace.description,
-                            category: userPlace.category,
-                            approved: userPlace.approved,
-                            instagram: userPlace.instagram,
-                            website: userPlace.website,
-                            phone: userPlace.phone,
-                            images: userPlace.images,
-                            weekdays: userPlace.weekdays,
-                            neighborhoods: [Neighborhood(neighborhood: choiceIndex)]
-                          );
-                        });
-                      }),
-                );
-              }).toList()),
-        ],
-      );
+          child: Text('الحي',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+        ),
+        Wrap(
+            // you can try GridView.builder in the future if Wrap doesn't satisfy your needs here
+            alignment: WrapAlignment.end,
+            children: places.neighborhoods!.map<Widget>((Neighborhood neighborhood) {
+              return Padding(
+                padding: const EdgeInsets.only(
+                  right: 2.0,
+                ),
+                child: ChoiceChip(
+                    label: Text(neighborhood.neighborhood!),
+                    selectedColor: Colors.blue,
+                    selected: choiceIndex == neighborhood,
+                    onSelected: (bool isSelected) {
+                      setState(() {
+                        choiceIndex = isSelected ? neighborhood : Neighborhood();
+                      });
+                      widget.addValue!(
+                        choiceIndex
+                      );
+                    }),
+              );
+            }).toList()),
+      ],
+    );
   }
 }

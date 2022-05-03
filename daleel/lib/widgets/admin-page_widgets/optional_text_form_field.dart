@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CustomTextFormField extends StatelessWidget {
-  CustomTextFormField(
+class OptionalTextFormField extends StatelessWidget {
+  OptionalTextFormField(
       {this.initValue,
       this.hintText,
       this.errText,
@@ -33,7 +33,7 @@ class CustomTextFormField extends StatelessWidget {
         children: [
           Text.rich(TextSpan(
               text: boldText,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
               children: <TextSpan>[
                 mandatory!
                     ? TextSpan(
@@ -45,23 +45,26 @@ class CustomTextFormField extends StatelessWidget {
                       )
                     : TextSpan(text: ''),
               ])),
-          TextFormField(
-              initialValue: initValue,
-              textDirection: TextDirection.rtl,
-              decoration: InputDecoration(
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                  hintText: hintText,
-                  hintTextDirection: TextDirection.rtl),
-              validator: (String? value) {
-                if (value!.length > maxLength!) {
-                  return errText;
-                } else if (mandatory! && value.isEmpty) {
-                  return 'هذي الخانة ضرورية';
-                } else {
-                  return null;
-                }
-              },
-              onSaved: onSaved),
+          Padding(
+            padding: const EdgeInsets.only(left: 60.0),
+            child: TextFormField(
+                initialValue: initValue,
+                textDirection: TextDirection.rtl,
+                decoration: InputDecoration(
+                    hintStyle: TextStyle(color: Colors.grey[400], fontSize: 15),
+                    hintText: hintText,
+                    hintTextDirection: TextDirection.rtl),
+                validator: (String? value) {
+                  if (value!.length > maxLength!) {
+                    return errText;
+                  } else if (mandatory! && value.isEmpty) {
+                    return 'هذي الخانة ضرورية';
+                  } else {
+                    return null;
+                  }
+                },
+                onSaved: onSaved),
+          ),
         ],
       ),
     );

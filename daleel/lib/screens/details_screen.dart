@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:daleel/widgets/details_widgets/details_card.dart';
-import 'package:daleel/widgets/details_widgets/image_viewer.dart';
+import 'package:daleel/widgets/details-widgets/details_card.dart';
+import 'package:daleel/widgets/details-widgets/image_viewer.dart';
 import 'package:daleel/widgets/explore_widgets/image_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

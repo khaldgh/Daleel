@@ -1,5 +1,5 @@
 import 'package:daleel/models/place.dart';
-import 'package:daleel/screens/admin_page_screen.dart';
+import 'package:daleel/screens/test_screen.dart';
 import 'package:daleel/widgets/home_widgets/chip_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,10 +27,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               InkWell(
-                onTap: (){
-                  var getCategories = Provider.of<Places>(context, listen: false).getCategories();
-                  // formPlces.forEach((element) {print(element.category);});
-                  print(getCategories);
+                onTap: () async {
+                  var test = await Provider.of<Places>(context, listen: false);
+                  test.getPlaces();
+                  // print(test.preApprovedList);
+                  // formPlces.forEach((;element) {print(element.category);});
+                  // test.map((e) => print(e)).toList();
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -70,7 +72,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               InkWell(
                 onTap: (){
-                  Navigator.of(context).pushNamed(AdminPage.routename);
+                  Navigator.of(context).pushNamed(TestScreen.routeName);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

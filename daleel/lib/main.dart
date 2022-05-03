@@ -1,12 +1,11 @@
 import 'package:daleel/providers/offers.dart';
 import 'package:daleel/screens/add-place-screen.dart';
-import 'package:daleel/screens/admin_page_screen.dart';
 import 'package:daleel/screens/settings_screen.dart';
 import 'package:daleel/screens/login_screen.dart';
 import 'package:daleel/screens/preferences_screen.dart';
 import 'package:daleel/screens/capital_places.dart';
 import 'package:daleel/screens/test_screen.dart';
-import 'package:daleel/widgets/admin-page_widgets/admin_form_field.dart';
+import 'package:daleel/widgets/admin-page_widgets/admin_form.dart';
 import 'package:daleel/widgets/home_widgets/filter_chip_widget.dart';
 import 'package:daleel/widgets/explore_widgets/category_detail_item.dart';
 import 'package:flutter/material.dart';
@@ -62,8 +61,8 @@ class _MyAppState extends State<MyApp> {
               SearchDetailsScreen.routeName: (ctx) => SearchDetailsScreen(),
               FilterChipWidget.routeName: (ctx) => FilterChipWidget(),
               AddPlaceScreen.routeName: (ctx) => AddPlaceScreen(),
-              AdminPage.routename: (ctx) => AdminPage(),
-              AdminFormField.routename: (ctx) => AdminFormField(),
+              AdminForm.routeName: (ctx) => AdminForm(),
+              TestScreen.routeName: (ctx) => TestScreen(),
             }),
       ),
     );

@@ -3,13 +3,13 @@ import 'package:daleel/models/neighborhood.dart';
 import 'package:daleel/models/subcategory.dart';
 
 class Place {
-  final int? place_id;
+   int? place_id;
   final String? title;
   final String? description;
-  Category? category;
+  final Category? category;
   final List<Subcategory>? subcategories;
   final List<Neighborhood>? neighborhoods;
-  final bool? approved;
+   bool? approved;
   final int? phone;
   final String? website;
   final String? instagram;
@@ -39,8 +39,11 @@ class Place {
             categoryId: json['category_id'], category: json['category']),
         neighborhoods: [
           Neighborhood(
-              neighborhoodId: json['neighborhood_id'],
-              neighborhood: json['neighborhood'])
+            neighborhoodId: json['neighborhoods'][0]['neighborhood_id'],
+            neighborhood: json['neighborhoods'][0]['neighborhood'],
+            cityId: json['neighborhoods'][0]['city_id'],
+            city: json['neighborhoods'][0]['city'],
+          )
         ],
         approved: json['approved'] == 0,
         phone: json['phone'] as int,
@@ -69,15 +72,12 @@ class Place {
         'instagram': instagram!,
         'images': images!,
         'neighborhoods': neighborhoods!,
-        'sunday': weekdays![0],
-        'monday': weekdays![1],
-        'tuesday': weekdays![2],
-        'wednesday': weekdays![3],
-        'thursday': weekdays![4],
-        'friday': weekdays![5],
-        'saturday': weekdays![6],
-        // 'imageUrl': imageUrl!,
-        // 'isFavorite': isFavorite! ? 1 : 0,
-        // 'time': time!.toIso8601String(),
+        'Sunday': weekdays![0],
+        'Monday': weekdays![1],
+        'Tuesday': weekdays![2],
+        'Wednesday': weekdays![3],
+        'Thursday': weekdays![4],
+        'Friday': weekdays![5],
+        'Saturday': weekdays![6],
       };
 }

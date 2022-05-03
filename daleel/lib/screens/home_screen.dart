@@ -37,7 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
     ExploreScreen(),
     AddPlaceScreen(),
     SettingsScreen(),
-    PrefrencesScreen()
+    // PrefrencesScreen()
+    TestScreen()
   ];
 
   @override
