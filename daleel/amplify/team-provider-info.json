@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-daleel-dev-50649-authRole",
+      "UnauthRoleArn": "arn:aws:iam::433255485869:role/amplify-daleel-dev-50649-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::433255485869:role/amplify-daleel-dev-50649-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-daleel-dev-50649-deployment",
+      "UnauthRoleName": "amplify-daleel-dev-50649-unauthRole",
+      "StackName": "amplify-daleel-dev-50649",
+      "StackId": "arn:aws:cloudformation:ap-south-1:433255485869:stack/amplify-daleel-dev-50649/080c7bc0-cc18-11ec-b4ca-06121c22e38a",
+      "AmplifyAppId": "d3bct9ci5tdi7q"
+    },
+    "categories": {
+      "auth": {
+        "daleela1f4c2fa": {}
+      }
+    }
+  }
+}

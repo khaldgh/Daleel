@@ -1,46 +1,70 @@
 {
   "providers": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-daleel-staging-200553-authRole",
-      "UnauthRoleArn": "arn:aws:iam::433255485869:role/amplify-daleel-staging-200553-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::433255485869:role/amplify-daleel-staging-200553-authRole",
-      "Region": "us-east-2",
-      "DeploymentBucketName": "amplify-daleel-staging-200553-deployment",
-      "UnauthRoleName": "amplify-daleel-staging-200553-unauthRole",
-      "StackName": "amplify-daleel-staging-200553",
-      "StackId": "arn:aws:cloudformation:us-east-2:433255485869:stack/amplify-daleel-staging-200553/5c8a2440-fecd-11eb-9c8e-0a04953e1c5a",
-      "AmplifyAppId": "d2p03yz3422itl"
+      "AuthRoleName": "amplify-daleel-dev-50649-authRole",
+      "UnauthRoleArn": "arn:aws:iam::433255485869:role/amplify-daleel-dev-50649-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::433255485869:role/amplify-daleel-dev-50649-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-daleel-dev-50649-deployment",
+      "UnauthRoleName": "amplify-daleel-dev-50649-unauthRole",
+      "StackName": "amplify-daleel-dev-50649",
+      "StackId": "arn:aws:cloudformation:ap-south-1:433255485869:stack/amplify-daleel-dev-50649/080c7bc0-cc18-11ec-b4ca-06121c22e38a",
+      "AmplifyAppId": "d3bct9ci5tdi7q"
     }
   },
-  "api": {
-    "Daleel": {
-      "service": "AppSync",
+  "auth": {
+    "daleela1f4c2fa": {
+      "service": "Cognito",
       "providerPlugin": "awscloudformation",
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 30,
-              "description": "api key description"
-            }
-          },
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "AWS_IAM"
-            }
-          ]
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "loginMechanisms": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
         },
-        "GraphQLAPIIdOutput": "w57gzppmw5bkljyamynz7occu4",
-        "GraphQLAPIEndpointOutput": "https://a6qepksfyffcdopwwfovcn2abm.appsync-api.us-east-2.amazonaws.com/graphql",
-        "GraphQLAPIKeyOutput": "da2-4v7ai6ergrhtrn2s2mifhk35we"
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ]
       },
       "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-daleel-staging-200553-deployment/amplify-cfn-templates/api/cloudformation-template.json",
-        "logicalId": "apiDaleel"
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-daleel-dev-50649-deployment/amplify-cfn-templates/auth/daleela1f4c2fa-cloudformation-template.yml",
+        "logicalId": "authdaleela1f4c2fa"
       },
-      "lastPushTimeStamp": "2021-09-17T21:12:57.834Z",
-      "lastPushDirHash": "139lRqTCSroX2fZLCvgF0T2goXM="
+      "lastPushTimeStamp": "2022-05-05T02:19:06.427Z",
+      "output": {
+        "UserPoolId": "ap-south-1_SavMgNmXg",
+        "AppClientIDWeb": "199q2j87a39an1hparss488qo4",
+        "AppClientID": "eh1ao5c990vllnk1b658k7ha6",
+        "IdentityPoolId": "ap-south-1:e777ae74-02b7-4b2a-bef3-327bec9e3bde",
+        "UserPoolArn": "arn:aws:cognito-idp:ap-south-1:433255485869:userpool/ap-south-1_SavMgNmXg",
+        "IdentityPoolName": "daleela1f4c2fa_identitypool_a1f4c2fa__dev",
+        "UserPoolName": "daleela1f4c2fa_userpool_a1f4c2fa"
+      },
+      "lastPushDirHash": "+T2ThW6RXzj8CwJOyrJq4CFmPEk="
+    }
+  },
+  "storage": {
+    "s314564131": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-daleel-dev-50649-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
+        "logicalId": "storages314564131"
+      },
+      "lastPushTimeStamp": "2022-05-05T02:19:06.427Z",
+      "output": {
+        "BucketName": "daleel2c599cd061ac49af939fc643b943c84c50649-dev",
+        "Region": "ap-south-1"
+      },
+      "lastPushDirHash": "Ckari01d9FS7AvHkmEN+i4lRXYc="
     }
   }
 }

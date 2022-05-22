@@ -78,7 +78,6 @@ class _AdminFormState extends State<AdminForm> {
         weekdays: userPlace.weekdays);
   }
 
-
   @override
   Widget build(BuildContext context) {
     categorySelected;
@@ -240,6 +239,17 @@ class _AdminFormState extends State<AdminForm> {
               height: 30,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              IconButton(
+                icon: Icon(Icons.photo),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: Icon(Icons.camera_alt),
+                onPressed: () {},
+              ),
+            ]),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Padding(
@@ -278,7 +288,7 @@ class _AdminFormState extends State<AdminForm> {
                         userPlace.place_id =
                             widget.listOfPlaces![widget.index!].place_id!;
 
-                            userPlace.approved = true;
+                        userPlace.approved = true;
 
                         userPlace;
 

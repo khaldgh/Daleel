@@ -1,3 +1,12 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+
 import 'package:daleel/models/category.dart';
 import 'package:daleel/models/city.dart';
 import 'package:daleel/models/neighborhood.dart';
@@ -5,10 +14,8 @@ import 'package:daleel/providers/places.dart';
 import 'package:daleel/widgets/add-place-widgets/category_chip.dart';
 import 'package:daleel/widgets/add-place-widgets/city_chip.dart';
 import 'package:daleel/widgets/add-place-widgets/neighborhood_chip.dart';
-import 'package:flutter/material.dart';
 
 import 'package:daleel/models/place.dart';
-import 'package:provider/provider.dart';
 import 'add_place_text_form_field.dart';
 import './custom_drop_button.dart';
 
@@ -47,44 +54,79 @@ class _AddPlaceFormState extends State<AddPlaceForm> {
     // time: null
   );
 
-  void addCategory(
-      Category category) {
-      userPlace = Place(
-          title: userPlace.title,
-          description: userPlace.description,
-          approved: userPlace.approved,
-          category: category,
-          images: userPlace.images,
-          instagram: userPlace.instagram,
-          neighborhoods: userPlace.neighborhoods,
-          phone: userPlace.phone,
-          website: userPlace.website,
-          weekdays: userPlace.weekdays);
-    }
+  void addCategory(Category category) {
+    userPlace = Place(
+        title: userPlace.title,
+        description: userPlace.description,
+        approved: userPlace.approved,
+        category: category,
+        images: userPlace.images,
+        instagram: userPlace.instagram,
+        neighborhoods: userPlace.neighborhoods,
+        phone: userPlace.phone,
+        website: userPlace.website,
+        weekdays: userPlace.weekdays);
+  }
 
-void addNeighborhood(
-      Neighborhood? neighborhood) {
-        userPlace = Place(
-          title: userPlace.title,
-          description: userPlace.description,
-          approved: userPlace.approved,
-          category: userPlace.category,
-          images: userPlace.images,
-          instagram: userPlace.instagram,
-          neighborhoods: [neighborhood!],
-          phone: userPlace.phone,
-          website: userPlace.website,
-          weekdays: userPlace.weekdays);
-    }
-    
+  void addNeighborhood(Neighborhood? neighborhood) {
+    userPlace = Place(
+        title: userPlace.title,
+        description: userPlace.description,
+        approved: userPlace.approved,
+        category: userPlace.category,
+        images: userPlace.images,
+        instagram: userPlace.instagram,
+        neighborhoods: [neighborhood!],
+        phone: userPlace.phone,
+        website: userPlace.website,
+        weekdays: userPlace.weekdays);
+  }
 
-  
+  ImagePicker picker = ImagePicker();
+
+  XFile? pickedImage;
+
+  onImageAdded(ImageSource? source) async {
+    pickedImage = await picker.pickImage(source: source!, imageQuality: 30);
+  }
+
+  Future<void> onImageSubmitted({String? category, dynamic fileName}) async {
+    final exampleString = 'Example file contents';
+    final tempDir = await getTemporaryDirectory();
+    // final exampleFile = File(tempDir.path + '/example.txt')
+    //   ..createSync()
+    //   ..writeAsStringSync(exampleString);
+
+    var exampleFile = File(pickedImage!.path);
+
+    // Provider.of<Places>(context, listen: false).PostImage(pickedImage!);
+      try {
+        final UploadFileResult result = await Amplify.Storage.uploadFile(
+            local: exampleFile,
+            //     options:  S3UploadFileOptions(
+            //   accessLevel: StorageAccessLevel.guest,
+            //   contentType: 'text/plain',
+            //   metadata: <String, String>{
+            //     'project': 'ExampleProject',
+            //   },
+            // ),
+            key: 'images/$category/${await fileName}',
+            onProgress: (progress) {
+              print("Fraction completed: " +
+                  progress.getFractionCompleted().toString());
+            });
+        print('Successfully uploaded file: ${result.key}');
+      } on StorageException catch (e) {
+        print('Error uploading file: $e');
+      }
+  }
 
   @override
   Widget build(BuildContext context) {
     categorySelected;
     Places places = Provider.of<Places>(context, listen: false);
-    if (places.neighborhoods!.isNotEmpty) places.neighborhoods!.clear(); // to clear neighborhoods on setState();
+    if (places.neighborhoods!.isNotEmpty)
+      places.neighborhoods!.clear(); // to clear neighborhoods on setState();
     // Place userPlace = places.userPlace;
     List<Place> formPlaces = places.formPlaces;
     Future<List<City>> cities = places.getCities();
@@ -139,6 +181,14 @@ void addNeighborhood(
                       weekdays: userPlace.weekdays,
                       images: userPlace.images);
                 }),
+            SizedBox(
+              height: 30,
+            ),
+            IconButton(
+                icon: Icon(Icons.photo),
+                onPressed: () {
+                  onImageAdded(ImageSource.camera);
+                }),
             CategoryChip(
               title: 'التصنيف',
               futureFunction: categories,
@@ -161,16 +211,20 @@ void addNeighborhood(
                   width: double.infinity,
                   child: ElevatedButton(
                       onPressed: () {
-
                         _globalKey.currentState!.validate();
-                        
 
                         _globalKey.currentState!.save();
 
                         userPlace;
 
-                        Provider.of<Places>(context, listen: false)
-                            .postPlace(userPlace);
+                        var placeId =
+                            Provider.of<Places>(context, listen: false)
+                                .postPlace(userPlace);
+
+                        onImageSubmitted(
+                          category: userPlace.category!.category,
+                          fileName: placeId,
+                        );
 
                         print(userPlace.title);
                         print(userPlace.description);

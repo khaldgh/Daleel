@@ -1,16 +1,22 @@
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:daleel/providers/offers.dart';
 import 'package:daleel/screens/add-place-screen.dart';
 import 'package:daleel/screens/settings_screen.dart';
 import 'package:daleel/screens/login_screen.dart';
 import 'package:daleel/screens/preferences_screen.dart';
-import 'package:daleel/screens/capital_places.dart';
-import 'package:daleel/screens/test_screen.dart';
+import 'package:daleel/screens/admin_screen.dart';
 import 'package:daleel/widgets/admin-page-widgets/admin_form.dart';
 import 'package:daleel/widgets/home_widgets/filter_chip_widget.dart';
 import 'package:daleel/widgets/explore_widgets/category_detail_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+
+// Generated in previous step
+import 'amplifyconfiguration.dart';
 
 import './screens/details_screen.dart';
 import './screens/explore_screen.dart';
@@ -23,18 +29,42 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-    var cookie = FlutterSecureStorage().read(key: 'cookie');
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _configureAmplify();
+  }
+
+  void _configureAmplify() async {
+    // AmplifyAnalyticsPinpoint analyticsPlugin = AmplifyAnalyticsPinpoint();
+
+    AmplifyStorageS3 storagePlugin = AmplifyStorageS3();
+
+    AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
+
+    await Amplify.addPlugins([storagePlugin, authPlugin]);
+
+    try {
+      await Amplify.configure(amplifyconfig);
+    } on AmplifyAlreadyConfiguredException {
+      print(
+          "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+    }
+  }
+
+  var cookie = FlutterSecureStorage().read(key: 'cookie');
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          
           create: (ctx) => Places(),
         ),
         ChangeNotifierProvider(
@@ -62,7 +92,7 @@ class _MyAppState extends State<MyApp> {
               FilterChipWidget.routeName: (ctx) => FilterChipWidget(),
               AddPlaceScreen.routeName: (ctx) => AddPlaceScreen(),
               AdminForm.routeName: (ctx) => AdminForm(),
-              TestScreen.routeName: (ctx) => TestScreen(),
+              AdminScreen.routeName: (ctx) => AdminScreen(),
             }),
       ),
     );

@@ -15,6 +15,7 @@ class Place {
   final String? instagram;
   final List<String>? weekdays;
   final List<dynamic>? images;
+  final String? email;
 
   Place({
     this.place_id,
@@ -29,6 +30,7 @@ class Place {
     this.instagram,
     this.weekdays,
     this.images,
+    this.email
   });
 
   static Place fromJson(Map<String, dynamic> json) => Place(
@@ -50,6 +52,7 @@ class Place {
         website: json['website'] as String,
         instagram: json['instagram'] as String,
         images: json['images'] as List<dynamic>,
+        email: json['email'] as String,
         weekdays: [
           json['Sunday'],
           json['monday'],
@@ -71,6 +74,7 @@ class Place {
         'website': website!,
         'instagram': instagram!,
         'images': images!,
+        'email': email!,
         'neighborhoods': neighborhoods!,
         'Sunday': weekdays![0],
         'Monday': weekdays![1],

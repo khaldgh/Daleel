@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:daleel/widgets/signup_widgets/signin_widget.dart';
 import 'package:daleel/widgets/signup_widgets/signup_widget.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import '../providers/places.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -96,7 +97,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Shadow(
                                     color: Colors.black, offset: Offset(1, 1))
                               ])),
-                    )
+                    ),
+                    IconButton(onPressed: () async {
+                      await FlutterSecureStorage().delete(key: 'cookie');
+                      await FlutterSecureStorage().read(key: 'cookie');
+                    }, icon: Icon(Icons.cookie), color: Color.fromARGB(255, 110, 51, 29), iconSize: 50,)
                     // loginStatus
                     //     ? SigninWidget(username, password)
                     //     : SignupWidget(username, password, email),
@@ -123,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     loginStatus
                         ? SigninWidget(username, password)
-                        : SignupWidget(username, password, email),
+                        : SignupWidget(email, username, password),
                     ElevatedButton(
                       child: Text(loginStatus ? 'login' : 'sign up'),
                       onPressed: () {
@@ -131,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ? places.signin(
                                 username.text, password.text, context)
                             : places.signup(
-                                username.text, password.text, context);
+                                email.text, username.text, password.text, context);
                       },
                     ),
                     TextButton(
