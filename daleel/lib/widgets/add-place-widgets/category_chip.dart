@@ -24,17 +24,25 @@ class CategoryChip extends StatefulWidget {
   final Future<List<Object>>? futureFunction;
   final Place? place;
   final Function? addValue;
+  
 
   @override
   State<CategoryChip> createState() => _CategoryChipState();
 }
 
 class _CategoryChipState extends State<CategoryChip> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<Places>(context, listen: false).getCategories();
+  }
+
   Category choiceIndex = Category();
   bool noSelection = true;
   @override
   Widget build(BuildContext context) {
-    Places places = Provider.of<Places>(context);
     return FutureBuilder(
       future: widget.futureFunction,
       builder: (BuildContext context, AsyncSnapshot snapshot) => Column(
@@ -48,31 +56,27 @@ class _CategoryChipState extends State<CategoryChip> {
             child: Text(widget.title!,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
           ),
-          Wrap(
+                 Wrap(
               // you can try GridView.builder in the future if Wrap doesn't satisfy your needs here
               alignment: WrapAlignment.end,
-              children: snapshot.data!.map<Widget>((Category choice) {
+              children: snapshot.data!.map<Widget>((Category choice) { 
                 return Padding(
                   padding: const EdgeInsets.only(
-                    right: 2.0,
+                  right: 2.0,
                   ),
                   child: ChoiceChip(
-                      label: Text(choice.category!),
-                      selectedColor: Colors.blue,
-                      selected: noSelection
-                          ? choice == snapshot.data!.reversed.toList()[0]
-                          : choice == choiceIndex,
-                      onSelected: (bool isSelected) {
-                        setState(() {
-                          noSelection = false;
-                          choiceIndex = isSelected ? choice : Category();
-                          widget.addValue!(
-                              choiceIndex
-                              );
-                        });
-
-                        // print(choiceIndex.categoryId);
-                      }),
+                    label: Text(choice.category),
+                    selectedColor: Colors.blue,
+                    selected: noSelection
+                        ? choice == snapshot.data!.reversed.toList()[0]
+                        : choice == choiceIndex,
+                    onSelected: (bool isSelected) {
+                      setState(() {
+                        noSelection = false;
+                        choiceIndex = isSelected ? choice : Category();
+                      });
+                        widget.addValue!(choiceIndex);
+                    }),
                 );
               }).toList()),
         ],

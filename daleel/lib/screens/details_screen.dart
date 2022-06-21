@@ -1,11 +1,7 @@
-import 'dart:convert';
 
 import 'package:daleel/models/comment.dart';
-import 'package:daleel/models/place.dart';
 import 'package:daleel/widgets/details-widgets/comments_widget.dart';
 import 'package:daleel/widgets/details-widgets/details_card.dart';
-import 'package:daleel/widgets/details-widgets/image_viewer.dart';
-import 'package:daleel/widgets/explore_widgets/image_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -53,12 +49,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   ? Icon(Icons.favorite)
                   : Icon(Icons.favorite_border),
               onPressed: () {
-                place.userFavorite(homeArgs);
                 setState(() {
                   favorited = !favorited;
                   fss.write(key: 'favorited', value: favorited.toString());
                   // place.addToFavorites(homeArgs);
                 });
+                favorited
+                    ? place.userFavorite(homeArgs)
+                    : place.removeFavorite(homeArgs);
               },
             ),
             IconButton(
@@ -75,7 +73,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             child: Container(
               alignment: Alignment.topCenter,
               height: 2300,
-              child: Image.network(snapshot.data![0]!.images![0]['image']),
+              child: Image.network(snapshot.data![0]!.images![0]),
             ),
           ),
           Positioned(
@@ -102,7 +100,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         description: snapshot.data![0]!.description!,
                         category: snapshot.data![0]!.category!,
                         images: snapshot.data![0]!.images!,
-                        username: snapshot.data![0]!.email!,
+                        user: snapshot.data![0]!.user!,
                         weekdays: snapshot.data![0]!.weekdays!,
                       ),
                     ],

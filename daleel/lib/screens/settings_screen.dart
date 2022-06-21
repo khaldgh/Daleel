@@ -1,7 +1,4 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:daleel/models/place.dart';
 import 'package:daleel/screens/admin_screen.dart';
-import 'package:daleel/widgets/home_widgets/chip_widget.dart';
 import 'package:daleel/widgets/settings-screen-widgets/custom_settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 height: 50,
               ),
               FutureBuilder(
-                future: places.getDownloadUrl(2),
+                future: places.getDownloadUrl(folderName: 'profilePics',id:2),
                 builder: (BuildContext ctx, AsyncSnapshot snapshot) => Center(
                     child: CircleAvatar(
                   backgroundImage: NetworkImage(snapshot.data),
@@ -49,8 +46,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Icons.edit,
                 label: 'preferences',
                 onTap: () async {
-                  places.getComments(3);
-                  
+                  places.getPlaces();
                 },
               ),
               CustomSettingsButton(

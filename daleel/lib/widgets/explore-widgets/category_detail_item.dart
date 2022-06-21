@@ -4,7 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
 import 'package:daleel/providers/places.dart';
-import 'package:daleel/widgets/home_widgets/image_card.dart';
+import 'package:daleel/widgets/home-widgets/image_card.dart';
 
 
 
@@ -28,18 +28,21 @@ class _CategoryDetailItemState extends State<CategoryDetailItem> {
       // final places = Provider.of<Places>(context);
   Future<List<Place>> places = Provider.of<Places>(context, listen: false).getPlaces();
 
-    return FutureBuilder(
-      future: places,
-      builder: (BuildContext context, AsyncSnapshot snapshot) => StaggeredGridView.countBuilder(
-        crossAxisCount: 3,
-        itemCount: snapshot.data.length,
-        itemBuilder: (context, index) => ImageCard(
-          image: snapshot.data[index].imageUrl,
+    return Scaffold(
+      body: FutureBuilder(
+        future: places,
+        builder: (BuildContext context, AsyncSnapshot snapshot) => StaggeredGridView.countBuilder(
+          crossAxisCount: 3,
+          itemCount: snapshot.data.length,
+          itemBuilder: (context, index) => ImageCard(
+            category: snapshot.data[index].category!.category! ,
+            image: snapshot.data[index].images[0],
+          ),
+          staggeredTileBuilder: (index) => StaggeredTile.count(
+              (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),
+          mainAxisSpacing: 8.0,
+          crossAxisSpacing: 8.0,
         ),
-        staggeredTileBuilder: (index) => StaggeredTile.count(
-            (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),
-        mainAxisSpacing: 8.0,
-        crossAxisSpacing: 8.0,
       ),
     );
   }

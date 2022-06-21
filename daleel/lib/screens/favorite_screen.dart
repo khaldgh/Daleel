@@ -49,7 +49,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(snapshot.data![i].category!.category!),
+                          Text(snapshot.data![i].category!.category),
                           Text(snapshot.data![i].title!,
                               style: TextStyle(fontWeight: FontWeight.bold)),
                         ],

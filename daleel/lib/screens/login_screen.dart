@@ -98,29 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     color: Colors.black, offset: Offset(1, 1))
                               ])),
                     ),
-                    IconButton(onPressed: () async {
-                      await FlutterSecureStorage().delete(key: 'cookie');
-                      await FlutterSecureStorage().read(key: 'cookie');
-                    }, icon: Icon(Icons.cookie), color: Color.fromARGB(255, 110, 51, 29), iconSize: 50,)
-                    // loginStatus
-                    //     ? SigninWidget(username, password)
-                    //     : SignupWidget(username, password, email),
-                    // ElevatedButton(
-                    //   child: Text('login'),
-                    //   onPressed: () {
-                    //     loginStatus
-                    //         ? places.signin(username.text, password.text, context)
-                    //         : places.signup(username.text, password.text, context);
-                    //   },
-                    // ),
-                    // TextButton(
-                    //     onPressed: () {
-                    //       setState(() {
-                    //         loginStatus = !loginStatus;
-                    //         print(loginStatus);
-                    //       });
-                    //     },
-                    //     child: Text(loginStatus ? 'signup' : 'signin'))
                   ],
                 )
               : Column(

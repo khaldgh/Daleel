@@ -1,6 +1,7 @@
 import 'package:daleel/models/category.dart';
 import 'package:daleel/models/neighborhood.dart';
 import 'package:daleel/models/subcategory.dart';
+import 'package:daleel/models/user.dart';
 
 class Place {
    int? place_id;
@@ -14,8 +15,8 @@ class Place {
   final String? website;
   final String? instagram;
   final List<String>? weekdays;
-  final List<dynamic>? images;
-  final String? email;
+   List<String>? images;
+  final User? user;
 
   Place({
     this.place_id,
@@ -30,7 +31,7 @@ class Place {
     this.instagram,
     this.weekdays,
     this.images,
-    this.email
+    this.user
   });
 
   static Place fromJson(Map<String, dynamic> json) => Place(
@@ -51,8 +52,12 @@ class Place {
         phone: json['phone'] as int,
         website: json['website'] as String,
         instagram: json['instagram'] as String,
-        images: json['images'] as List<dynamic>,
-        email: json['email'] as String,
+        user: User(
+          user_id: json['user_id'],
+          username: json['username'],
+          email: json['email'],
+        ),
+        images: [],
         weekdays: [
           json['Sunday'],
           json['monday'],
@@ -74,7 +79,7 @@ class Place {
         'website': website!,
         'instagram': instagram!,
         'images': images!,
-        'email': email!,
+        // 'user': user!,
         'neighborhoods': neighborhoods!,
         'Sunday': weekdays![0],
         'Monday': weekdays![1],

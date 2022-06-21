@@ -1,12 +1,12 @@
-import 'package:daleel/screens/admin_screen.dart';
-import 'package:daleel/screens/favorite_screen.dart';
+import 'package:daleel/screens/add_place_screen.dart';
+import 'package:daleel/screens/preferences_screen.dart';
 import 'package:daleel/screens/test_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:daleel/screens/settings_screen.dart';
 import 'package:daleel/screens/explore_screen.dart';
-import 'package:daleel/widgets/home_widgets/my_navigation_bar.dart';
-import 'package:daleel/widgets/home_widgets/places_grid.dart';
+import 'package:daleel/widgets/home-widgets/my_navigation_bar.dart';
+import 'package:daleel/widgets/home-widgets/places_grid.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/homescreen';
@@ -26,12 +26,13 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> _screens = [
     PlacesGrid(),
     ExploreScreen(),
-    // AddPlaceScreen(),
-    FavoriteScreen(),
+    AddPlaceScreen(),
+    TestScreen(),
+    // PreferencesScreen(),
+    // FavoriteScreen(),
     SettingsScreen(),
-    // PrefrencesScreen()
     // AdminScreen()
-    TestScreen()
+    // PlacesCollectionScreen()
   ];
 
   @override

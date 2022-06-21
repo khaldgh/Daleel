@@ -5,10 +5,11 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:daleel/models/user.dart';
 import 'package:daleel/providers/places.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:images_picker/images_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class TestScreen extends StatefulWidget {
   const TestScreen({Key? key}) : super(key: key);
@@ -18,55 +19,18 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-  ImagePicker picker = ImagePicker();
-
-  XFile? pickedImage;
-
-  onImageAdded(ImageSource? source, User user) async {
-    pickedImage = await picker.pickImage(source: source!, imageQuality: 30);
-
-    var exampleFile = File(pickedImage!.path);
-
-    // Provider.of<Places>(context, listen: false).PostImage(pickedImage!);
-    try {
-      final UploadFileResult result = await Amplify.Storage.uploadFile(
-          local: exampleFile,
-          //     options:  S3UploadFileOptions(
-          //   accessLevel: StorageAccessLevel.guest,
-          //   contentType: 'text/plain',
-          //   metadata: <String, String>{
-          //     'project': 'ExampleProject',
-          //   },
-          // ),
-          key: 'profilePics/${user.user_id}',
-          onProgress: (progress) {
-            print("Fraction completed: " +
-                progress.getFractionCompleted().toString());
-          });
-      print('Successfully uploaded file: ${result.key}');
-    } on StorageException catch (e) {
-      print('Error uploading file: $e');
-    }
-  }
+  PdfViewerController _pdfViewController = PdfViewerController();
 
   @override
   Widget build(BuildContext context) {
     var places = Provider.of<Places>(context, listen: false);
+
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-              icon: Icon(Icons.photo),
-              onPressed: () async {
-                User user = await places.whoami();
-                onImageAdded(ImageSource.camera, user);
-              }),
-          IconButton(onPressed: () async {
-            String? cookie = await FlutterSecureStorage().read(key: 'cookie');
-            print(cookie);
-          }, icon: Icon(Icons.cookie))
-        ],
+      child: IconButton(
+        icon: Icon(Icons.person_search),
+        onPressed: () async {
+          places.getOffers();
+        }
       ),
     );
   }

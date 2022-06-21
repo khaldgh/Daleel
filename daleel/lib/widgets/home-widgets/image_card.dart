@@ -40,6 +40,7 @@ class ImageCard extends StatelessWidget {
                 child: Text(
                   category!,
                   style: TextStyle(
+                    fontSize: 20,
                       fontWeight: FontWeight.bold,
                       backgroundColor: Colors.teal,
                       color: Colors.white),

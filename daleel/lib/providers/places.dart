@@ -1,23 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'package:dio/dio.dart' as dioo;
+
 import 'package:daleel/models/category.dart';
 import 'package:daleel/models/city.dart';
 import 'package:daleel/models/comment.dart';
 import 'package:daleel/models/neighborhood.dart';
 import 'package:daleel/models/user.dart';
-import 'package:daleel/screens/settings_screen.dart';
-import 'package:daleel/screens/explore_screen.dart';
 import 'package:daleel/screens/home_screen.dart';
 import 'package:daleel/screens/login_screen.dart';
-import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart' as dioo;
-import 'package:image_picker/image_picker.dart';
+import 'package:daleel/screens/preferences_screen.dart';
 import '../models/place.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Places with ChangeNotifier {
   List<String> nameList = [
@@ -39,9 +38,6 @@ class Places with ChangeNotifier {
   ];
 
   FlutterSecureStorage fStorage = FlutterSecureStorage();
-  
-
-  List<String> userPreferences = [];
 
   List<Place> _favoriteList = [];
 
@@ -52,20 +48,53 @@ class Places with ChangeNotifier {
   Future<Place> findById(int id) async {
     String url = 'http://192.168.8.105:3000/places/findone/$id';
     String? cookie = await FlutterSecureStorage().read(key: 'cookie');
-    print(id);
+    List<String> urls = [];
+    final ListResult result1 = await Amplify.Storage.list();
+    final List<StorageItem> items = result1.items;
+    final ListResult result2 = await Amplify.Storage.list(path: 'profilePics/');
+    final List<StorageItem> items2 = result2.items;
+
     dioo.Dio dio = dioo.Dio();
     try {
       dioo.Response response = await dio.get(url,
           options: dioo.Options(headers: {'cookie': cookie}));
       Place place = Place.fromJson(response.data);
-      print(response.data);
+      final ids = items
+          .map((e) => e.key.split('/').length < 4
+              ? 0
+              : int.parse((e.key.split('/')[2])))
+          .toList();
+      ids.removeWhere((element) => element == 0);
+      for (int index2 = 0; index2 < ids.length; index2++) {
+        if (ids[index2] == place.place_id) {
+          List<StorageItem> filteredItems = items
+              .where((item) =>
+                  item.key.split('/').length > 3 &&
+                  int.parse(item.key.split('/')[2]) == ids[index2])
+              .toList();
+          List<String> keys = filteredItems.map((e) => e.key).toList();
+          keys.removeAt(0);
+          for (int index3 = 0; index3 < keys.length; index3++) {
+            String downloadUrl = await imagesDownloadUrl(keys[index3]);
+            if (!urls.contains(downloadUrl)) urls.add(downloadUrl);
+            /** future task: urls from aws s3 might change, which will add the same image to (urls).
+               observed problem: when one of placeGrid's items was chosesn, returned to PlacesGrid then chose the same item again, the same images were repeated in
+               the place.images List, ie. if the images were 2 they become 4. Two duplicates are added to place.images */
+          }
+        }
+      }
+      StorageItem kUrl = items2.firstWhere(
+        ((element) =>
+            place.user!.user_id == int.parse(element.key.split('/')[1])),
+        orElse: () => StorageItem(key: 'failed'),
+      );
+      String profilePic = await imagesDownloadUrl(kUrl.key);
+      place.user!.profilePic = profilePic;
+      place.images = urls;
       return place;
     } catch (e) {
       throw e;
     }
-    // bool findPlace = _favoritePlaces.any((element) => element.place_id == id);
-    // if (findPlace) {
-    //   var place = _favoritePlaces.firstWhere((element) => element.place_id == id);
   }
 
   Place findByTitle(String title) {
@@ -79,17 +108,75 @@ class Places with ChangeNotifier {
     return [..._favoritePlaces];
   }
 
-  Future<List<Place>> getPlaces() async {
+  Future<List<Place>> getPlaces(
+      {List<Category> filteredList = const []}) async {
+    // print(' getplace function $filteredList');
+    dioo.Dio dio = dioo.Dio();
     String? header = await fStorage.read(key: 'cookie');
-    String url = 'http://192.168.8.105:3000/places/places';
+    String categoriesUrl = '';
+    List<Category> categories = await getUserPreferences();
+    List<int?> userPrefs = filteredList.isNotEmpty
+        ? filteredList.map((e) => e.categoryId).toList()
+        : categories.map((e) => e.categoryId).toList();
+    if (userPrefs.length == 1) {
+      print('first');
+      categoriesUrl = userPrefs[0].toString();
+    } else if (userPrefs.length == 2) {
+      print('second');
+      String first = userPrefs.first.toString() + '%2C';
+      String last = userPrefs.last.toString();
+      categoriesUrl = first + last;
+    } else {
+      String first = userPrefs.first.toString() + '%2C';
+      String last = userPrefs.last.toString();
+      var middle = userPrefs.sublist(1, userPrefs.length - 1);
+      middle.forEach((element) {
+        categoriesUrl += element.toString() + '%2C';
+        print('third');
+      });
+      categoriesUrl = first + categoriesUrl + last;
+      print(categoriesUrl);
+    }
+    String url =
+        'http://192.168.8.105:3000/places/queryPlaces?categories=$categoriesUrl';
+
     try {
-      dioo.Dio dio = dioo.Dio();
+      final ListResult result = await Amplify.Storage.list();
+      final List<StorageItem> items = result.items;
       dioo.Response<dynamic> response = await dio.get(url,
           options: dioo.Options(headers: {'cookie': header}));
       List places = response.data as List;
       List<Place> list = places.map((place) => Place.fromJson(place)).toList();
-      print(list);
+      final awsIds = items // finds ids of images from AWS
+          .map((e) =>
+              e.key.split('/').length < 4 ? 0 : int.parse(e.key.split('/')[2]))
+          .toList();
+      awsIds.removeWhere(
+          (element) => element == 0); // removes all 0s from the previous step
+      for (int index1 = 0; index1 < list.length; index1++) {
+        List<String> urls = [];
+        for (int index2 = 0; index2 < awsIds.length; index2++) {
+          if (awsIds[index2] == list[index1].place_id) {
+            List<StorageItem> filteredItems = items
+                .where((item) =>
+                    item.key.split('/').length > 2 &&
+                    int.parse(item.key.split('/')[2]) == awsIds[index2])
+                .toList();
+            List<String> keys = filteredItems.map((e) => e.key).toList();
+            print(keys);
+            keys.removeAt(0);
+            for (int index3 = 0; index3 < keys.length; index3++) {
+              String downloadUrl = await imagesDownloadUrl(keys[index3]);
+              if (!urls.contains(downloadUrl)) urls.add(downloadUrl);
+            }
+          }
+        }
+        // print('urls ${urls.length}');
+        list[index1].images = urls;
+      }
 
+      // this.userPreferences
+      // var categorizedList = list.where((element) => element.category!.category == 'مطاعم').toList();
       return list;
     } catch (e) {
       print(e);
@@ -97,18 +184,63 @@ class Places with ChangeNotifier {
     }
   }
 
-  Future<String> getDetails() async {
+  Future<void> getOffers() async {
+    List<String> keys = [];
+    List<String> offersUrl = [];
+    final ListResult result =
+        await Amplify.Storage.list(path: 'offers/سوبرماركت');
+    final List<StorageItem> items = result.items;
+    items.map(((e) {
+      List<String> segmentedKey = e.key.split('/');
+      segmentedKey.length == 3 ? keys.add(e.key.split('/')[2]) : 'wrong';
+      // print(e.key.split('/'));
+    })).toList();
+    keys.removeAt(0);
+
+    for (String key in keys) {
+      for (int index = 0; index < items.length; index++) {
+        String thirdSegment = items[index].key.split('/')[2];
+
+        if (key == thirdSegment) {
+          offersUrl.add(items[index].key);
+        }
+      }
+    }
+    print(offersUrl);
+  }
+
+  Future<String> imagesDownloadUrl(String? key) async {
     try {
-      String url =
-          'https://maps.googleapis.com/maps/api/place/details/json?language=ar&place_id=ChIJO2w4oJz9ST4RTj5KAwQHza4&key=AIzaSyB9cPWZjeIkrKrAg95mBBuHuXob2YYf-h4';
-      dioo.Dio dio = dioo.Dio();
-      dioo.Response<dynamic> response = await dio.get(url);
-      String data =
-          response.data['result']['address_components'][0]['long_name'];
-      print(data);
-      return data;
-    } catch (e) {
-      print(e);
+      S3GetUrlOptions options =
+          S3GetUrlOptions(accessLevel: StorageAccessLevel.guest);
+      final GetUrlResult result = await Amplify.Storage.getUrl(
+        key: key!,
+        options: options,
+      );
+      // NOTE: This code is only for demonstration
+      // Your debug console may truncate the printed url string
+      // print('Got URL: ${result.url}');
+      return result.url;
+    } on StorageException catch (e) {
+      print('Error getting download URL: $e');
+      throw e;
+    }
+  }
+
+  Future<String> getDownloadUrl({String? folderName, int? id}) async {
+    try {
+      S3GetUrlOptions options =
+          S3GetUrlOptions(accessLevel: StorageAccessLevel.guest);
+      final GetUrlResult result = await Amplify.Storage.getUrl(
+        key: '$folderName/${id}',
+        options: options,
+      );
+      // NOTE: This code is only for demonstration
+      // Your debug console may truncate the printed url string
+      // print('Got URL: ${result.url}');
+      return result.url;
+    } on StorageException catch (e) {
+      print('Error getting download URL: $e');
       throw e;
     }
   }
@@ -174,7 +306,7 @@ class Places with ChangeNotifier {
 
       response;
       loggedIn = true;
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      Navigator.of(context).pushReplacementNamed(PreferencesScreen.routeName);
     } catch (err) {
       print(err);
       throw err;
@@ -207,7 +339,6 @@ class Places with ChangeNotifier {
       // await dio.post(url, options: dioo.Options(headers: {'cookie': header}));
       await fStorage.delete(key: 'cookie');
       Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
-      print('${header} heeeeeeeeeeeeeeeeeeyyyyyyy');
     } catch (err) {
       print(err);
       throw err;
@@ -222,6 +353,34 @@ class Places with ChangeNotifier {
 
   Future<List<Place>> getPreApprovedPlaces() async {
     String url = 'http://192.168.8.105:3000/places/pre-approved-places';
+    try {
+      dioo.Dio dio = dioo.Dio();
+      dioo.Response response = await dio.get(url);
+      List<dynamic> places = response.data;
+      List<Place> preApprovedList =
+          places.map((place) => Place.fromJson(place)).toList();
+      return preApprovedList;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<Place>> getDayMostVisitedPlaces() async {
+    String url = 'http://192.168.8.105:3000/places/mostdayvisited';
+    try {
+      dioo.Dio dio = dioo.Dio();
+      dioo.Response response = await dio.get(url);
+      List<dynamic> places = response.data;
+      List<Place> preApprovedList =
+          places.map((place) => Place.fromJson(place)).toList();
+      return preApprovedList;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<Place>> getWeekMostVisitedPlaces() async {
+    String url = 'http://192.168.8.105:3000/places/mostweekvisited';
     try {
       dioo.Dio dio = dioo.Dio();
       dioo.Response response = await dio.get(url);
@@ -284,8 +443,13 @@ class Places with ChangeNotifier {
       List<int> s3Ids = [];
       items.forEach((element) {
         String key = element.key;
-        String sub = key.substring(12);
-        s3Ids.add(int.parse(sub));
+        List<String> sub = key.split('/');
+        List<String> spltKey = key.split('/');
+        List<String> spltKey2 = spltKey[1].split('.');
+        spltKey2.length < 1
+            ? s3Ids.add(int.parse(sub[1]))
+            : s3Ids.add(int.parse(spltKey2[0]));
+        print('key ${s3Ids}');
       });
       comments.forEach((element) => userIds.add(element.user!.user_id!));
 
@@ -298,54 +462,14 @@ class Places with ChangeNotifier {
       int id = 0;
       comments.forEach((comment) async {
         id = newList.firstWhere((element) => element == comment.user!.user_id);
-        String dUrl = await getDownloadUrl(id);
+        String dUrl = await getDownloadUrl(folderName: 'profilePics', id: id);
+        print(dUrl[4]);
         comment.user!.profilePic = dUrl;
       });
       print(newList);
 
       return comments;
     } catch (e) {
-      throw e;
-    }
-  }
-
-  Future<String> getDownloadUrl(int id) async {
-    try {
-      S3GetUrlOptions options =
-          S3GetUrlOptions(accessLevel: StorageAccessLevel.guest);
-      final GetUrlResult result = await Amplify.Storage.getUrl(
-        key: 'profilePics/${id}',
-        options: options,
-      );
-      // NOTE: This code is only for demonstration
-      // Your debug console may truncate the printed url string
-      print('Got URL: ${result.url}');
-      return result.url;
-    } on StorageException catch (e) {
-      print('Error getting download URL: $e');
-      throw e;
-    }
-  }
-
-  // use getDownloadUrl inside listItems to save the list of urls together and use them anywhere
-
-  Future<List<String>> listItems() async {
-    List<String> urls = [];
-    try {
-      final ListResult result = await Amplify.Storage.list();
-      final List<StorageItem> items = result.items;
-      items.forEach(
-        (element) async {
-          String key = element.key;
-          GetUrlResult foundItem = await Amplify.Storage.getUrl(key: key);
-          String url = foundItem.url;
-          urls.add(url);
-        },
-      );
-      print('Got items: $urls');
-      return urls;
-    } on StorageException catch (e) {
-      print('Error listing items: $e');
       throw e;
     }
   }
@@ -360,18 +484,45 @@ class Places with ChangeNotifier {
     }
   }
 
-  Future<void> PostImage(XFile image) async {
-    String url = 'http://192.168.8.105:3000/places/photos';
+  List<Category> userPreferences = [];
+
+  Future<void> setUserPreferences(
+      List<Category> categories, BuildContext context) async {
+    List<Map<String, Object>> jsonCategories = [];
+    String url = 'http://192.168.8.105:3000/users/preferences';
+    dioo.Dio dio = dioo.Dio();
+    var fStorage = FlutterSecureStorage();
+    var header = await fStorage.read(key: 'cookie');
+    categories.forEach((element) {
+      jsonCategories.add(element.toJson());
+    });
+    // print('${place.category!.categoryId} the function');
     try {
-      dioo.Dio dio = dioo.Dio();
-      // List<int> imageBytes = await image.readAsBytes();
-      // String baseImage = base64Encode(imageBytes);
-      String fileName = image.path.split('/').last;
-      dioo.FormData formData = dioo.FormData.fromMap({
-        'image':
-            await dioo.MultipartFile.fromFile(image.path, filename: fileName)
-      });
-      await dio.post(url, data: formData);
+      dioo.Response<dynamic> response = await dio.post(url,
+          data: jsonCategories,
+          options: dioo.Options(headers: {'cookie': header}));
+      Navigator.of(context).pushNamed(HomeScreen.routeName);
+      print(jsonCategories);
+      // return response;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<Category>> getUserPreferences() async {
+    List<Category> fromJsonCategories = [];
+    String url = 'http://192.168.8.105:3000/users/preferences';
+    dioo.Dio dio = dioo.Dio();
+    var fStorage = FlutterSecureStorage();
+    var header = await fStorage.read(key: 'cookie');
+    try {
+      dioo.Response<dynamic> response = await dio.get(url,
+          options: dioo.Options(headers: {'cookie': header}));
+      List<dynamic> resData = response.data;
+      resData.forEach(
+          ((element) => fromJsonCategories.add(Category().fromJson(element))));
+      // print(categories);
+      return fromJsonCategories;
     } catch (e) {
       throw e;
     }
@@ -381,9 +532,13 @@ class Places with ChangeNotifier {
     String url = 'http://192.168.8.105:3000/places';
     var jsonObj = place.toJson();
     // print('${place.category!.categoryId} the function');
+    var fStorage = FlutterSecureStorage();
+    var header = await fStorage.read(key: 'cookie');
     try {
       dioo.Dio dio = dioo.Dio();
-      dioo.Response<dynamic> response = await dio.post(url, data: jsonObj);
+      print(jsonObj);
+      dioo.Response<dynamic> response = await dio.post(url,
+          data: jsonObj, options: dioo.Options(headers: {'cookie': header}));
       return response;
     } catch (e) {
       throw e;
@@ -397,7 +552,20 @@ class Places with ChangeNotifier {
     var header = await fStorage.read(key: 'cookie');
     print(header);
     try {
-      dio.put(url, options: dioo.Options(headers: {'cookie': header}));
+      dio.post(url, options: dioo.Options(headers: {'cookie': header}));
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> removeFavorite(int id) async {
+    String url = 'http://192.168.8.105:3000/users/favoritePlace/$id';
+    dioo.Dio dio = dioo.Dio();
+    var fStorage = FlutterSecureStorage();
+    var header = await fStorage.read(key: 'cookie');
+    print(header);
+    try {
+      dio.delete(url, options: dioo.Options(headers: {'cookie': header}));
     } catch (e) {
       throw e;
     }
@@ -407,7 +575,7 @@ class Places with ChangeNotifier {
     String url = 'http://192.168.8.105:3000/places/$id';
     try {
       dioo.Dio dio = dioo.Dio();
-      dioo.Response response = await dio.delete(url);
+      await dio.delete(url);
     } catch (e) {
       throw e;
     }
@@ -446,10 +614,22 @@ class Places with ChangeNotifier {
       dioo.Response response = await dio.get(url);
       List<dynamic> data = response.data;
       data.forEach((cat) => categories.add(category.fromJson(cat)));
-      categories.forEach((element) {
-        print(data);
-      });
-      return categories.reversed.toList();
+      return categories.toList();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<Category>> getBigCategories() async {
+    String url = 'http://192.168.8.105:3000/categories/bigCategories';
+    Category category = Category();
+    dioo.Dio dio = dioo.Dio();
+    List<Category> categories = [];
+    try {
+      dioo.Response response = await dio.get(url);
+      List<dynamic> data = response.data;
+      data.forEach((cat) => categories.add(category.fromJson(cat)));
+      return categories.toList();
     } catch (e) {
       throw e;
     }

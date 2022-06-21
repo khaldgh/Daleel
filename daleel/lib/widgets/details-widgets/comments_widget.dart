@@ -61,9 +61,8 @@ class _CommentsWidgetState extends State<CommentsWidget> {
                     itemCount: widget.futureFunc!.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
-                        trailing: CircleAvatar(
-                          child: Image.network(
-                              widget.futureFunc![index].user!.profilePic!),
+                        trailing: CircleAvatar(backgroundImage: NetworkImage(
+                              widget.futureFunc![index].user!.profilePic!)
                         ),
                         title: Text(
                           widget.futureFunc![index].user!.username!,

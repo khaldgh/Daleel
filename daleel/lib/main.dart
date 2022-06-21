@@ -1,18 +1,19 @@
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:daleel/providers/offers.dart';
-import 'package:daleel/screens/add-place-screen.dart';
+import 'package:daleel/screens/add_place_screen.dart';
+import 'package:daleel/screens/offers_screen.dart';
+import 'package:daleel/screens/places_collection_screen.dart';
 import 'package:daleel/screens/settings_screen.dart';
 import 'package:daleel/screens/login_screen.dart';
 import 'package:daleel/screens/preferences_screen.dart';
 import 'package:daleel/screens/admin_screen.dart';
 import 'package:daleel/widgets/admin-page-widgets/admin_form.dart';
-import 'package:daleel/widgets/home_widgets/filter_chip_widget.dart';
-import 'package:daleel/widgets/explore_widgets/category_detail_item.dart';
+import 'package:daleel/widgets/home-widgets/filter_chip_widget.dart';
+import 'package:daleel/widgets/explore-widgets/category_detail_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 // Generated in previous step
@@ -64,7 +65,6 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          
           create: (ctx) => Places(),
         ),
         ChangeNotifierProvider(
@@ -82,7 +82,7 @@ class _MyAppState extends State<MyApp> {
             home: snapshot.hasData ? HomeScreen() : LoginScreen(),
             routes: {
               LoginScreen.routeName: (ctx) => LoginScreen(),
-              PrefrencesScreen.routeName: (ctx) => PrefrencesScreen(),
+              PreferencesScreen.routeName: (ctx) => PreferencesScreen(),
               HomeScreen.routeName: (ctx) => HomeScreen(),
               DetailsScreen.routeName: (ctx) => DetailsScreen(),
               ExploreScreen.routeName: (ctx) => ExploreScreen(),
@@ -93,6 +93,8 @@ class _MyAppState extends State<MyApp> {
               AddPlaceScreen.routeName: (ctx) => AddPlaceScreen(),
               AdminForm.routeName: (ctx) => AdminForm(),
               AdminScreen.routeName: (ctx) => AdminScreen(),
+              PlacesCollectionScreen.routeName: (ctx) => PlacesCollectionScreen(),
+              OffersScreen.routeName: (ctx) => OffersScreen(),
             }),
       ),
     );

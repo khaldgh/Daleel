@@ -1,11 +1,10 @@
-import 'dart:convert';
-import 'package:daleel/widgets/details-widgets/details_card.dart';
-import 'package:daleel/widgets/details-widgets/image_viewer.dart';
-import 'package:daleel/widgets/explore_widgets/image_slider.dart';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 
 import 'package:daleel/providers/places.dart';
+import 'package:daleel/widgets/details-widgets/details_card.dart';
+
 
 // You will be directed to this page if you used the Search bar from the Explore screen
 

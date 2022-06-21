@@ -1,6 +1,6 @@
-import 'package:daleel/screens/settings_screen.dart';
-import 'package:daleel/widgets/explore_widgets/category_detail_item.dart';
 import 'package:flutter/material.dart';
+
+import 'package:daleel/widgets/explore-widgets/category_detail_item.dart';
 
 class CircleWidget extends StatelessWidget {
   final String title;
@@ -27,10 +27,12 @@ class CircleWidget extends StatelessWidget {
             Container(
               // color: Colors.red,
               width: width/5.5,
-              child: Center(
-                child: Text(
-                  title,
-                  
+              child: Flexible(
+                child: Center(
+                  child: Text(
+                    title,
+                    
+                  ),
                 ),
               ),
             )

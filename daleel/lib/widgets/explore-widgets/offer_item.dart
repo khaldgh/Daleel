@@ -1,3 +1,4 @@
+import 'package:daleel/screens/offers_screen.dart';
 import 'package:flutter/material.dart';
 
 class OfferItem extends StatelessWidget {
@@ -12,15 +13,7 @@ class OfferItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        showModalBottomSheet(
-            context: context,
-            builder: (_) {
-              return Container(
-                
-                color: Colors.red,
-                child: Center(child: Text('hi'),),
-              );
-            });
+        Navigator.of(context).pushNamed(OffersScreen.routeName);
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

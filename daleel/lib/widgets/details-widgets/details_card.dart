@@ -1,4 +1,5 @@
 import 'package:carousel_indicator/carousel_indicator.dart';
+import 'package:daleel/models/user.dart';
 import 'package:daleel/widgets/details-widgets/full-screen-widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -7,7 +8,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:daleel/models/category.dart';
 import 'package:daleel/widgets/details-widgets/rating.dart';
 import 'package:daleel/widgets/details-widgets/working_hours_card.dart';
-import 'package:daleel/widgets/explore_widgets/horz_list.dart';
+import 'package:daleel/widgets/explore-widgets/day_list.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class DetailsCard extends StatefulWidget {
@@ -16,14 +17,14 @@ class DetailsCard extends StatefulWidget {
       this.title,
       this.description,
       this.weekdays,
-      this.username,
+      this.user,
       this.images});
   final String? title;
   final Category? category;
   final String? description;
   final List<String>? weekdays;
   final List<dynamic>? images;
-  final String? username;
+  final User? user;
   @override
   _DetailsCardState createState() => _DetailsCardState();
 }
@@ -58,20 +59,21 @@ class _DetailsCardState extends State<DetailsCard> {
                   child: CarouselSlider(
                     options: CarouselOptions(
                       height: 200.0,
-                      onPageChanged: (int index, CarouselPageChangedReason reason) {
+                      onPageChanged:
+                          (int index, CarouselPageChangedReason reason) {
                         setState(() {
                           _imageIndex = index;
                         });
                       },
                     ),
-                    items:
-                        widget.images!.sublist(1, widget.images!.length).map((i) {
+                    items: widget.images!.map((i) {
+                      print(i);
                       return Builder(
                         builder: (BuildContext context) {
                           return Container(
                               width: MediaQuery.of(context).size.width,
                               margin: EdgeInsets.symmetric(horizontal: 5.0),
-                              child: Image.network(i['image']));
+                              child: Image.network(i));
                         },
                       );
                     }).toList(),
@@ -97,7 +99,7 @@ class _DetailsCardState extends State<DetailsCard> {
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0, top: 8),
                         child: Text(
-                          widget.category!.category!,
+                          widget.category!.category,
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontSize: 25,
@@ -130,7 +132,8 @@ class _DetailsCardState extends State<DetailsCard> {
                   children: [
                     Text(
                       'Description',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     Card(
                       shadowColor: Colors.orange,
@@ -152,26 +155,26 @@ class _DetailsCardState extends State<DetailsCard> {
                     SizedBox(
                       height: 30,
                     ),
-                    ListTile(
-                      trailing:
-                          CircleAvatar(backgroundColor: Colors.blue, radius: 15),
-                      title: Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Text(
-                          'اسم افتراضي',
+                    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                      Text('${widget.user!.username!} اضاف هذا المكان'),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          foregroundImage:
+                              NetworkImage(widget.user!.profilePic!),
+                          backgroundColor: Colors.blue,
+                          radius: 20,
                         ),
                       ),
-                      contentPadding: EdgeInsets.only(left: 130, right: 15),
-                      leading: Text('اضاف هذا المكان'),
-                    ),
+                    ]),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Column(
                           children: [
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 8.0, bottom: 10.0),
+                              padding: const EdgeInsets.only(
+                                  right: 8.0, bottom: 10.0),
                               child: Text(
                                 'Working Hours                            ',
                                 style: TextStyle(
@@ -194,7 +197,8 @@ class _DetailsCardState extends State<DetailsCard> {
                                       children: [
                                         !expand
                                             ? Padding(
-                                                padding: const EdgeInsets.all(8.0),
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
@@ -203,12 +207,14 @@ class _DetailsCardState extends State<DetailsCard> {
                                                     //weekdayIndex == 1, 2, 3, 4, 5, 6, 7 starts with Monday
                                                     // weekdays == 0, 1, 2 ,3, 4, 5, 6 starts with Sunday
                                                     Text(weekdayIndex != 7
-                                                        ? widget.weekdays!
-                                                            .firstWhere((element) =>
+                                                        ? widget.weekdays!.firstWhere(
+                                                            (element) =>
                                                                 widget.weekdays!
                                                                     .indexOf(
                                                                         element) ==
-                                                                weekdayIndex)
+                                                                weekdayIndex,
+                                                            orElse: () =>
+                                                                'null')
                                                         : widget.weekdays![0]),
                                                     SizedBox(
                                                       width: 10,
@@ -264,14 +270,14 @@ class _DetailsCardState extends State<DetailsCard> {
                         padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
                         child: Text(
                           'Related places',
-                          style:
-                              TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
                     Container(
                       height: 300,
-                      child: HorzList(
+                      child: DayList(
                         isWeekList: false,
                       ),
                     ),

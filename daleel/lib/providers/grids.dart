@@ -3,7 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
 import 'package:daleel/providers/places.dart';
-import 'package:daleel/widgets/home_widgets/image_card.dart';
+import 'package:daleel/widgets/home-widgets/image_card.dart';
 
 
 class StandardGrid extends StatelessWidget {

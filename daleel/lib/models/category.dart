@@ -1,10 +1,10 @@
 
 class Category {
 
-  int? categoryId;
-  String? category;
+  int categoryId;
+  String category;
 
-  Category({this.categoryId, this.category});
+  Category({this.categoryId = 0, this.category = ''});
 
   fromJson(Map<String, dynamic> json) => Category(
     categoryId: json['category_id'],
@@ -12,8 +12,8 @@ class Category {
   );
 
   Map<String, Object> toJson() => {
-    'category_id': categoryId!,
-    'category': category!
+    'category_id': categoryId,
+    'category': category
   };
 
 }

@@ -42,7 +42,7 @@ class _FullScreenWidgetState extends State<FullScreenWidget> {
               items: widget.images!.map((i) {
                 return Builder(
                   builder: (BuildContext context) {
-                    return Image.network(i['image'], fit: BoxFit.fill);
+                    return Image.network(i, fit: BoxFit.fill);
                   },
                 );
               }).toList(),

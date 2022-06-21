@@ -1,11 +1,13 @@
+import 'package:daleel/models/category.dart';
 import 'package:daleel/providers/places.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ChipWidget extends StatefulWidget {
   
-  final String? label;
-  const ChipWidget(this.label,{ Key? key }) : super(key: key,);
+  final Category? category;
+  final List<Category>? categoriesList;
+  const ChipWidget(this.category, this.categoriesList,{ Key? key }) : super(key: key,);
 
   @override
   
@@ -17,8 +19,6 @@ class _ChipWidgetState extends State<ChipWidget> {
   bool _selected = false;
   @override
   Widget build(BuildContext context) {
-  Places places = Provider.of<Places>(context, listen: false);
-  List<String> userPreferences = places.userPreferences;
 
     return Padding(
       padding: const EdgeInsets.all(5.0),
@@ -26,17 +26,17 @@ class _ChipWidgetState extends State<ChipWidget> {
             backgroundColor: Colors.grey[300],
             padding: EdgeInsets.all(10),
             selected: _selected,
-            label: Text(widget.label!, style: TextStyle(fontSize: 15),),
+            label: Text(widget.category!.category!, style: TextStyle(fontSize: 15),),
             onSelected: (bool change) {
               setState(() {
                 _selected = !_selected;
               });
               if(_selected){
-                userPreferences.add(widget.label!);
+                widget.categoriesList!.add(widget.category!);
               } else {
-                userPreferences.remove(widget.label!);
+                widget.categoriesList!.remove(widget.category!);
               }
-              print(userPreferences);
+              
             },
             selectedColor: Colors.blue,
             showCheckmark: false,

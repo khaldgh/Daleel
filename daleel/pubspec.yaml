@@ -34,6 +34,10 @@ dependencies:
   amplify_auth_cognito: ^0.4.0
   amplify_storage_s3: ^0.4.0
   amplify_analytics_pinpoint: ^0.4.0
+  images_picker: ^1.2.11
+  filter_list: ^1.0.1
+  syncfusion_flutter_pdfviewer: ^20.1.61-beta
+  # filter_widget: path: https://github.com/khaldgh/flutter_plugin_filter_list
   # http: ^0.12.0
   intl: ^0.17.0
   # The following adds the Cupertino Icons font to your application.
@@ -64,7 +68,12 @@ flutter:
   assets:
     - assets/images/ku_b-1-768x495.jpg
     - assets/images/login.webp
-    - assets/images/login.jpg
+    - assets/images/664368-.jpg
+    - assets/images/Eastern.jpg
+    - assets/images/Western.jpg
+    - assets/images/Central.jpg
+    - assets/images/Northern.jpg
+    - assets/images/Southern.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

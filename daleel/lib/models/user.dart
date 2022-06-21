@@ -8,7 +8,7 @@ class User {
   bool? isAdmin;
   bool? isOwner;
 
-  User({this.email, this.user_id, this.isAdmin, this.username, this.isOwner});
+  User({this.email, this.user_id, this.isAdmin, this.username, this.isOwner, this.profilePic});
 
   static User fromJson(Map<String, dynamic> json) {
     return User(

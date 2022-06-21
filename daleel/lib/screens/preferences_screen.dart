@@ -2,30 +2,32 @@ import 'package:daleel/models/category.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/home_widgets/chip_widget.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import '../widgets/home-widgets/chip_widget.dart';
 import '../providers/places.dart';
 
-class PrefrencesScreen extends StatefulWidget {
-  static const routeName = 'prefrencesScreen';
-  const PrefrencesScreen({Key? key}) : super(key: key);
+class PreferencesScreen extends StatefulWidget {
+  static const routeName = '/preferences_screen';
+  const PreferencesScreen({Key? key}) : super(key: key);
 
   @override
-  _PrefrencesScreenState createState() => _PrefrencesScreenState();
+  _PreferencesScreenState createState() => _PreferencesScreenState();
 }
 
-class _PrefrencesScreenState extends State<PrefrencesScreen> {
+class _PreferencesScreenState extends State<PreferencesScreen> {
   var _selected = false;
+    List<Category> userPreferences = [];
+    
   @override
   Widget build(BuildContext context) {
-    Places places = Provider.of<Places>(context);
-    List<String> nameList = Provider.of<Places>(context).nameList;
+    Places places = Provider.of<Places>(context, listen: false);
 
     return Scaffold(
         backgroundColor: Colors.blue[200],
         body: FutureBuilder(
           future: places.getCategories(),
-          builder: (BuildContext context, AsyncSnapshot<List<Category>> snapshot) => Container(
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Category>> snapshot) =>
+                  Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/images/ku_b-1-768x495.jpg'),
@@ -47,7 +49,29 @@ class _PrefrencesScreenState extends State<PrefrencesScreen> {
                 ),
                 Center(
                   child: Wrap(
-                    children: [for (var i in snapshot.data!) ChipWidget(i.category)],
+                    children: [
+                      for (var i in snapshot.data!)
+                        ChipWidget(i, userPreferences),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: TextButton(
+                    onPressed: () async {
+                      await places.setUserPreferences(
+                          userPreferences, context);
+                    },
+                    child: Text(
+                      'استمر',
+                      style: TextStyle(
+                          color: Colors.red[700],
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ],
