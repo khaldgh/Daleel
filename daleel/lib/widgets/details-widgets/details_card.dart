@@ -44,17 +44,17 @@ class _DetailsCardState extends State<DetailsCard> {
     return Column(
       children: [
         Container(
-          height: 1015,
+          height: 1055,
           child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(40)),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 InkWell(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            FullScreenWidget(images: widget.images)));
+                        builder: (context) => FullScreenWidget(
+                            images: widget.images, imageIndex: _imageIndex)));
                   },
                   child: CarouselSlider(
                     options: CarouselOptions(
@@ -67,12 +67,12 @@ class _DetailsCardState extends State<DetailsCard> {
                       },
                     ),
                     items: widget.images!.map((i) {
-                      print(i);
                       return Builder(
                         builder: (BuildContext context) {
                           return Container(
+                              // color: Colors.black,
                               width: MediaQuery.of(context).size.width,
-                              margin: EdgeInsets.symmetric(horizontal: 5.0),
+                              // margin: EdgeInsets.symmetric(horizontal: 5.0),
                               child: Image.network(i));
                         },
                       );
@@ -87,25 +87,32 @@ class _DetailsCardState extends State<DetailsCard> {
                   color: Colors.blue,
                   count: widget.images!.length,
                   index: _imageIndex,
-                  height: 8,
-                  width: 8,
+                  height: 10,
+                  width: 10,
                   space: 15,
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  margin: EdgeInsets.only(right: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(widget.title!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                      Column(
+                        children: [
+                          // Text('التقييم'), 
+                        Rating()],
+                      ),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, top: 8),
-                        child: Text(
-                          widget.category!.category,
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 25,
-                          ),
-                        ),
-                      ),
                       Padding(
                         padding: const EdgeInsets.only(right: 18.0),
                         child: Column(
@@ -116,10 +123,20 @@ class _DetailsCardState extends State<DetailsCard> {
                               color: Colors.deepOrange,
                             ),
                             Text(
-                              'Go to location',
+                              'اذهب',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             )
                           ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, top: 8),
+                        child: Text(
+                          widget.category!.category,
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 25,
+                          ),
                         ),
                       ),
                     ],
@@ -129,65 +146,55 @@ class _DetailsCardState extends State<DetailsCard> {
                   height: 15,
                 ),
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      'Description',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 18.0),
+                      child: Text(
+                        'الوصف',
+                        style: TextStyle(
+                            fontSize: 23, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    Card(
-                      shadowColor: Colors.orange,
-                      elevation: 8,
-                      child: Container(
-                        width: 300,
-                        height: 100,
-                        margin: EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                          color: Theme.of(context).primaryColor,
-                        )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(child: Text(widget.description!)),
+                    Container(
+                      // width: 300,
+                      // height: 100,
+                      margin: EdgeInsets.all(3),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Text(
+                          widget.description!,
+                          textAlign: TextAlign.end,
+                          // style: TextStyle(height: 1.2),
                         ),
                       ),
                     ),
                     SizedBox(
                       height: 30,
                     ),
-                    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                      Text('${widget.user!.username!} اضاف هذا المكان'),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CircleAvatar(
-                          foregroundImage:
-                              NetworkImage(widget.user!.profilePic!),
-                          backgroundColor: Colors.blue,
-                          radius: 20,
-                        ),
-                      ),
-                    ]),
+                    // Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    //   Text('${widget.user!.username!} اضاف هذا المكان'),
+                    //   Padding(
+                    //     padding: const EdgeInsets.all(8.0),
+                    //     child: CircleAvatar(
+                    //       foregroundImage:
+                    //           NetworkImage(widget.user!.profilePic!),
+                    //       backgroundColor: Colors.blue,
+                    //       radius: 20,
+                    //     ),
+                    //   ),
+                    // ]),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Column(
+                        Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 8.0, bottom: 10.0),
-                              child: Text(
-                                'Working Hours                            ',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ),
                             Row(
                               children: [
                                 Container(
                                   margin: EdgeInsets.only(right: 1, left: 15),
                                   padding: EdgeInsets.all(3),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
                                   ),
                                   height: expand ? 296 : 64,
                                   width: 189,
@@ -250,12 +257,18 @@ class _DetailsCardState extends State<DetailsCard> {
                                         },
                                       ),
                                     ),
-                                    Column(
-                                      children: [Text('Rating'), Rating()],
-                                    ),
                                   ],
                                 ),
                               ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 8.0, bottom: 10.0),
+                              child: Text(
+                                'ساعات العمل',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
                             ),
                             SizedBox(
                               height: 30,
@@ -265,11 +278,11 @@ class _DetailsCardState extends State<DetailsCard> {
                       ],
                     ),
                     Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.centerRight,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+                        padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
                         child: Text(
-                          'Related places',
+                          'الاماكن المشابهة',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),

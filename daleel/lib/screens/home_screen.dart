@@ -1,6 +1,8 @@
 import 'package:daleel/screens/add_place_screen.dart';
+import 'package:daleel/screens/favorite_screen.dart';
 import 'package:daleel/screens/preferences_screen.dart';
 import 'package:daleel/screens/test_screen.dart';
+import 'package:daleel/screens/test_screen2.dart';
 import 'package:flutter/material.dart';
 
 import 'package:daleel/screens/settings_screen.dart';
@@ -15,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int selectedIndex = 0;
+  int selectedIndex = 3;
 
   void changeIndex(int index) {
     setState(() {
@@ -24,13 +26,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Widget> _screens = [
-    PlacesGrid(),
-    ExploreScreen(),
-    AddPlaceScreen(),
-    TestScreen(),
     // PreferencesScreen(),
-    // FavoriteScreen(),
     SettingsScreen(),
+    FavoriteScreen(),
+    // TestScreen(),
+    // AddPlaceScreen(),
+    ExploreScreen(),
+    PlacesGrid(),
     // AdminScreen()
     // PlacesCollectionScreen()
   ];

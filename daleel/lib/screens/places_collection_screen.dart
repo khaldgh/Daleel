@@ -47,14 +47,14 @@ class _PlacesCollectionScreenState extends State<PlacesCollectionScreen> {
                                 Column(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: const EdgeInsets.only(bottom: 1.0 , left:8.0),
                                       child: Icon(
                                         Icons.location_on,
                                         size: 35,
                                         color: Colors.red[700],
                                       ),
                                     ),
-                                    Text('اذهب الى الموقع')
+                                    Text('اذهب')
                                   ],
                                 ),
                                 Text(

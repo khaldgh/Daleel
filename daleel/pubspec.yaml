@@ -36,7 +36,14 @@ dependencies:
   amplify_analytics_pinpoint: ^0.4.0
   images_picker: ^1.2.11
   filter_list: ^1.0.1
-  syncfusion_flutter_pdfviewer: ^20.1.61-beta
+  # flutter_pdfview: ^1.2.1
+  # pdf_render: ^1.1.0
+  flutter_cache_manager: ^3.3.0
+  shimmer: ^2.0.0
+  # http: ^0.12.0+4
+  path_provider: any
+  permission_handler: any
+  # syncfusion_flutter_pdfviewer: ^20.1.61-beta
   # filter_widget: path: https://github.com/khaldgh/flutter_plugin_filter_list
   # http: ^0.12.0
   intl: ^0.17.0
@@ -47,11 +54,20 @@ dependencies:
   flutter_secure_storage: ^5.0.2
   carousel_slider: ^4.0.0
   carousel_indicator: ^1.0.6
-  path_provider: ^2.0.9
-  # flutter_typeahead: any
+  # path_provider: ^2.0.9
+  flutter_typeahead: ^4.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
+  flutter_launcher_icons: "^0.9.2"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets_dev/wejhat.jpeg"
+  adaptive_icon_background: "#191919"
+  adaptive_icon_foreground: "assets_dev/wejhat.jpeg"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -66,14 +82,19 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+
+  # images
     - assets/images/ku_b-1-768x495.jpg
     - assets/images/login.webp
     - assets/images/664368-.jpg
-    - assets/images/Eastern.jpg
-    - assets/images/Western.jpg
-    - assets/images/Central.jpg
-    - assets/images/Northern.jpg
-    - assets/images/Southern.jpg
+    - assets/images/collections/0d933113-fc3f-4a67-887e-1ba18cefb051.jpg
+    - assets/images/Regions/Eastern.jpg
+    - assets/images/Regions/Western.jpg
+    - assets/images/Regions/Central.jpg
+    - assets/images/Regions/Northern.jpg
+    - assets/images/Regions/Southern.jpg
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -97,6 +118,11 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+
+  fonts:
+    - family: Frutiger
+      fonts:
+        - asset: assets/fonts/Frutiger.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

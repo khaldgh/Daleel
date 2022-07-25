@@ -39,25 +39,32 @@ class SingleListItem extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  bottom: 10,
+                  bottom: 1,
                   child: Container(
                       color: Colors.black38,
                       height: 70,
-                      width: 190,
-                      alignment: Alignment.center,
-                      child: ListTile(
-                        title: Text(
-                          title!,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                      width: 150,
+                      child: Column( 
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Text(
+                            title!,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
                         ),
-                        subtitle: Text(
-                          category!,
-                          style: const TextStyle(color: Colors.yellow, fontSize: 17),
+                          ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Text(
+                            category!,
+                            style: const TextStyle(color: Colors.yellow, fontSize: 15),
+                          ),
                         ),
-                      )),
+                      ])),
                 )
               ],
             ),

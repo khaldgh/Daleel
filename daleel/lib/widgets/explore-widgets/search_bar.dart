@@ -1,6 +1,7 @@
+import 'package:daleel/screens/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import 'package:daleel/providers/places.dart';
 import 'package:daleel/models/place.dart';
@@ -12,6 +13,7 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final placesData = Provider.of<Places>(context);
@@ -24,53 +26,20 @@ class _SearchBarState extends State<SearchBar> {
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: [BoxShadow(color: Colors.black, blurRadius: 5)]),
+            boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5)]
+            ),
         child: Container(
           height: 50,
           width: 360,
           margin: EdgeInsets.all(9),
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: Colors.grey[350],
+            // color: Colors.grey[350],
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Row(
             children: [
-              // Expanded(
-              //     child: TypeAheadField<Place>(
-              //   textFieldConfiguration: TextFieldConfiguration(
-                  
-              //       // autofocus: true,
-              //       ),
-              //   onSuggestionSelected: (suggestion) {
-              //     Navigator.of(context).pushNamed(SearchDetailsScreen.routeName,
-              //         arguments: suggestion);
-              //   },
-              //   itemBuilder: (context, suggestion) {
-              //     return ListTile(
-              //       leading: CircleAvatar(
-              //         backgroundColor: Colors.blue,
-              //         backgroundImage: NetworkImage('suggestion.imageUrl!'),
-              //       ),
-              //       title: RichText(
-              //         text: TextSpan(
-              //             text: suggestion.title,
-              //             style: TextStyle(color: Colors.black)),
-              //       ),
-              //     );
-              //   },
-              //   suggestionsCallback: (pattern) {
-              //     return pattern.isEmpty
-              //         ? snapshot.data
-              //         : snapshot.data.where((place) {
-              //             final placeLower = place.title!.toLowerCase();
-              //             final patternLower = pattern.toLowerCase();
-    
-              //             return placeLower.contains(patternLower);
-              //           }).toList();
-              //   },
-              // )
-              // ),
+              Icon(Icons.search),
               Divider(
                 color: Colors.grey,
                 thickness: 1,
@@ -78,7 +47,47 @@ class _SearchBarState extends State<SearchBar> {
               SizedBox(
                 width: 10,
               ),
-              Icon(Icons.search),
+              Expanded(
+                  child: TypeAheadField<Place>(
+                textFieldConfiguration: TextFieldConfiguration(
+                  decoration: InputDecoration(border: InputBorder.none)
+                    // autofocus: true,
+                    ),
+                onSuggestionSelected: (suggestion) {
+                  Navigator.of(context).pushNamed(DetailsScreen.routeName,
+                      arguments: suggestion.place_id);
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.blue,
+                      backgroundImage: NetworkImage(suggestion.images![0]),
+                    ),
+                    title: RichText(
+                      text: TextSpan(
+                          text: suggestion.title,
+                          style: TextStyle(color: Colors.black)),
+                    ),
+                  );
+                },
+                suggestionsCallback: (pattern) {
+                  return pattern.isEmpty
+                      ? snapshot.data
+                      : snapshot.data.where((place) {
+                          final placeLower = place.title!.toLowerCase();
+                          final patternLower = pattern.toLowerCase();
+    
+                          return placeLower.contains(patternLower);
+                        }).toList();
+                },
+              )
+              ),
+              
+              // Expanded(
+              //   child: TextField(
+              //     controller: searchController ,
+              //   ),
+              // ),
             ],
           ),
         ),

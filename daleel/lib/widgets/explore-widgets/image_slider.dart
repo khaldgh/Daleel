@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:daleel/models/place.dart';
+import 'package:daleel/screens/test_screen.dart';
+import 'package:daleel/screens/test_screen2.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
@@ -17,11 +19,11 @@ class ImageSlider extends StatelessWidget {
   ];
 
   List<String> images = [
-    'assets/images/Eastern.jpg',
-    'assets/images/Western.jpg',
-    'assets/images/Central.jpg',
-    'assets/images/Southern.jpg',
-    'assets/images/Northern.jpg'
+    'assets/images/Regions/Eastern.jpg',
+    'assets/images/Regions/Western.jpg',
+    'assets/images/Regions/Central.jpg',
+    'assets/images/Regions/Southern.jpg',
+    'assets/images/Regions/Northern.jpg'
   ];
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class ImageSlider extends StatelessWidget {
     double width = size.width;
     return GFCarousel(
       autoPlay: true,
+      reverse: true,
       pauseAutoPlayOnTouch: Duration(seconds: 10),
       items: provinces.map(
         (place) {
@@ -44,15 +47,23 @@ class ImageSlider extends StatelessWidget {
                     image: DecorationImage(
                         colorFilter: ColorFilter.linearToSrgbGamma(),
                         image: AssetImage(images[provinces.indexOf(place)]))),
-                child: Center(
-                  child: Text(place,
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          // background: Paint(), 
-                          backgroundColor: Colors.white24
-                          ),),
+                child: InkWell(
+                  onTap: () {
+                    // Navigator.of(context).pushNamed(TestScreen2.routeName);
+                  },
+                  child: Container(
+                    color: Colors.white12,
+                    child: Center(
+                      child: Text(place,
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              // background: Paint(), 
+                              // backgroundColor: Colors.white24
+                              ),),
+                    ),
+                  ),
                 )),
           );
         },

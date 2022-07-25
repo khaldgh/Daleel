@@ -12,16 +12,16 @@ class CustomSettingsButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 18.0),
-            child: Icon(icon!),
-          ),
+          Text(label!, style: TextStyle(fontSize: 23)),
           SizedBox(
             width: 30,
           ),
-          Text(label!, style: TextStyle(fontSize: 23)),
+          Padding(
+            padding: const EdgeInsets.only(right: 18.0),
+            child: Icon(icon!),
+          ),
         ],
       ),
     );

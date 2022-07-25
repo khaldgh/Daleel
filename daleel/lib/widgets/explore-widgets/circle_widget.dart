@@ -21,7 +21,7 @@ class CircleWidget extends StatelessWidget {
           children: [
             CircleAvatar(
               maxRadius: width/20,
-              backgroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Color(0xFF35A8E1),
               child: icon,
             ),
             Container(
@@ -31,7 +31,7 @@ class CircleWidget extends StatelessWidget {
                 child: Center(
                   child: Text(
                     title,
-                    
+                    style: TextStyle(fontSize: 12, color: Color(0xFF35A8E1)),
                   ),
                 ),
               ),

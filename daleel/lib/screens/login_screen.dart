@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:daleel/providers/users.dart';
 import 'package:flutter/material.dart';
 
 import 'package:daleel/widgets/signup_widgets/signin_widget.dart';
@@ -36,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var places = Provider.of<Places>(context);
+    var users = Provider.of<Users>(context);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
@@ -57,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'sign up',
+                      'تسجيل الدخول',
                       style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -72,12 +73,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child:
-                          SignInButton(Buttons.FacebookNew, onPressed: () {}),
+                          SignInButton(Buttons.FacebookNew, onPressed: () {}, text: 'سجل دخولك عبر فيسبوك',),
                     ),
 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: SignInButton(Buttons.Google, onPressed: () {}),
+                      child: SignInButton(Buttons.Twitter, onPressed: () {}, text: 'سجل دخولك عبر تويتر',),
+                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: SignInButton(Buttons.Google, onPressed: () {}, text: 'سجل دخولك عبر قوقل',),
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SignInButton(Buttons.Google, onPressed: () {}, text: 'سجل دخولك عبر قوقل',),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -85,11 +94,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         setState(() {
                           emailLogin = true;
                         });
-                      }),
+                      }, text: 'سجل عبر بريدك الالكتروني',),
                     ),
                     TextButton(
                       onPressed: () {},
-                      child: Text('Skip',
+                      child: Text('تخطي',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -107,12 +116,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ? SigninWidget(username, password)
                         : SignupWidget(email, username, password),
                     ElevatedButton(
-                      child: Text(loginStatus ? 'login' : 'sign up'),
+                      child: Text(loginStatus ? 'تسجيل الدخول' : 'انشاء حساب'),
                       onPressed: () {
                         loginStatus
-                            ? places.signin(
+                            ? users.signin(
                                 username.text, password.text, context)
-                            : places.signup(
+                            : users.signup(
                                 email.text, username.text, password.text, context);
                       },
                     ),
@@ -123,14 +132,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             print(loginStatus);
                           });
                         },
-                        child: Text(loginStatus ? 'signup' : 'signin')),
+                        child: Text(loginStatus ? 'اضغط لإنشاء حساب' : 'اضغط لتسجيل الدخول', style: TextStyle(color: Colors.white,))),
                     TextButton(
                         onPressed: () {
                           setState(() {
                             emailLogin = false;
                           });
                         },
-                        child: Text('go back'))
+                        child: Text('العودة', style: TextStyle(color: Colors.white,)))
                   ],
                 ),
         ),

@@ -39,7 +39,7 @@ class Place {
         title: json['title'] as String,
         description: json['description'] as String,
         category: Category(
-            categoryId: json['category_id'], category: json['category']),
+            categoryId: json['category']['category_id'] as int, category: json['category']['category'] as String),
         neighborhoods: [
           Neighborhood(
             neighborhoodId: json['neighborhoods'][0]['neighborhood_id'],

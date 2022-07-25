@@ -17,12 +17,15 @@ class _CommentsWidgetState extends State<CommentsWidget> {
   @override
   Widget build(BuildContext context) {
     Places places = Provider.of<Places>(context, listen: false);
-    var size = MediaQuery.of(context).size;
+    var mediaQ = MediaQuery.of(context);
+    Size size = mediaQ.size;
+    double btm = mediaQ.viewInsets.bottom;
+    print(btm);
     TextEditingController commentController = TextEditingController();
     return SizedBox.expand(
       child: DraggableScrollableSheet(
-        initialChildSize: .2,
-        minChildSize: .2,
+        initialChildSize: btm != 0.0 ? .6 : .1,
+        minChildSize: .1,
         maxChildSize: .8,
         builder: (BuildContext context, ScrollController scrollController) {
           return Column(
@@ -30,7 +33,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
               Padding(
                 padding: const EdgeInsets.only(right: 5.0),
                 child: Container(
-                  width: size.width / 1.1,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Color.fromARGB(80, 244, 67, 54),
@@ -39,7 +42,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
                     controller: commentController,
                     textAlign: TextAlign.right,
                     decoration: InputDecoration(
-                      hintText: 'اكتب تعليقك هنا',
+                      hintText: '$btm',
                       hintStyle: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     onSubmitted: (comment) {
@@ -51,7 +54,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
               ),
               Expanded(
                 child: Container(
-                  width: size.width / 1.1,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.blue[100],

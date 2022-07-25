@@ -133,7 +133,7 @@ class _AdminFormState extends State<AdminForm> {
             Padding(
               padding: const EdgeInsets.only(right: 8.0, top: 38.0),
               child: Text(
-                widget.listOfPlaces![widget.index!].category!.category!,
+                widget.listOfPlaces![widget.index!].category!.category,
                 style: TextStyle(fontSize: 20.0),
               ),
             ),

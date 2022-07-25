@@ -1,28 +1,27 @@
 import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
-
 import 'package:daleel/models/category.dart';
 import 'package:daleel/models/city.dart';
 import 'package:daleel/models/neighborhood.dart';
+import 'package:daleel/models/place.dart';
 import 'package:daleel/providers/places.dart';
+import 'package:daleel/widgets/add-place-widgets/add_place_text_form_field.dart';
 import 'package:daleel/widgets/add-place-widgets/category_chip.dart';
 import 'package:daleel/widgets/add-place-widgets/city_chip.dart';
 import 'package:daleel/widgets/add-place-widgets/neighborhood_chip.dart';
-
-import 'package:daleel/models/place.dart';
-import '../add-place-widgets/add_place_text_form_field.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:images_picker/images_picker.dart';
+import 'package:provider/provider.dart';
 
 class AdminNewPlace extends StatefulWidget {
+  static const routeName = '/test-screen2';
   const AdminNewPlace({Key? key}) : super(key: key);
 
   @override
-  _AdminNewPlaceState createState() => _AdminNewPlaceState();
+  State<AdminNewPlace> createState() => _AdminNewPlaceState();
 }
 
 class _AdminNewPlaceState extends State<AdminNewPlace> {
@@ -33,12 +32,13 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
     // id: 0,
     title: 'default title',
     description: 'default desc',
-    category: Category(categoryId: 1, category: 'default cat'),
+    category: Category(categoryId: 5, category: 'default cat'),
     approved: false,
     phone: 0,
     instagram: 'default insta',
     website: 'default web',
     neighborhoods: [],
+    // user: User(user_id: 30),
     weekdays: [
       's',
       'm',
@@ -53,7 +53,7 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
     // time: null
   );
 
-  void addCategory(Category category) {
+  void addCategory(Category? category) {
     userPlace = Place(
         title: userPlace.title,
         description: userPlace.description,
@@ -62,6 +62,7 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
         images: userPlace.images,
         instagram: userPlace.instagram,
         neighborhoods: userPlace.neighborhoods,
+        // user: User(user_id: 30),
         phone: userPlace.phone,
         website: userPlace.website,
         weekdays: userPlace.weekdays);
@@ -76,31 +77,23 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
         images: userPlace.images,
         instagram: userPlace.instagram,
         neighborhoods: [neighborhood!],
+        // user: User(user_id: 30),
         phone: userPlace.phone,
         website: userPlace.website,
         weekdays: userPlace.weekdays);
   }
 
-  ImagePicker picker = ImagePicker();
-
-  XFile? pickedImage;
+  List<Media>? pickedImage;
 
   onImageAdded(ImageSource? source) async {
-    pickedImage = await picker.pickImage(source: source!, imageQuality: 30);
+    pickedImage = await ImagesPicker.pick(count: 8);
   }
 
   Future<void> onImageSubmitted({String? category, dynamic fileName}) async {
-    final exampleString = 'Example file contents';
-    final tempDir = await getTemporaryDirectory();
-    // final exampleFile = File(tempDir.path + '/example.txt')
-    //   ..createSync()
-    //   ..writeAsStringSync(exampleString);
-
-    var exampleFile = File(pickedImage!.path);
-
-    // Provider.of<Places>(context, listen: false).PostImage(pickedImage!);
-      try {
-        final UploadFileResult result = await Amplify.Storage.uploadFile(
+    try {
+      for (int i = 0; i < pickedImage!.length; i++) {
+        var exampleFile = File(pickedImage![i].path);
+        await Amplify.Storage.uploadFile(
             local: exampleFile,
             //     options:  S3UploadFileOptions(
             //   accessLevel: StorageAccessLevel.guest,
@@ -109,15 +102,16 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
             //     'project': 'ExampleProject',
             //   },
             // ),
-            key: 'images/$category/${await fileName}',
+            key: 'images/$category/${await fileName}/$i',
             onProgress: (progress) {
               print("Fraction completed: " +
                   progress.getFractionCompleted().toString());
             });
-        print('Successfully uploaded file: ${result.key}');
-      } on StorageException catch (e) {
-        print('Error uploading file: $e');
+        print('Successfully uploaded file: '); //${result.key}
       }
+    } on StorageException catch (e) {
+      print('Error uploading file: $e');
+    }
   }
 
   @override
@@ -130,7 +124,6 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
     List<Place> formPlaces = places.formPlaces;
     Future<List<City>> cities = places.getCities();
     Future<List<Category>> categories = places.getCategories();
-
     return SafeArea(
       child: Form(
         // autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -157,6 +150,7 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
                         approved: userPlace.approved,
                         instagram: userPlace.instagram,
                         neighborhoods: userPlace.neighborhoods,
+                        // user: User(user_id: 30),
                         weekdays: userPlace.weekdays,
                         images: userPlace.images);
                   }),
@@ -178,17 +172,30 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
                         approved: userPlace.approved,
                         instagram: userPlace.instagram,
                         neighborhoods: userPlace.neighborhoods,
+                        // user: User(user_id: 30),
                         weekdays: userPlace.weekdays,
                         images: userPlace.images);
                   }),
               SizedBox(
                 height: 30,
               ),
-              IconButton(
-                  icon: Icon(Icons.photo),
-                  onPressed: () {
-                    onImageAdded(ImageSource.camera);
-                  }),
+              Text('اضف صور للمكان',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.camera_alt),
+                      onPressed: () {
+                        onImageAdded(ImageSource.camera);
+                      }),
+                  IconButton(
+                      icon: Icon(Icons.photo),
+                      onPressed: () {
+                        onImageAdded(ImageSource.gallery);
+                      }),
+                ],
+              ),
               CategoryChip(
                 title: 'التصنيف',
                 futureFunction: categories,
@@ -216,6 +223,8 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
                           _globalKey.currentState!.save();
     
                           userPlace;
+
+                          userPlace.approved = true;
     
                           Future<dynamic> placeId =
                               Provider.of<Places>(context, listen: false)
@@ -239,9 +248,9 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
                           print(userPlace.phone);
                         },
                         child: Text('submit')),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),

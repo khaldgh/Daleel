@@ -1,3 +1,4 @@
+import 'package:daleel/shimmers/day_week_shimmer.dart';
 import 'package:daleel/widgets/explore-widgets/single_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,10 @@ class WeekList extends StatelessWidget {
     final places = Provider.of<Places>(context, listen: false);
     return FutureBuilder(
       future: places.getPlaces() ,
-      builder: (BuildContext context, AsyncSnapshot snapshot) => ListView.builder(
+      builder: (BuildContext context, AsyncSnapshot snapshot) => 
+      snapshot.connectionState == ConnectionState.waiting
+              ? DayWeekShimmer()
+              : ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: snapshot.data.length,
         itemBuilder: (ctx, i) => SingleListItem(

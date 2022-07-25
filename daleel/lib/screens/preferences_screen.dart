@@ -63,7 +63,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                   child: TextButton(
                     onPressed: () async {
                       await places.setUserPreferences(
-                          userPreferences, context);
+                          userPreferences, context, settingsScreen: false);
                     },
                     child: Text(
                       'استمر',

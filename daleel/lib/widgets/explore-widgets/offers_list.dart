@@ -7,7 +7,7 @@ import 'package:daleel/providers/offers.dart';
 class OffersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final offerProvider = Provider.of<Offers>(context).offers;
+    final offerProvider = Provider.of<Offers>(context, listen: false).offers;
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 230, mainAxisSpacing: 10, crossAxisSpacing: 1),

@@ -1,4 +1,5 @@
 import 'package:daleel/models/place.dart';
+import 'package:daleel/screens/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
@@ -31,12 +32,19 @@ class _CategoryDetailItemState extends State<CategoryDetailItem> {
     return Scaffold(
       body: FutureBuilder(
         future: places,
-        builder: (BuildContext context, AsyncSnapshot snapshot) => StaggeredGridView.countBuilder(
+        builder: (BuildContext context, AsyncSnapshot<List<Place>> snapshot) => StaggeredGridView.countBuilder(
           crossAxisCount: 3,
-          itemCount: snapshot.data.length,
+          itemCount: snapshot.data!.length,
           itemBuilder: (context, index) => ImageCard(
-            category: snapshot.data[index].category!.category! ,
-            image: snapshot.data[index].images[0],
+            title: snapshot.data![index].title,
+            category: snapshot.data![index].category!.category! ,
+            image: snapshot.data![index].images![0],
+            onTap: () {
+                                    Navigator.of(context).pushNamed(
+                                        DetailsScreen.routeName,
+                                        arguments:
+                                            snapshot.data![index].place_id);
+                                  },
           ),
           staggeredTileBuilder: (index) => StaggeredTile.count(
               (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),

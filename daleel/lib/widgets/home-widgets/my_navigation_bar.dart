@@ -13,32 +13,32 @@ class MyNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment(0, 0.1),
-      height: 100,
-      padding: EdgeInsets.only(top:20, bottom:  20, right: 40, left: 40),
+      height: 90,
+      padding: EdgeInsets.only(top:20,  right: 40, left: 40),
       decoration: BoxDecoration(
-        // color: Colors.blue,
+        color: Colors.transparent,
         borderRadius: BorderRadius.all(
           Radius.circular(25),
         ),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(25)),
+        borderRadius: BorderRadius.all(Radius.circular(30)),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.grey[300],
           showUnselectedLabels: true,
           selectedItemColor: Colors.blue,
           currentIndex: selectedIndex!,
-          showSelectedLabels: true,
+          showSelectedLabels: true, 
           onTap: changeIndex,
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Explore'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.favorite), label: 'favorites'),
+                icon: Icon(Icons.account_circle), label: 'الملف الشخصي'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings_rounded), label: 'Settings'),
-            BottomNavigationBarItem(icon: Icon(Icons.loop_sharp), label: 'test'),
+                icon: Icon(Icons.favorite), label: 'المفضلة'),
+            // BottomNavigationBarItem(icon: Icon(Icons.add), label: 'مكان جديد'),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'البحث'),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
 
           ],
         ),

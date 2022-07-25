@@ -1,4 +1,5 @@
 import 'package:daleel/models/category.dart';
+import 'package:daleel/widgets/home-widgets/filter_chip_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -20,26 +21,33 @@ class PlacesGrid extends StatefulWidget {
 }
 
 class _PlacesGridState extends State<PlacesGrid> {
+
+  List<Category?> filteredCategories = [];
+
+  bool changeFlipWidget = false;
+  late Places places;
+  late Future<List<Category>> categories;
+
+
   @override
   void initState() {
     // TODO: implement initState
-    Provider.of<Places>(context, listen: false).getPlaces();
-    print('init');
     super.initState();
+    places = Provider.of<Places>(context, listen: false);
+    categories = places.getCategories();
+    // WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+
   }
-     List<Category>? filteredCategories = [];
 
-  bool changeFlipWidget = false;
-  @override
-  Widget build(BuildContext context) {
+  
 
 
-    void openFilterDialog() async {
-      List<Category> categories = await Provider.of<Places>(context, listen: false).getCategories();
-      await FilterListDialog.display<Category>(
+  void openFilterDialog() async {
+    List<Category> cats = await categories;
+    cats.forEach((element) {print(element.toJson());});
+      FilterListDialog.display<Category>(
         context,
-        listData: categories,
-        // selectedListData: ['1', '2', '3'],
+        listData: cats,
         choiceChipLabel: (category) => category!.category,
         validateSelectedItem: (list, val) => list!.contains(val),
         onItemSearch: (category, query) {
@@ -53,23 +61,33 @@ class _PlacesGridState extends State<PlacesGrid> {
         selectedItemsText: 'اخترت',
         onApplyButtonClick: (list) {
           setState(() {
-            filteredCategories = list;
-            print(filteredCategories);
-            // selectedUserList = List.from(list!);
+            filteredCategories = list!;
           });
           Navigator.pop(context);
         },
       );
     }
 
-print('before widget build');
-print(filteredCategories);
+
+  @override
+  Widget build(BuildContext context) {
+
+
+    void filterChipChoice(List<Category?> selectedCategories) {
+      filteredCategories = selectedCategories;
+      setState(() {
+        
+      });
+    }
+
+    print(filteredCategories.length);
+
     return FutureBuilder(
-        future: Provider.of<Places>(context, listen: false).getPlaces(filteredList: filteredCategories!),
+        future: Provider.of<Places>(context, listen: false).getPlaces(filteredList: filteredCategories),
         builder: (BuildContext context, AsyncSnapshot<List<Place>> snapshot) {
           List<Place> getPlaces = snapshot.data ?? [];
-          List<String> labels =
-              getPlaces.map((e) => e.category!.category).toSet().toList();
+          List<Category?> categories =
+              getPlaces.map((e) => e.category).toList();
           return snapshot.connectionState == ConnectionState.waiting
               ? Center(child: CircularProgressIndicator())
               : snapshot.hasError
@@ -77,17 +95,26 @@ print(filteredCategories);
                   : SafeArea(
                       bottom: false,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Expanded(
-                            // child: FilterChipWidget(
-                            //   count: labels.length,
-                            //   labels: labels,
-                            // ),
-                            child: TextButton(
-                              child: Text('press me'),
-                              onPressed: openFilterDialog,
-                            ),
-                            flex: 1,
+                            child: filteredCategories.length == 1 ? Padding(
+                                  padding: const EdgeInsets.all(5.5),
+                                  child: FilterChip(label: Text('الكل'), onSelected: (bool){
+                                    setState(() {
+                                      filteredCategories = [];
+                                    });
+                                  },),)
+                                  : 
+                                  FilterChipWidget(
+                                  categories: categories,
+                                  fccFunction: filterChipChoice
+                                )
+                                
+                          //   child: TextButton(
+                          //     child: Text('press me'),
+                          //     onPressed: openFilterDialog,
+                          //   ),
                           ),
                           Container(
                             child: Expanded(
@@ -101,9 +128,6 @@ print(filteredCategories);
                                         DetailsScreen.routeName,
                                         arguments:
                                             snapshot.data![index].place_id);
-                                    // print(count);
-                                    // print(snapshot.data![index].place_id);
-                                    print(snapshot.data![index].images);
                                   },
                                   image: snapshot.data![index].images![0],
                                   title: snapshot.data![index].title,

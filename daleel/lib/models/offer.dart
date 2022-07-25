@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Offer {
-  String? title;
-  IconData? icon;
+  Text? title;
+  Icon? icon;
 
   Offer({this.title,this.icon});
 }

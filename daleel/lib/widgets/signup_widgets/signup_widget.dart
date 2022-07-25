@@ -8,22 +8,22 @@ class SignupWidget extends StatelessWidget {
     return Column(
       children: [
          Text(
-              'email',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              'البريد الالكتروني',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             ),
             TextFormField(
           controller: email,
         ),
         Text(
-              'Username',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              'اسم المستخدم',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             ),
             TextFormField(
           controller: username,
         ),
         Text(
-          'Password',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          'كلمة المرور',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         TextFormField(
           controller: password,

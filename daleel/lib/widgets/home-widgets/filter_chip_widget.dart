@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class FilterChipWidget extends StatefulWidget {
   static const routeName = 'FilterChipWidget';
-    FilterChipWidget({ this.count, this.labels, Key? key }) : super(key: key);
+    FilterChipWidget({this.categories, this.fccFunction, Key? key }) : super(key: key);
 
-  final int? count;
-  final List<String>? labels;
+  final List<Category?>? categories;
+  final Function? fccFunction;
 
   @override
   State<FilterChipWidget> createState() => _FilterChipWidgetState();
@@ -17,9 +17,11 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
+    List<String> categoriesLabels = widget.categories!.map((e) => e!.category).toList();
+    List<String> uniqueLabels = categoriesLabels.toSet().toList();
     return Expanded(
       child: ListView.builder(
-        itemCount: widget.count,
+        itemCount: uniqueLabels.length,
         scrollDirection: Axis.horizontal,
         reverse: true,
         itemBuilder: (BuildContext context, int index) => Padding(
@@ -27,12 +29,13 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
           child: FilterChip(showCheckmark: false,
           padding: EdgeInsets.all(5),
             selected: index == selectedIndex ? _selected : false,
-            label: Text(widget.labels![index]),
+            label: Text(uniqueLabels[index]!),
             selectedColor: Colors.blue,
             onSelected: (changeFilterChip){ 
               setState(() {
                 _selected = changeFilterChip;
                 selectedIndex = index;
+                widget.fccFunction!([widget.categories![index]]);
               });
             },
           ),

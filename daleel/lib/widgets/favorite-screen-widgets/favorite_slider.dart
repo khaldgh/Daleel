@@ -4,10 +4,10 @@ import 'package:daleel/models/place.dart';
 import 'package:flutter/material.dart';
 
 class FavoriteSlider extends StatefulWidget {
-  const FavoriteSlider({Key? key, this.places, this.i}) : super(key: key);
+  const FavoriteSlider({Key? key, this.places, this.index}) : super(key: key);
 
   final List<Place>? places;
-  final int? i;
+  final int? index;
 
   @override
   State<FavoriteSlider> createState() => _FavoriteSliderState();
@@ -29,7 +29,7 @@ class _FavoriteSliderState extends State<FavoriteSlider> {
                   _imageIndex = index;
                 });
               }),
-          items: widget.places![widget.i!].images!.map((place) {
+          items: widget.places![widget.index!].images!.map((place) {
             return Builder(
               builder: (BuildContext context) {
                 return Container(
@@ -47,7 +47,7 @@ class _FavoriteSliderState extends State<FavoriteSlider> {
           height: 10,
         ),
         CarouselIndicator(
-          count: widget.places![widget.i!].images!.length,
+          count: widget.places![widget.index!].images!.length,
           index: _imageIndex,
         )
       ],

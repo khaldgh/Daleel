@@ -31,6 +31,9 @@
 .pub/
 /build/
 
+# Android Studio will place build artifacts here
+**/android/key.properties
+
 # Web related
 lib/generated_plugin_registrant.dart
 

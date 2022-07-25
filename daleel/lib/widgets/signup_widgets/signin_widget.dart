@@ -10,15 +10,15 @@ class SigninWidget extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'Username',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          'اسم المستخدم',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         TextFormField(
           controller: username,
         ),
         Text(
-          'Password',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          'كلمة المرور',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         TextFormField(
           controller: password,

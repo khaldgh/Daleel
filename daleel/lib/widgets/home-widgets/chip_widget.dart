@@ -26,7 +26,7 @@ class _ChipWidgetState extends State<ChipWidget> {
             backgroundColor: Colors.grey[300],
             padding: EdgeInsets.all(10),
             selected: _selected,
-            label: Text(widget.category!.category!, style: TextStyle(fontSize: 15),),
+            label: Text(widget.category!.category, style: TextStyle(fontSize: 15),),
             onSelected: (bool change) {
               setState(() {
                 _selected = !_selected;
