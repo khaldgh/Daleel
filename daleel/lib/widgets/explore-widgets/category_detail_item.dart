@@ -18,26 +18,26 @@ class CategoryDetailItem extends StatefulWidget {
 }
 
 class _CategoryDetailItemState extends State<CategoryDetailItem> {
+  late Future<List<Place>> futurePlaces;
   void initState() {
     // TODO: implement initState
-     Provider.of<Places>(context, listen: false).getPlaces();
+     futurePlaces = Provider.of<Places>(context, listen: false).getPlaces();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
       // final places = Provider.of<Places>(context);
-  Future<List<Place>> places = Provider.of<Places>(context, listen: false).getPlaces();
 
     return Scaffold(
       body: FutureBuilder(
-        future: places,
+        future: futurePlaces,
         builder: (BuildContext context, AsyncSnapshot<List<Place>> snapshot) => StaggeredGridView.countBuilder(
           crossAxisCount: 3,
           itemCount: snapshot.data!.length,
           itemBuilder: (context, index) => ImageCard(
             title: snapshot.data![index].title,
-            category: snapshot.data![index].category!.category! ,
+            category: snapshot.data![index].category!.category ,
             image: snapshot.data![index].images![0],
             onTap: () {
                                     Navigator.of(context).pushNamed(

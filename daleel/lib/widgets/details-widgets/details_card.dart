@@ -1,15 +1,18 @@
+import 'package:flutter/material.dart';
+
 import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:daleel/models/user.dart';
 import 'package:daleel/widgets/details-widgets/full-screen-widget.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:daleel/models/category.dart';
 import 'package:daleel/widgets/details-widgets/rating.dart';
 import 'package:daleel/widgets/details-widgets/working_hours_card.dart';
 import 'package:daleel/widgets/explore-widgets/day_list.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailsCard extends StatefulWidget {
   DetailsCard(
@@ -99,12 +102,12 @@ class _DetailsCardState extends State<DetailsCard> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text(widget.title!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
-                      Column(
-                        children: [
-                          // Text('التقييم'), 
-                        Rating()],
+                      Text(
+                        widget.title!,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 25),
                       ),
+                      Rating(),
                     ],
                   ),
                 ),
@@ -117,10 +120,27 @@ class _DetailsCardState extends State<DetailsCard> {
                         padding: const EdgeInsets.only(right: 18.0),
                         child: Column(
                           children: [
-                            Icon(
-                              Icons.location_on,
-                              size: 35,
-                              color: Colors.deepOrange,
+                            IconButton(
+                              icon: Icon(
+                                Icons.location_on,
+                                size: 35,
+                                color: Colors.deepOrange,
+                              ),
+                              onPressed: () {
+                                Future<void> openMap(
+                                    double latitude, double longitude) async {
+                                  String googleUrl =
+                                      'geo: 0, 0, 15z?q=8100 شارع عمر بن الخطاب، حي الفيصلية، الدمام 32272 4096،, Bufeyat+Omar';
+                                  if (!await launchUrl(Uri.parse(googleUrl)))
+                                    throw 'Could not open the map.';
+                                }
+
+                                openMap(26.4062189, 50.071216);
+
+                                // launchUrl(Uri.parse(
+                                //     'https://goo.gl/maps/SvVF5BseigVyRHwNA'));
+                                // print('object');
+                              },
                             ),
                             Text(
                               'اذهب',
@@ -139,6 +159,38 @@ class _DetailsCardState extends State<DetailsCard> {
                           ),
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 28.0),
+                  child: Row(
+                    children: [
+                      IconButton(onPressed: (){}, icon: Icon(Icons.language), ),
+                      IconButton(
+                          onPressed: () {},
+                          icon: ShaderMask(
+                              shaderCallback: ((Rect bounds) {
+                                return LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: <Color>[
+                                    Color(0xff515BD4),
+                                    Color(0xff8134AF),
+                                    Color(0xffDD2A7B),
+                                    Color(
+                                      0XFFF58529,
+                                    ),
+                                    Color(0xffFEDA77),
+                                  ],
+                                  tileMode: TileMode.repeated,
+                                ).createShader(bounds);
+                              }),
+                              child: FaIcon(FontAwesomeIcons.instagramSquare,
+                                  color: Colors.white
+                                  )
+                                  ),
+                          iconSize: 30),
                     ],
                   ),
                 ),
@@ -194,8 +246,7 @@ class _DetailsCardState extends State<DetailsCard> {
                                 Container(
                                   margin: EdgeInsets.only(right: 1, left: 15),
                                   padding: EdgeInsets.all(3),
-                                  decoration: BoxDecoration(
-                                  ),
+                                  decoration: BoxDecoration(),
                                   height: expand ? 296 : 64,
                                   width: 189,
                                   child: Card(

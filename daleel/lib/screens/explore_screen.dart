@@ -11,13 +11,20 @@ import '../widgets/explore-widgets/search_bar.dart';
 class ExploreScreen extends StatelessWidget {
   static const routeName = '/explore_screen';
 
-// void openSnackBar(BuildContext context){
-//      showDialog(context: context, builder: (BuildContext context) => AlertDialog(content: Text('content')));
-//   }
+void openSnackBar(BuildContext context){
+  final snackBar = SnackBar(
+            content: const Text('الرجاء التأكد من الاتصال بالانترنت'),
+            behavior: SnackBarBehavior.floating ,
+  );
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    
+     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  });
+  }
   
+
   @override
   Widget build(BuildContext context) {
-    
     // final places = Provider.of<Places>(context).favoritePlaces;
     return Scaffold(
       body: GestureDetector(
@@ -28,17 +35,41 @@ class ExploreScreen extends StatelessWidget {
           child: SafeArea(
             child: Column(
               children: [
-                ImageSlider(),
+                // ImageSlider(),
+                const SizedBox(
+                  height: 60,
+                ),
                 SearchBar(),
-                Container(
-                  height: 90,
-                  child: PlacesCollectionWidget((){}),
-                ), // to use a listView.builder inside a column, the child's height of the listView should be smaller than the container height
-                // Container(height: 90,child: CapitalPlaces(),),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 20,
+                ),
                 Container(
                   height: 180,
                   child: CategoryItems(),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                // Container(height: 90,child: CapitalPlaces(),),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Padding(
+                      padding: const EdgeInsets.only(right: 18.0, bottom: 8.0),
+                      child: const Text(
+                        'الاماكن المفتوحة',
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      height: 90,
+                      child: PlacesCollectionWidget(openSnackBar),
+                    ),
+                  ],
+                ), // to use a listView.builder inside a column, the child's height of the listView should be smaller than the container height
+                const SizedBox(
+                  height: 20,
                 ),
                 Column(
                   children: [
@@ -51,7 +82,8 @@ class ExploreScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           const Padding(
-                            padding: const EdgeInsets.only(right: 18.0, bottom: 8.0),
+                            padding:
+                                const EdgeInsets.only(right: 18.0, bottom: 8.0),
                             child: const Text(
                               'الاكثر زيارة اليوم',
                               style: const TextStyle(
@@ -62,7 +94,8 @@ class ExploreScreen extends StatelessWidget {
                               child:
                                   DayList()), // to use a listView.builder inside a column, the child's height of the listView should be smaller than the container height
                           const Padding(
-                            padding: const EdgeInsets.only( right: 18.0, bottom: 8.0),
+                            padding:
+                                const EdgeInsets.only(right: 18.0, bottom: 8.0),
                             child: const Text(
                               'الاكثر زيارة هذا الاسبوع',
                               style: const TextStyle(
@@ -80,8 +113,8 @@ class ExploreScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: const Text(
                         'احدث العروض',
-                        style:
-                            TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Container(

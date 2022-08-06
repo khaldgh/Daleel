@@ -1,4 +1,5 @@
 import 'package:daleel/models/category.dart';
+import 'package:daleel/shimmers/explore-shimmers/home-shimmers/home_shimmer.dart';
 import 'package:daleel/widgets/home-widgets/filter_chip_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -68,6 +69,11 @@ class _PlacesGridState extends State<PlacesGrid> {
       );
     }
 
+    Widget openSnackbar() {
+        Provider.of<Places>(context, listen: false).openSnackBar(context);
+        return Center(child: CircularProgressIndicator());
+    }
+
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +86,6 @@ class _PlacesGridState extends State<PlacesGrid> {
       });
     }
 
-    print(filteredCategories.length);
-
     return FutureBuilder(
         future: Provider.of<Places>(context, listen: false).getPlaces(filteredList: filteredCategories),
         builder: (BuildContext context, AsyncSnapshot<List<Place>> snapshot) {
@@ -91,7 +95,7 @@ class _PlacesGridState extends State<PlacesGrid> {
           return snapshot.connectionState == ConnectionState.waiting
               ? Center(child: CircularProgressIndicator())
               : snapshot.hasError
-                  ? Center(child: Text(snapshot.error.toString()))
+                  ? openSnackbar()
                   : SafeArea(
                       bottom: false,
                       child: Column(
@@ -116,9 +120,9 @@ class _PlacesGridState extends State<PlacesGrid> {
                           //     onPressed: openFilterDialog,
                           //   ),
                           ),
-                          Container(
-                            child: Expanded(
-                              flex: 8,
+                          Expanded(
+                            flex: 8,
+                            child: Container(
                               child: StaggeredGridView.countBuilder(
                                 crossAxisCount: 2,
                                 itemCount: snapshot.data!.length,

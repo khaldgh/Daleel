@@ -35,8 +35,10 @@ class StandardStaggeredGrid extends StatelessWidget {
     return StaggeredGridView.countBuilder(
       crossAxisCount: 3,
       itemCount: places.length,
-      itemBuilder: (context, index) => ImageCard(
-        image: places[index].images![0],
+      itemBuilder: (context, index) => Container(
+        height: 40,
+        width: 40,
+        color: Colors.black,
       ),
       staggeredTileBuilder: (index) => StaggeredTile.count(1, 1),
       mainAxisSpacing: 8.0,

@@ -25,6 +25,15 @@ class OffersScreen extends StatefulWidget {
 }
 
 class _OffersScreenState extends State<OffersScreen> {
+  late Future<List<File>> futureOffers;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    futureOffers = Provider.of<Offers>(context, listen: false).offerFiles();
+  }
+
   @override
   Widget build(BuildContext context) {
     var places = Provider.of<Places>(context, listen: false);
@@ -32,10 +41,10 @@ class _OffersScreenState extends State<OffersScreen> {
 
     return Scaffold(
       body: FutureBuilder(
-        future: offers.offerFiles(),
-        builder: (BuildContext context, AsyncSnapshot<List<File>> snapshot) {
-          List<File>snp = snapshot.data ?? [File('')];
-          // print(snapshot.data![0].path);
+          future: futureOffers,
+          builder: (BuildContext context, AsyncSnapshot<List<File>> snapshot) {
+            List<File> snp = snapshot.data ?? [File('')];
+            // print(snapshot.data![0].path);
             return StaggeredGridView.countBuilder(
                 // itemCount: snapshot.data!.length,
                 crossAxisCount: 2,
@@ -53,8 +62,7 @@ class _OffersScreenState extends State<OffersScreen> {
                       ),
                     ),
                 staggeredTileBuilder: (int i) => StaggeredTile.fit(1));
-  }
-      ),
+          }),
     );
   }
 }

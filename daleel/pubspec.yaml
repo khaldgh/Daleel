@@ -35,7 +35,9 @@ dependencies:
   amplify_storage_s3: ^0.4.0
   amplify_analytics_pinpoint: ^0.4.0
   images_picker: ^1.2.11
+  weekday_selector: ^1.1.0
   filter_list: ^1.0.1
+  url_launcher: ^6.1.5
   # flutter_pdfview: ^1.2.1
   # pdf_render: ^1.1.0
   flutter_cache_manager: ^3.3.0
@@ -51,6 +53,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   dio: ^4.0.4
+  font_awesome_flutter: ^9.0.0
   flutter_secure_storage: ^5.0.2
   carousel_slider: ^4.0.0
   carousel_indicator: ^1.0.6
@@ -87,6 +90,7 @@ flutter:
     - assets/images/ku_b-1-768x495.jpg
     - assets/images/login.webp
     - assets/images/664368-.jpg
+    - assets/images/aramco.jpeg
     - assets/images/collections/0d933113-fc3f-4a67-887e-1ba18cefb051.jpg
     - assets/images/Regions/Eastern.jpg
     - assets/images/Regions/Western.jpg

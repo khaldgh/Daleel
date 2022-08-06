@@ -2,7 +2,7 @@ import 'package:daleel/models/category.dart';
 import 'package:daleel/models/neighborhood.dart';
 import 'package:daleel/models/user.dart';
 import 'package:daleel/screens/details_screen.dart';
-import 'package:daleel/shimmers/favorite_screen_shimmer.dart';
+import 'package:daleel/shimmers/favorites-shimmers/favorite_screen_shimmer.dart';
 import 'package:daleel/widgets/favorite-screen-widgets/favorite_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -20,6 +20,11 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
+
+  Widget openSnackbar() {
+        Provider.of<Places>(context, listen: false).openSnackBar(context);
+        return FavoriteScreenShimmer();
+    }
   @override
   Widget build(BuildContext context) {
     Places places = Provider.of<Places>(context, listen: false);
@@ -30,9 +35,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             snapshot.connectionState == ConnectionState.waiting
                 ? FavoriteScreenShimmer()
                 : snapshot.hasError
-                    ? Center(
-                        child: Text(snapshot.error.toString()),
-                      )
+                    ? openSnackbar()
                     : snapshot.data!.isEmpty
                         ? Center(
                             child: Column(

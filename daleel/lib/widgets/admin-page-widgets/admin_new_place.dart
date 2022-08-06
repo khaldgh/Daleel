@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:images_picker/images_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:weekday_selector/weekday_selector.dart';
 
 class AdminNewPlace extends StatefulWidget {
   static const routeName = '/test-screen2';
@@ -114,6 +115,8 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
     }
   }
 
+  final values = List.filled(7, true);
+
   @override
   Widget build(BuildContext context) {
     categorySelected;
@@ -196,6 +199,13 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
                       }),
                 ],
               ),
+              WeekdaySelector(
+                values: values,
+                onChanged: (int day) {
+                  final index = day % 7;
+                  values[index] = !values[index];
+                },
+              ),
               CategoryChip(
                 title: 'التصنيف',
                 futureFunction: categories,
@@ -219,22 +229,22 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
                     child: ElevatedButton(
                         onPressed: () {
                           _globalKey.currentState!.validate();
-    
+
                           _globalKey.currentState!.save();
-    
+
                           userPlace;
 
                           userPlace.approved = true;
-    
+
                           Future<dynamic> placeId =
                               Provider.of<Places>(context, listen: false)
                                   .postPlace(userPlace);
-    
+
                           onImageSubmitted(
                             category: userPlace.category!.category,
                             fileName: placeId,
                           );
-    
+
                           print(userPlace.title);
                           print(userPlace.description);
                           print(userPlace.category!.toJson());

@@ -1,4 +1,5 @@
 import 'package:daleel/models/category.dart';
+import 'package:daleel/models/place.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,17 +15,27 @@ class PreferencesScreen extends StatefulWidget {
 }
 
 class _PreferencesScreenState extends State<PreferencesScreen> {
+  late Future<List<Category>> futureCategories;
+  late Places places;
   var _selected = false;
     List<Category> userPreferences = [];
+
+    @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    places = Provider.of<Places>(context, listen: false);
+    futureCategories = places.getCategories();
+  }
     
   @override
   Widget build(BuildContext context) {
-    Places places = Provider.of<Places>(context, listen: false);
+    
 
     return Scaffold(
         backgroundColor: Colors.blue[200],
         body: FutureBuilder(
-          future: places.getCategories(),
+          future: futureCategories,
           builder:
               (BuildContext context, AsyncSnapshot<List<Category>> snapshot) =>
                   Container(

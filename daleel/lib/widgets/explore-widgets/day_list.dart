@@ -1,5 +1,5 @@
 import 'package:daleel/models/place.dart';
-import 'package:daleel/shimmers/day_week_shimmer.dart';
+import 'package:daleel/shimmers/explore-shimmers/day_week_shimmer.dart';
 import 'package:daleel/widgets/explore-widgets/single_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,24 +17,24 @@ class DayList extends StatefulWidget {
 }
 
 class _DayListState extends State<DayList> {
-  late Future<List<Place>> placesList;
+  late Future<List<Place>> futurePlaces;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     final places = Provider.of<Places>(context, listen: false);
-    placesList = places.getPlaces();
+    futurePlaces = places.getPlaces();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: placesList,
+      future: futurePlaces,
       builder: (BuildContext context, AsyncSnapshot snapshot) =>
           snapshot.connectionState == ConnectionState.waiting
               ? DayWeekShimmer()
-              : ListView.builder(
+              : snapshot.hasError ? DayWeekShimmer() : ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: snapshot.data.length,
                   itemBuilder: (ctx, i) => SingleListItem(

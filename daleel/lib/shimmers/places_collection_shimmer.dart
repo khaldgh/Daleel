@@ -6,15 +6,16 @@ import 'package:shimmer/shimmer.dart';
 class PlacesCollectionShimmer extends StatelessWidget {
 
   final bool hasError;
-  final Function? parnetSnackBar;
+  final void Function(BuildContext context)? parentSnackbar;
 
-  const PlacesCollectionShimmer( this.hasError, {this.parnetSnackBar, Key? key}) : super(key: key);
+  const PlacesCollectionShimmer(this.hasError, {this.parentSnackbar, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     if(hasError){
-      parnetSnackBar;
+      parentSnackbar!(context);
     }
+    
     return Shimmer.fromColors(
           baseColor: Colors.grey[400]!,
           highlightColor: Colors.grey[200]!,

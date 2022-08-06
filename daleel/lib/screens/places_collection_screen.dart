@@ -1,5 +1,7 @@
+import 'package:daleel/models/place.dart';
 import 'package:daleel/providers/places.dart';
 import 'package:daleel/screens/details_screen.dart';
+import 'package:daleel/widgets/explore-widgets/image_slider.dart';
 import 'package:daleel/widgets/home-widgets/image_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -14,9 +16,17 @@ class PlacesCollectionScreen extends StatefulWidget {
 }
 
 class _PlacesCollectionScreenState extends State<PlacesCollectionScreen> {
+  late Future<List<Place>> futurePlaces;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Places places = Provider.of<Places>(context, listen: false);
+    futurePlaces = places.getPlaces();
+  }
   @override
   Widget build(BuildContext context) {
-    Places places = Provider.of<Places>(context, listen: false);
     return Scaffold(
       body: Column(
         children: [
@@ -37,8 +47,9 @@ class _PlacesCollectionScreenState extends State<PlacesCollectionScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Image.asset('assets/images/ku_b-1-768x495.jpg',
-                              alignment: Alignment.topCenter),
+                          // Image.asset('assets/images/ku_b-1-768x495.jpg',
+                          //     alignment: Alignment.topCenter),
+                          ImageSlider(),
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Row(
@@ -78,7 +89,7 @@ class _PlacesCollectionScreenState extends State<PlacesCollectionScreen> {
           ),
           Expanded(
             child: FutureBuilder(
-              future: places.getPlaces(),
+              future: futurePlaces,
               builder: (BuildContext context, AsyncSnapshot snapshot) =>
                   StaggeredGridView.countBuilder(
                 crossAxisCount: 2,

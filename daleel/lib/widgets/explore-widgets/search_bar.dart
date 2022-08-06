@@ -5,7 +5,10 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import 'package:daleel/providers/places.dart';
 import 'package:daleel/models/place.dart';
-import 'package:daleel/screens/search_details_screen.dart';
+
+
+// futureBuilder needs to be rewritten, the future needs to go to initState
+
 
 class SearchBar extends StatefulWidget {
   @override
@@ -16,9 +19,9 @@ class _SearchBarState extends State<SearchBar> {
   TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final placesData = Provider.of<Places>(context);
+    final places = Provider.of<Places>(context, listen: false);
     return FutureBuilder(
-      future: placesData.getPlaces(),
+      future: places.getPlaces(),
       builder: ( BuildContext contxt, AsyncSnapshot snapshot) => Container(
         height: 57,
         width: 390,
@@ -39,18 +42,11 @@ class _SearchBarState extends State<SearchBar> {
           ),
           child: Row(
             children: [
-              Icon(Icons.search),
-              Divider(
-                color: Colors.grey,
-                thickness: 1,
-              ),
-              SizedBox(
-                width: 10,
-              ),
               Expanded(
                   child: TypeAheadField<Place>(
                 textFieldConfiguration: TextFieldConfiguration(
-                  decoration: InputDecoration(border: InputBorder.none)
+                  textDirection: TextDirection.rtl,
+                  // decoration: InputDecoration(tex)
                     // autofocus: true,
                     ),
                 onSuggestionSelected: (suggestion) {
@@ -73,15 +69,25 @@ class _SearchBarState extends State<SearchBar> {
                 suggestionsCallback: (pattern) {
                   return pattern.isEmpty
                       ? snapshot.data
-                      : snapshot.data.where((place) {
-                          final placeLower = place.title!.toLowerCase();
-                          final patternLower = pattern.toLowerCase();
+                      : places.searchPlaces(pattern);
+                      // snapshot.data.where((place) {
+                      //     final placeLower = place.title!.toLowerCase();
+                      //     final patternLower = pattern.toLowerCase();
     
-                          return placeLower.contains(patternLower);
-                        }).toList();
+                      //     return placeLower.contains(patternLower);
+                      //   }).toList();
                 },
               )
               ),
+              // VerticalDivider(
+              //   color: Colors.grey,
+              //   thickness: 1,
+              // ),
+              SizedBox(
+                width: 10,
+              ),
+              Icon(Icons.search),
+              
               
               // Expanded(
               //   child: TextField(

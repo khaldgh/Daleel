@@ -1,4 +1,4 @@
-import 'package:daleel/shimmers/dw_item.dart';
+import 'package:daleel/shimmers/explore-shimmers/dw_item.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';

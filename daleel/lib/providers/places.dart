@@ -45,6 +45,17 @@ class Places with ChangeNotifier {
     return [..._favoriteList];
   }
 
+  void openSnackBar(BuildContext context){
+  final snackBar = SnackBar(
+            content: const Text('الرجاء التأكد من الاتصال بالانترنت'),
+            behavior: SnackBarBehavior.floating ,
+  );
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    
+     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  });
+  }
+
   Future<Place> findById(int id) async {
     String url = 'https://daleel-app.herokuapp.com/places/findone/$id';
     String? cookie = await FlutterSecureStorage().read(key: 'cookie');
@@ -173,6 +184,53 @@ class Places with ChangeNotifier {
         list[index1].images = urls;
       }
 
+      return list;
+    } catch (e) {
+      print(e);
+      throw e;
+    }
+  }
+
+  Future<List<Place>> searchPlaces(String? phrase) async {
+    String url = 'https://daleel-app.herokuapp.com/places/search/$phrase';
+    dioo.Dio dio = dioo.Dio();
+    final ListResult result = await Amplify.Storage.list(path: 'images');
+      final List<StorageItem> items = result.items;
+    FlutterSecureStorage storage = FlutterSecureStorage();
+    String? cookie = await storage.read(key: 'cookie');
+    try {
+      var response = await dio.get(url,
+          options: dioo.Options(headers: {'cookie': cookie}));
+          List places = response.data as List;
+      List<Place> list = places.map((place) => Place.fromJson(place)).toList();
+      final awsIds = items // finds ids of images from AWS
+          .map((e) =>
+              e.key.split('/').length < 4 ? 0 : int.parse(e.key.split('/')[2])).toSet()
+          .toList();
+      awsIds.removeWhere(
+          (element) => element == 0); // removes all 0s from the previous step
+          
+         // looping through all places to attach every image from AWS to the right place
+      for (int index1 = 0; index1 < list.length; index1++) {
+        List<String> urls = [];
+        for (int index2 = 0; index2 < awsIds.length; index2++) {
+          if (awsIds[index2] == list[index1].place_id) {
+            List<StorageItem> filteredItems = items
+                .where((item) {
+                  return item.key.split('/').length > 3 &&
+                    int.parse(item.key.split('/')[2]) == awsIds[index2];
+                })
+                .toList();
+            List<String> keys = filteredItems.map((e) => e.key).toList();
+            keys.removeAt(0);
+            for (int index3 = 0; index3 < keys.length; index3++) {
+              String downloadUrl = await imagesDownloadUrl(keys[index3]);
+              if (urls.length < keys.length) urls.add(downloadUrl);
+            }
+          }
+        }
+        list[index1].images = urls;
+      }
       return list;
     } catch (e) {
       throw e;

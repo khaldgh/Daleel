@@ -86,10 +86,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
               ];
 
           return snapshot.connectionState == ConnectionState.waiting
-              ? Scaffold(
-                  body: Center(
-                  child: CircularProgressIndicator(),
-                ))
+              ? Center(
+                  child: Scaffold(body: Center(child: CircularProgressIndicator())),
+                )
               : Scaffold(
                   resizeToAvoidBottomInset: false,
                   appBar: AppBar(
@@ -111,12 +110,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               : place.removeFavorite(homeArgs);
                         },
                       ),
-                      IconButton(
-                        icon: Icon(Icons.ios_share),
-                        onPressed: () {
-                          // place.testRead();
-                        },
-                      )
                     ],
                   ),
                   backgroundColor: Theme.of(context).primaryColor,

@@ -33,7 +33,8 @@ class MyNavigationBar extends StatelessWidget {
           onTap: changeIndex,
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle), label: 'الملف الشخصي'),
+                icon: Icon(Icons.account_circle),
+                   label: 'الملف الشخصي'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.favorite), label: 'المفضلة'),
             // BottomNavigationBarItem(icon: Icon(Icons.add), label: 'مكان جديد'),

@@ -19,26 +19,24 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
   Widget build(BuildContext context) {
     List<String> categoriesLabels = widget.categories!.map((e) => e!.category).toList();
     List<String> uniqueLabels = categoriesLabels.toSet().toList();
-    return Expanded(
-      child: ListView.builder(
-        itemCount: uniqueLabels.length,
-        scrollDirection: Axis.horizontal,
-        reverse: true,
-        itemBuilder: (BuildContext context, int index) => Padding(
-          padding: const EdgeInsets.all(5.5),
-          child: FilterChip(showCheckmark: false,
-          padding: EdgeInsets.all(5),
-            selected: index == selectedIndex ? _selected : false,
-            label: Text(uniqueLabels[index]!),
-            selectedColor: Colors.blue,
-            onSelected: (changeFilterChip){ 
-              setState(() {
-                _selected = changeFilterChip;
-                selectedIndex = index;
-                widget.fccFunction!([widget.categories![index]]);
-              });
-            },
-          ),
+    return ListView.builder(
+      itemCount: uniqueLabels.length,
+      scrollDirection: Axis.horizontal,
+      reverse: true,
+      itemBuilder: (BuildContext context, int index) => Padding(
+        padding: const EdgeInsets.all(5.5),
+        child: FilterChip(showCheckmark: false,
+        padding: EdgeInsets.all(5),
+          selected: index == selectedIndex ? _selected : false,
+          label: Text(uniqueLabels[index]),
+          selectedColor: Colors.blue,
+          onSelected: (changeFilterChip){ 
+            setState(() {
+              _selected = changeFilterChip;
+              selectedIndex = index;
+              widget.fccFunction!([widget.categories![index]]);
+            });
+          },
         ),
       ),
     );
