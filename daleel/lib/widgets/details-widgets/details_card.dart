@@ -47,7 +47,7 @@ class _DetailsCardState extends State<DetailsCard> {
     return Column(
       children: [
         Container(
-          height: 1055,
+          height: 1155,
           child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(40)),
             child: Column(
@@ -60,27 +60,31 @@ class _DetailsCardState extends State<DetailsCard> {
                             images: widget.images, imageIndex: _imageIndex)));
                   },
                   child: CarouselSlider(
-                    options: CarouselOptions(
-                      height: 200.0,
-                      onPageChanged:
-                          (int index, CarouselPageChangedReason reason) {
-                        setState(() {
-                          _imageIndex = index;
-                        });
-                      },
-                    ),
-                    items: widget.images!.map((i) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return Container(
-                              // color: Colors.black,
-                              width: MediaQuery.of(context).size.width,
-                              // margin: EdgeInsets.symmetric(horizontal: 5.0),
-                              child: Image.network(i));
+                      options: CarouselOptions(
+                        viewportFraction: 0.9,
+                        height: 300.0,
+                        onPageChanged:
+                            (int index, CarouselPageChangedReason reason) {
+                          setState(() {
+                            _imageIndex = index;
+                          });
                         },
-                      );
-                    }).toList(),
-                  ),
+                      ),
+                      items: widget.images!.map((i) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                                // color: Colors.black,
+                                width: MediaQuery.of(context).size.width,
+                                // margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                child: Image.network(
+                                  i,
+                                  fit: BoxFit.fill,
+                                ));
+                          },
+                        );
+                      }).toList(),
+                    ),
                 ),
                 SizedBox(
                   height: 15,
@@ -106,6 +110,13 @@ class _DetailsCardState extends State<DetailsCard> {
                         widget.title!,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 25),
+                      ),
+                      Text(
+                        widget.category!.category,
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 15,
+                        ),
                       ),
                       Rating(),
                     ],
@@ -149,48 +160,37 @@ class _DetailsCardState extends State<DetailsCard> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, top: 8),
-                        child: Text(
-                          widget.category!.category,
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 25,
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.language),
                           ),
-                        ),
+                          IconButton(
+                              onPressed: () {},
+                              icon: ShaderMask(
+                                  shaderCallback: ((Rect bounds) {
+                                    return LinearGradient(
+                                      begin: Alignment.topRight,
+                                      end: Alignment.bottomLeft,
+                                      colors: <Color>[
+                                        Color(0xff515BD4),
+                                        Color(0xff8134AF),
+                                        Color(0xffDD2A7B),
+                                        Color(
+                                          0XFFF58529,
+                                        ),
+                                        Color(0xffFEDA77),
+                                      ],
+                                      tileMode: TileMode.repeated,
+                                    ).createShader(bounds);
+                                  }),
+                                  child: FaIcon(
+                                      FontAwesomeIcons.instagramSquare,
+                                      color: Colors.white)),
+                              iconSize: 30),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 28.0),
-                  child: Row(
-                    children: [
-                      IconButton(onPressed: (){}, icon: Icon(Icons.language), ),
-                      IconButton(
-                          onPressed: () {},
-                          icon: ShaderMask(
-                              shaderCallback: ((Rect bounds) {
-                                return LinearGradient(
-                                  begin: Alignment.topRight,
-                                  end: Alignment.bottomLeft,
-                                  colors: <Color>[
-                                    Color(0xff515BD4),
-                                    Color(0xff8134AF),
-                                    Color(0xffDD2A7B),
-                                    Color(
-                                      0XFFF58529,
-                                    ),
-                                    Color(0xffFEDA77),
-                                  ],
-                                  tileMode: TileMode.repeated,
-                                ).createShader(bounds);
-                              }),
-                              child: FaIcon(FontAwesomeIcons.instagramSquare,
-                                  color: Colors.white
-                                  )
-                                  ),
-                          iconSize: 30),
                     ],
                   ),
                 ),
@@ -224,6 +224,22 @@ class _DetailsCardState extends State<DetailsCard> {
                     SizedBox(
                       height: 30,
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 18.0),
+                      child: Wrap(
+                        spacing: 15,
+                        alignment: WrapAlignment.end,
+                        children: [
+                          Text('مائية#', style: TextStyle(color: Colors.grey[400]),),
+                          Text('حركية#', style: TextStyle(color: Colors.grey[400]),),
+                          Text('ذكاء#', style: TextStyle(color: Colors.grey[400]),),
+                          Text('مرح#', style: TextStyle(color: Colors.grey[400]),),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
                     // Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                     //   Text('${widget.user!.username!} اضاف هذا المكان'),
                     //   Padding(
@@ -248,7 +264,7 @@ class _DetailsCardState extends State<DetailsCard> {
                                   padding: EdgeInsets.all(3),
                                   decoration: BoxDecoration(),
                                   height: expand ? 296 : 64,
-                                  width: 189,
+                                  width: 199,
                                   child: Card(
                                     elevation: 7,
                                     child: Column(

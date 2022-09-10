@@ -45,6 +45,9 @@ class _SearchBarState extends State<SearchBar> {
               Expanded(
                   child: TypeAheadField<Place>(
                 textFieldConfiguration: TextFieldConfiguration(
+                  decoration: InputDecoration(
+                    border: InputBorder.none
+                  ),
                   textDirection: TextDirection.rtl,
                   // decoration: InputDecoration(tex)
                     // autofocus: true,

@@ -6,16 +6,19 @@ import 'package:daleel/models/city.dart';
 import 'package:daleel/models/neighborhood.dart';
 import 'package:daleel/models/place.dart';
 import 'package:daleel/providers/places.dart';
+import 'package:daleel/providers/subcategories.dart';
 import 'package:daleel/widgets/add-place-widgets/add_place_text_form_field.dart';
 import 'package:daleel/widgets/add-place-widgets/category_chip.dart';
 import 'package:daleel/widgets/add-place-widgets/city_chip.dart';
 import 'package:daleel/widgets/add-place-widgets/neighborhood_chip.dart';
+import 'package:daleel/widgets/admin-page-widgets/weekday_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:images_picker/images_picker.dart';
+import 'package:intl/date_symbols.dart';
 import 'package:provider/provider.dart';
-import 'package:weekday_selector/weekday_selector.dart';
 
 class AdminNewPlace extends StatefulWidget {
   static const routeName = '/test-screen2';
@@ -28,6 +31,25 @@ class AdminNewPlace extends StatefulWidget {
 class _AdminNewPlaceState extends State<AdminNewPlace> {
   GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   bool? categorySelected = false;
+  List<String> chosenWeekdays = [];
+  String workingHours = '';
+  String selectedDropDownItem = '';
+  List<String> weekdays = [
+    'الاحد',
+    'الاثنين',
+    'الثلاثاء',
+    'الاربعاء',
+    'الخميس',
+    'الجمعة',
+    'السبت',
+  ];
+  List<DropdownMenuItem> subcats = [
+    DropdownMenuItem(child: Text('اطفال')),
+    DropdownMenuItem(child: Text('كبار')),
+    DropdownMenuItem(child: Text('مائية')),
+    DropdownMenuItem(child: Text('حركية')),
+    DropdownMenuItem(child: Text('ذكاء')),
+  ];
 
   Place userPlace = Place(
     // id: 0,
@@ -41,17 +63,15 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
     neighborhoods: [],
     // user: User(user_id: 30),
     weekdays: [
-      's',
-      'm',
-      't',
-      'w',
-      't',
-      'f',
-      's',
+      'الاحد',
+      'الاثنين',
+      'الثلاثاء',
+      'الاربعاء',
+      'الخميس',
+      'الجمعة',
+      'السبت',
     ],
     images: [],
-    // isFavorite: null,
-    // time: null
   );
 
   void addCategory(Category? category) {
@@ -115,12 +135,39 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
     }
   }
 
-  final values = List.filled(7, true);
+  void fetchWeekdayPickerValues(
+      List<int> pickerWeekdays, String openingTime, String closingTime) {
+    print(pickerWeekdays);
+    // print(openingTime);
+    // print(closingTime);
+    chosenWeekdays.clear();
+    pickerWeekdays.forEach((element) {
+      chosenWeekdays.add(weekdays[element]);
+      print(chosenWeekdays);
+      this.userPlace.weekdays![element] = '$openingTime - $closingTime';
+      workingHours = this.userPlace.weekdays![element];
+    });
+    setState(() {});
+    userPlace = Place(
+        title: userPlace.title,
+        description: userPlace.description,
+        approved: userPlace.approved,
+        category: userPlace.category,
+        images: userPlace.images,
+        instagram: userPlace.instagram,
+        neighborhoods: userPlace.neighborhoods,
+        phone: userPlace.phone,
+        website: userPlace.website,
+        weekdays: this.userPlace.weekdays);
+    // print(userPlace.weekdays);
+  }
 
   @override
   Widget build(BuildContext context) {
     categorySelected;
     Places places = Provider.of<Places>(context, listen: false);
+    Subcategories subcategories =
+        Provider.of<Subcategories>(context, listen: false);
     if (places.neighborhoods!.isNotEmpty)
       places.neighborhoods!.clear(); // to clear neighborhoods on setState();
     // Place userPlace = places.userPlace;
@@ -199,17 +246,68 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
                       }),
                 ],
               ),
-              WeekdaySelector(
-                values: values,
-                onChanged: (int day) {
-                  final index = day % 7;
-                  values[index] = !values[index];
-                },
-              ),
+              Text('اضف ساعات العمل',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              TextButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: WeekdayPicker(fetchWeekdayPickerValues),
+                          );
+                        });
+                  },
+                  child: Text('اضغط للاضافة')),
+              Container(
+                  height: 110,
+                  width: 300,
+                  child: Card(
+                    color: Colors.blue,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          'الايام: $chosenWeekdays',
+                          textDirection: TextDirection.rtl,
+                        ),
+                        Text(
+                          'الوقت:',
+                          textDirection: TextDirection.rtl,
+                        ),
+                        Text(workingHours)
+                      ],
+                    ),
+                  )),
+              // WeekdayPicker(),
               CategoryChip(
                 title: 'التصنيف',
                 futureFunction: categories,
                 addValue: addCategory,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 18.0),
+                child: DropdownSearch<String>.multiSelection(
+                  asyncItems: ((text) {
+                   return Provider.of<Subcategories>(context, listen: false).getSubcategoriesOfSingleCategory(1);
+                  }),
+                  dropdownDecoratorProps: DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        constraints: BoxConstraints(maxWidth: 320)),
+                  ),
+                  // items: ["اطفال", "كبار", 'مائية'],
+                  popupProps: PopupPropsMultiSelection.dialog(
+                    showSearchBox: true,
+                    showSelectedItems: true,
+                  ),
+                  onChanged: print,
+                  // selectedItems: ["Brazil"],
+                ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,

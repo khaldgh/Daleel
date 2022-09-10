@@ -22,7 +22,7 @@ class WorkingHoursCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(weekdaysValues![i]),
+            Text(weekdaysValues![i], style: TextStyle(fontSize: 11),),
             SizedBox(
               width: 10,
             ),

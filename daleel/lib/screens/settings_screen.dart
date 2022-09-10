@@ -99,10 +99,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             label: 'السجل',
                             onTap: () {},
                           ),
-                          CustomSettingsButton(
-                            icon: Icons.language,
-                            label: 'اللغة',
-                          ),
+                          // CustomSettingsButton(
+                          //   icon: Icons.language,
+                          //   label: 'اللغة',
+                          // ),
                           CustomSettingsButton(
                             icon: Icons.admin_panel_settings,
                             label: 'الاشراف',

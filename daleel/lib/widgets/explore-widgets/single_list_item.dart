@@ -9,18 +9,16 @@ class SingleListItem extends StatelessWidget {
   String? category;
   String? image;
 
-  SingleListItem({this.category,this.image,this.title});
+  SingleListItem({this.category, this.image, this.title});
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        
-      },
+      onTap: () {},
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: const EdgeInsets.only(left:10),
+            margin: const EdgeInsets.only(left: 10),
             decoration: BoxDecoration(
               color: Colors.blue,
               borderRadius: BorderRadius.circular(12),
@@ -40,31 +38,37 @@ class SingleListItem extends StatelessWidget {
                 ),
                 Positioned(
                   bottom: 1,
-                  child: Container(
-                      color: Colors.black38,
-                      height: 70,
-                      width: 150,
-                      child: Column( 
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Text(
-                            title!,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
-                        ),
-                          ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Text(
-                            category!,
-                            style: const TextStyle(color: Colors.yellow, fontSize: 15),
-                          ),
-                        ),
-                      ])),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)),
+                    child: Container(
+                        color: Colors.black38,
+                        height: 70,
+                        width: 150,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Text(
+                                  title!,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Text(
+                                  category!,
+                                  style: const TextStyle(
+                                      color: Colors.yellow, fontSize: 15),
+                                ),
+                              ),
+                            ])),
+                  ),
                 )
               ],
             ),

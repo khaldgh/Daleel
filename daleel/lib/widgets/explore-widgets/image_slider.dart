@@ -37,35 +37,42 @@ class ImageSlider extends StatelessWidget {
       pauseAutoPlayOnTouch: Duration(seconds: 10),
       items: provinces.map(
         (place) {
-          return ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(width / 6.7)),
-            child: Container(
-                // color: Colors.lightBlue,
-                width: double.infinity,
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        colorFilter: ColorFilter.linearToSrgbGamma(),
-                        image: AssetImage(images[provinces.indexOf(place)]))),
-                child: InkWell(
-                  onTap: () {
-                    // Navigator.of(context).pushNamed(TestScreen2.routeName);
-                  },
-                  child: Container(
+          return Container(
+              // color: Colors.lightBlue,
+              width: double.infinity,
+              margin: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                  image: DecorationImage(
+                      colorFilter: ColorFilter.linearToSrgbGamma(),
+                      image: AssetImage(images[provinces.indexOf(place)]),fit: BoxFit.fill)),
+              child: InkWell(
+                onTap: () {
+                  // Navigator.of(context).pushNamed(TestScreen2.routeName);
+                },
+                child: Stack(children: [
+                  Positioned(
+                    right: 10,
+                    top: 10,
+                    child: place == 'الشرقية' ? Text('') : Text('قريبا'),
+                  ),
+                  Container(
                     color: Colors.white12,
                     child: Center(
-                      child: Text(place,
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              // background: Paint(), 
-                              // backgroundColor: Colors.white24
-                              ),),
+                      child: Text(
+                        place,
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          // background: Paint(),
+                          // backgroundColor: Colors.white24
+                        ),
+                      ),
                     ),
                   ),
-                )),
-          );
+                ]),
+              ));
         },
       ).toList(),
     );

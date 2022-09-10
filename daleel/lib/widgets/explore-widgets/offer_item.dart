@@ -37,29 +37,29 @@ class OfferItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    icon!,
-                    title!
-                  ],
+                  children: [icon!, title!],
                 ),
               ),
             ),
             Positioned(
-                right: 15,
-                top: 10,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(7),
-                  child: Container(
-                    width: 37,
-                    color: Colors.red,
-                    child: Center(
-                      child: Text(
-                        'قريبا',
-                        style: TextStyle(shadows: [Shadow(color: Colors.black, offset: Offset(0.5,0.7))], fontWeight: FontWeight.bold, color: Colors.white),
-                      ),
+              right: 15,
+              top: 10,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(7),
+                child: Container(
+                  width: 37,
+                  color: Colors.red,
+                  child: Center(
+                    child: Text(
+                      'قريبا',
+                      style: TextStyle(shadows: [
+                        Shadow(color: Colors.black, offset: Offset(0.5, 0.7))
+                      ], fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
-                ))
+                ),
+              ),
+            )
           ]),
         ],
       ),

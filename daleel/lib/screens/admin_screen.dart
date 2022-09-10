@@ -7,6 +7,7 @@ import 'package:daleel/widgets/admin-page-widgets/admin_form.dart';
 import 'package:daleel/widgets/admin-page-widgets/admin_new_place.dart';
 import 'package:daleel/widgets/admin-page-widgets/admin_text_form_field.dart';
 import 'package:daleel/widgets/admin-page-widgets/optional_text_form_field.dart';
+import 'package:daleel/widgets/admin-page-widgets/weekday_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:math' as math;
@@ -127,32 +128,8 @@ class _AdminScreenState extends State<AdminScreen> with TickerProviderStateMixin
               body: TabBarView(
                 children: [
                   AdminNewPlace(),
-                  ListView.builder(
-                    itemCount: places.length,
-                    itemBuilder: (BuildContext context, int index) => Center(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color.fromARGB(54, 4, 6, 22)),
-                        width: 350,
-                        height: 850,
-                        margin: EdgeInsets.only(top: 20),
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              child: AdminForm(
-                                index: index,
-                                listOfPlaces: places,
-                                updateScreen: updateScreen,
-                              ),
-                              top: 20,
-                              right: 30,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  Container()
+                  // WeekdayPicker()
                 ],
               ),
             ),

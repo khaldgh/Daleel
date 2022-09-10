@@ -80,35 +80,6 @@ class Users with ChangeNotifier {
     }
   }
 
-  // Future<void> signin(
-  //     String username, String password, BuildContext context) async {
-  //   try {
-  //     // String cookie = '';
-  //     var url = 'https://daleel-app.herokuapp.com/users/signin';
-  //     var storage = FlutterSecureStorage();
-  //     var dio = dioo.Dio();
-  //     var response =
-  //         await dio.post(url, data: {'email': username, 'password': password});
-  //     List<String>? cookies = response.headers['set-cookie'];
-  //     String sub1 = cookies![0].substring(0, 30);
-  //     String sub2 = cookies[1].substring(0, 45);
-  //     cookie = sub1 + sub2;
-
-  //     print(cookie);
-
-  //     await storage.write(key: 'cookie', value: cookie);
-
-  //     print('${await storage.read(key: 'cookie')} I AM COOKIE');
-
-  //     loggedIn = true;
-  //     // [express:sess=eyJ1c2VySWQiOjU1fQ==; path=/; httpsonly, express:sess.sig=Zy_Lc7kXM1BqZKIZRRt7ygpCTrM; path=/; httpsonly]
-  //     Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // }
-
-  
 
   Future<User> whoami() async {
     try {

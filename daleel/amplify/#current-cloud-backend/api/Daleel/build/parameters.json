@@ -1,8 +1,0 @@
-{
-    "CreateAPIKey": 1,
-    "AppSyncApiName": "Daleel",
-    "DynamoDBBillingMode": "PAY_PER_REQUEST",
-    "DynamoDBEnableServerSideEncryption": false,
-    "S3DeploymentBucket": "amplify-daleel-staging-200553-deployment",
-    "S3DeploymentRootKey": "amplify-appsync-files/fd6e00dae33b025d120b22d87a4a67683ee84ec0"
-}

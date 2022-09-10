@@ -1,5 +1,6 @@
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:daleel/providers/offers.dart';
+import 'package:daleel/providers/subcategories.dart';
 import 'package:daleel/providers/users.dart';
 import 'package:daleel/screens/add_place_screen.dart';
 import 'package:daleel/screens/offers_screen.dart';
@@ -78,6 +79,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (ctx) => Users(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Subcategories(),
         ),
       ],
       child: FutureBuilder(

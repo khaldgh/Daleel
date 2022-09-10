@@ -37,7 +37,7 @@ void openSnackBar(BuildContext context){
               children: [
                 // ImageSlider(),
                 const SizedBox(
-                  height: 60,
+                  height: 40,
                 ),
                 SearchBar(),
                 const SizedBox(
@@ -51,23 +51,23 @@ void openSnackBar(BuildContext context){
                   height: 20,
                 ),
                 // Container(height: 90,child: CapitalPlaces(),),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const Padding(
-                      padding: const EdgeInsets.only(right: 18.0, bottom: 8.0),
-                      child: const Text(
-                        'الاماكن المفتوحة',
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Container(
-                      height: 90,
-                      child: PlacesCollectionWidget(openSnackBar),
-                    ),
-                  ],
-                ), // to use a listView.builder inside a column, the child's height of the listView should be smaller than the container height
+                // Column(
+                //   crossAxisAlignment: CrossAxisAlignment.end,
+                //   children: [
+                //     const Padding(
+                //       padding: const EdgeInsets.only(right: 18.0, bottom: 8.0),
+                //       child: const Text(
+                //         'الاماكن المفتوحة',
+                //         style: const TextStyle(
+                //             fontSize: 20, fontWeight: FontWeight.bold),
+                //       ),
+                //     ),
+                //     Container(
+                //       height: 90,
+                //       child: PlacesCollectionWidget(openSnackBar),
+                //     ),
+                //   ],
+                // ), // to use a listView.builder inside a column, the child's height of the listView should be smaller than the container height
                 const SizedBox(
                   height: 20,
                 ),

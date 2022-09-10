@@ -23,8 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  video_player: any
-  provider: ^5.0.0  
+  intl: ^0.17.0
+  provider: ^5.0.0 
   getwidget: ^2.0.3
   flutter_staggered_grid_view: ^0.4.0
   flutter_rating_bar: ^4.0.0
@@ -35,30 +35,21 @@ dependencies:
   amplify_storage_s3: ^0.4.0
   amplify_analytics_pinpoint: ^0.4.0
   images_picker: ^1.2.11
-  weekday_selector: ^1.1.0
   filter_list: ^1.0.1
   url_launcher: ^6.1.5
-  # flutter_pdfview: ^1.2.1
-  # pdf_render: ^1.1.0
   flutter_cache_manager: ^3.3.0
   shimmer: ^2.0.0
-  # http: ^0.12.0+4
-  path_provider: any
-  permission_handler: any
-  # syncfusion_flutter_pdfviewer: ^20.1.61-beta
-  # filter_widget: path: https://github.com/khaldgh/flutter_plugin_filter_list
-  # http: ^0.12.0
-  intl: ^0.17.0
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
   dio: ^4.0.4
   font_awesome_flutter: ^9.0.0
   flutter_secure_storage: ^5.0.2
   carousel_slider: ^4.0.0
   carousel_indicator: ^1.0.6
-  # path_provider: ^2.0.9
   flutter_typeahead: ^4.0.0
+  dropdown_search: ^5.0.2
+  # filter_widget: path: https://github.com/khaldgh/flutter_plugin_filter_list
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -112,7 +112,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ),
                     ],
                   ),
-                  backgroundColor: Theme.of(context).primaryColor,
+                  // backgroundColor: Theme.of(context).primaryColor,
                   body:
                       // snapshot.connectionState == ConnectionState.waiting
                       //     ?
@@ -122,12 +122,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       //       ))
                       //     :
                       Stack(clipBehavior: Clip.none, children: [
-                    Positioned(
-                      child: Container(
-                        alignment: Alignment.topCenter,
-                        height: 2300,
-                        child: Image.network(snapsht[0].images![0]),
-                      ),
+                    Container(
+                      alignment: Alignment.topCenter,
+                      height: 2300,
+                      child: Image.network(snapsht[0].images![1]),
                     ),
                     Positioned(
                       top: 130.0,
@@ -136,28 +134,21 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       bottom: 0.0,
                       child: ClipRRect(
                         borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(30),
-                            topLeft: Radius.circular(30)),
+                            topRight: Radius.circular(40),
+                            topLeft: Radius.circular(40)),
                         child: Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white),
                           child: SingleChildScrollView(
                             clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 40,
-                                ),
-                                DetailsCard(
+                            child: DetailsCard(
                                   title: snapsht[0].title!,
                                   description: snapsht[0].description!,
                                   category: snapsht[0].category!,
                                   images: snapsht[0].images!,
                                   user: snapsht[0].user!,
                                   weekdays: snapsht[0].weekdays!,
-                                ),
-                              ],
                             ),
                           ),
                           height: 1900,
