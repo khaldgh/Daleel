@@ -7,7 +7,7 @@ import '../widgets/home-widgets/chip_widget.dart';
 import '../providers/places.dart';
 
 class SettingsPreferencesScreen extends StatefulWidget {
-  static const routeName = '/settings_preferences_screen';
+  static const routeName = '/settings-preferences-screen';
   const SettingsPreferencesScreen({Key? key}) : super(key: key);
 
   @override

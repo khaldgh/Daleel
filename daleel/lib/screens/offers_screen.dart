@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:daleel/models/user.dart';
 import 'package:daleel/providers/offers.dart';
 import 'package:daleel/providers/places.dart';

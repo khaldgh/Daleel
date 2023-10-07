@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+// import 'package:amplify_flutter/amplify_flutter.dart';
+// import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:daleel/models/category.dart';
 import 'package:daleel/models/city.dart';
 import 'package:daleel/models/neighborhood.dart';
@@ -111,28 +111,28 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
   }
 
   Future<void> onImageSubmitted({String? category, dynamic fileName}) async {
-    try {
-      for (int i = 0; i < pickedImage!.length; i++) {
-        var exampleFile = File(pickedImage![i].path);
-        await Amplify.Storage.uploadFile(
-            local: exampleFile,
-            //     options:  S3UploadFileOptions(
-            //   accessLevel: StorageAccessLevel.guest,
-            //   contentType: 'text/plain',
-            //   metadata: <String, String>{
-            //     'project': 'ExampleProject',
-            //   },
-            // ),
-            key: 'images/$category/${await fileName}/$i',
-            onProgress: (progress) {
-              print("Fraction completed: " +
-                  progress.getFractionCompleted().toString());
-            });
-        print('Successfully uploaded file: '); //${result.key}
-      }
-    } on StorageException catch (e) {
-      print('Error uploading file: $e');
-    }
+    // try {
+    //   for (int i = 0; i < pickedImage!.length; i++) {
+    //     var exampleFile = File(pickedImage![i].path);
+    //     await Amplify.Storage.uploadFile(
+    //         local: exampleFile,
+    //         //     options:  S3UploadFileOptions(
+    //         //   accessLevel: StorageAccessLevel.guest,
+    //         //   contentType: 'text/plain',
+    //         //   metadata: <String, String>{
+    //         //     'project': 'ExampleProject',
+    //         //   },
+    //         // ),
+    //         key: 'images/$category/${await fileName}/$i',
+    //         onProgress: (progress) {
+    //           print("Fraction completed: " +
+    //               progress.getFractionCompleted().toString());
+    //         });
+    //     print('Successfully uploaded file: '); //${result.key}
+    //   }
+    // } on StorageException catch (e) {
+    //   print('Error uploading file: $e');
+    // }
   }
 
   void fetchWeekdayPickerValues(
@@ -289,18 +289,19 @@ class _AdminNewPlaceState extends State<AdminNewPlace> {
               SizedBox(
                 height: 30,
               ),
+              Text('التصنيف الفرعي'),
               Padding(
-                padding: const EdgeInsets.only(right: 18.0),
+                padding: const EdgeInsets.only(right: 18.0, left: 18.0),
                 child: DropdownSearch<String>.multiSelection(
                   asyncItems: ((text) {
-                   return Provider.of<Subcategories>(context, listen: false).getSubcategoriesOfSingleCategory(1);
+                   return subcategories.getSubcategoriesOfSingleCategory(userPlace.category!.categoryId);
                   }),
                   dropdownDecoratorProps: DropDownDecoratorProps(
                     dropdownSearchDecoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        constraints: BoxConstraints(maxWidth: 320)),
+                        // constraints: BoxConstraints(maxWidth: 320)
+                        ),
                   ),
-                  // items: ["اطفال", "كبار", 'مائية'],
                   popupProps: PopupPropsMultiSelection.dialog(
                     showSearchBox: true,
                     showSelectedItems: true,

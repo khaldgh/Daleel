@@ -11,13 +11,13 @@ import 'package:daleel/widgets/home-widgets/my_navigation_bar.dart';
 import 'package:daleel/widgets/home-widgets/places_grid.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const routeName = '/homescreen';
+  static const routeName = '/home-screen';
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int selectedIndex = 3;
+  int selectedIndex = 4;
 
   void changeIndex(int index) {
     setState(() {
@@ -26,15 +26,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Widget> _screens = [
-    // PreferencesScreen(),
     SettingsScreen(),
     FavoriteScreen(),
     // TestScreen(),
-    // AddPlaceScreen(),
+    AddPlaceScreen(),
     ExploreScreen(),
     PlacesGrid(),
-    // AdminScreen()
-    // PlacesCollectionScreen()
   ];
 
   @override

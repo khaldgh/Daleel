@@ -5,12 +5,13 @@ import 'package:daleel/screens/admin_screen.dart';
 import 'package:daleel/screens/settings_preferences_screen.dart';
 import 'package:daleel/widgets/settings-screen-widgets/custom_settings_button.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'package:daleel/providers/places.dart';
 
 class SettingsScreen extends StatefulWidget {
-  static const routeName = 'settings-screen';
+  static const routeName = '/settings-screen';
   SettingsScreen({Key? key}) : super(key: key);
 
   @override
@@ -90,14 +91,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             icon: Icons.edit,
                             label: 'التفضيلات',
                             onTap: () async {
-                              Navigator.of(context).pushNamed(
+                              GoRouter.of(context).go(
                                   SettingsPreferencesScreen.routeName);
                             },
                           ),
                           CustomSettingsButton(
                             icon: Icons.history,
                             label: 'السجل',
-                            onTap: () {},
+                            onTap: () async {
+                              var user = await users.whoami();
+                              print(user.username);
+                            },
                           ),
                           // CustomSettingsButton(
                           //   icon: Icons.language,
@@ -107,8 +111,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             icon: Icons.admin_panel_settings,
                             label: 'الاشراف',
                             onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(AdminScreen.routeName);
+                              GoRouter.of(context)
+                                  .go(AdminScreen.routeName);
                             },
                           ),
                           TextButton(

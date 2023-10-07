@@ -17,6 +17,7 @@ import 'package:daleel/widgets/home-widgets/filter_chip_widget.dart';
 import 'package:daleel/widgets/explore-widgets/category_detail_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
@@ -67,6 +68,7 @@ class _MyAppState extends State<MyApp> {
   final ThemeData theme = ThemeData(fontFamily: 'Frutiger');
 
   var cookie = FlutterSecureStorage().read(key: 'cookie');
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -86,36 +88,115 @@ class _MyAppState extends State<MyApp> {
       ],
       child: FutureBuilder(
         future: cookie,
-        builder: (BuildContext context, AsyncSnapshot snapshot) => MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Daleel',
-            theme: theme.copyWith(
-              primaryColor:Color(0xFF35A8E1),
-              // colorScheme: theme.colorScheme.copyWith(secondary: Color(0xFF40D8AB)),
-              // iconTheme: IconThemeData(color:Color(0xFF40D8AB) ),
-              bottomNavigationBarTheme: BottomNavigationBarThemeData(backgroundColor: Color(0xFF35A8E1) ),
-              // textButtonTheme: TextButtonThemeData(style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Color(0xFF40D8AB)))),
-              
-            ),
-            home: snapshot.hasData ? HomeScreen() : LoginScreen(),
-            routes: {
-              LoginScreen.routeName: (ctx) => LoginScreen(),
-              PreferencesScreen.routeName: (ctx) => PreferencesScreen(),
-              HomeScreen.routeName: (ctx) => HomeScreen(),
-              DetailsScreen.routeName: (ctx) => DetailsScreen(arguments: ModalRoute.of(ctx)!.settings.arguments as int),
-              ExploreScreen.routeName: (ctx) => ExploreScreen(),
-              SettingsScreen.routeName: (ctx) => SettingsScreen(),
-              CategoryDetailItem.routeName: (ctx) => CategoryDetailItem(),
-              SearchDetailsScreen.routeName: (ctx) => SearchDetailsScreen(),
-              FilterChipWidget.routeName: (ctx) => FilterChipWidget(),
-              AddPlaceScreen.routeName: (ctx) => AddPlaceScreen(),
-              AdminForm.routeName: (ctx) => AdminForm(),
-              AdminScreen.routeName: (ctx) => AdminScreen(),
-              PlacesCollectionScreen.routeName: (ctx) => PlacesCollectionScreen(),
-              OffersScreen.routeName: (ctx) => OffersScreen(),
-              SettingsPreferencesScreen.routeName: (ctx) => SettingsPreferencesScreen(),
-              TestScreen2.routeName: (ctx) => TestScreen2(),
-            }),
+        builder: (BuildContext context, AsyncSnapshot snapshot) =>
+            MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Daleel',
+          theme: theme.copyWith(
+            primaryColor: Color(0xFF35A8E1),
+            // colorScheme: theme.colorScheme.copyWith(secondary: Color(0xFF40D8AB)),
+            // iconTheme: IconThemeData(color:Color(0xFF40D8AB) ),
+            bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                backgroundColor: Color(0xFF35A8E1)),
+            // textButtonTheme: TextButtonThemeData(style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Color(0xFF40D8AB)))),
+          ),
+          routerConfig: GoRouter(
+            initialLocation: HomeScreen.routeName,
+            redirect:(context, state) {
+              if(!snapshot.hasData){
+                return LoginScreen.routeName;
+              }
+              return null;
+            },
+            routes: [
+              GoRoute(
+                path: HomeScreen.routeName,
+                builder: (context, state) =>
+                    // snapshot.hasData ? HomeScreen() : LoginScreen(),
+                    HomeScreen()
+              ),
+              GoRoute(
+                path: LoginScreen.routeName,
+                builder: (context, state) => LoginScreen()
+              ),
+              GoRoute(
+                path: PreferencesScreen.routeName,
+                builder: (context, state) => PreferencesScreen(),
+              ),
+              GoRoute(
+                path: '${DetailsScreen.routeName}/:placeId',
+                builder: (context, state) => DetailsScreen(arguments: int.parse(state.params['placeId']!))
+              ),
+              GoRoute(
+                path: ExploreScreen.routeName,
+                builder: (context, state) => ExploreScreen()
+              ),
+              GoRoute(
+                path: SettingsScreen.routeName,
+                builder: (context, state) => SettingsScreen()
+              ),
+              GoRoute(
+                path: CategoryDetailItem.routeName,
+                builder: (context, state) => CategoryDetailItem()
+              ),
+              GoRoute(
+                path: SearchDetailsScreen.routeName,
+                builder: (context, state) => SearchDetailsScreen()
+              ),
+              GoRoute(
+                path: FilterChipWidget.routeName,
+                builder: (context, state) => FilterChipWidget()
+              ),
+              GoRoute(
+                path: AddPlaceScreen.routeName,
+                builder: (context, state) => AddPlaceScreen()
+              ),
+              GoRoute(
+                path: AdminForm.routeName,
+                builder: (context, state) => AdminForm()
+              ),
+              GoRoute(
+                path: AdminScreen.routeName,
+                builder: (context, state) => AdminScreen()
+              ),
+              GoRoute(
+                path: PlacesCollectionScreen.routeName,
+                builder: (context, state) => PlacesCollectionScreen()
+              ),
+              GoRoute(
+                path: OffersScreen.routeName,
+                builder: (context, state) => OffersScreen()
+              ),
+              GoRoute(
+                path: SettingsPreferencesScreen.routeName,
+                builder: (context, state) => SettingsPreferencesScreen()
+              ),
+              GoRoute(
+                path: TestScreen2.routeName,
+                builder: (context, state) => TestScreen2()
+              ),
+            ],
+          ),
+          // home: snapshot.hasData ? HomeScreen() : LoginScreen(),
+          // routes: {
+          //   LoginScreen.routeName: (ctx) => LoginScreen(),
+          //   PreferencesScreen.routeName: (ctx) => PreferencesScreen(),
+          //   HomeScreen.routeName: (ctx) => HomeScreen(),
+          //   DetailsScreen.routeName: (ctx) => DetailsScreen(arguments: ModalRoute.of(ctx)!.settings.arguments as int),
+          //   ExploreScreen.routeName: (ctx) => ExploreScreen(),
+          //   SettingsScreen.routeName: (ctx) => SettingsScreen(),
+          //   CategoryDetailItem.routeName: (ctx) => CategoryDetailItem(),
+          //   SearchDetailsScreen.routeName: (ctx) => SearchDetailsScreen(),
+          //   FilterChipWidget.routeName: (ctx) => FilterChipWidget(),
+          //   AddPlaceScreen.routeName: (ctx) => AddPlaceScreen(),
+          //   AdminForm.routeName: (ctx) => AdminForm(),
+          //   AdminScreen.routeName: (ctx) => AdminScreen(),
+          //   PlacesCollectionScreen.routeName: (ctx) => PlacesCollectionScreen(),
+          //   OffersScreen.routeName: (ctx) => OffersScreen(),
+          //   SettingsPreferencesScreen.routeName: (ctx) => SettingsPreferencesScreen(),
+          //   TestScreen2.routeName: (ctx) => TestScreen2(),
+          // }
+        ),
       ),
     );
   }

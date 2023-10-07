@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+// import 'package:amplify_flutter/amplify_flutter.dart';
+// import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:images_picker/images_picker.dart';
 
 import 'package:daleel/models/category.dart';
@@ -94,28 +94,28 @@ class _AddPlaceFormState extends State<AddPlaceForm> {
   }
 
   Future<void> onImageSubmitted({String? category, dynamic fileName}) async {
-    try {
-      for (int i = 0; i < pickedImage!.length; i++) {
-        var exampleFile = File(pickedImage![i].path);
-         await Amplify.Storage.uploadFile(
-            local: exampleFile,
-            //     options:  S3UploadFileOptions(
-            //   accessLevel: StorageAccessLevel.guest,
-            //   contentType: 'text/plain',
-            //   metadata: <String, String>{
-            //     'project': 'ExampleProject',
-            //   },
-            // ),
-            key: 'images/$category/${await fileName}/$i',
-            onProgress: (progress) {
-              print("Fraction completed: " +
-                  progress.getFractionCompleted().toString());
-            });
-        print('Successfully uploaded file: '); //${result.key}
-      }
-    } on StorageException catch (e) {
-      print('Error uploading file: $e');
-    }
+    // try {
+    //   for (int i = 0; i < pickedImage!.length; i++) {
+    //     var exampleFile = File(pickedImage![i].path);
+    //      await Amplify.Storage.uploadFile(
+    //         local: exampleFile,
+    //         //     options:  S3UploadFileOptions(
+    //         //   accessLevel: StorageAccessLevel.guest,
+    //         //   contentType: 'text/plain',
+    //         //   metadata: <String, String>{
+    //         //     'project': 'ExampleProject',
+    //         //   },
+    //         // ),
+    //         key: 'images/$category/${await fileName}/$i',
+    //         onProgress: (progress) {
+    //           print("Fraction completed: " +
+    //               progress.getFractionCompleted().toString());
+    //         });
+    //     print('Successfully uploaded file: '); //${result.key}
+    //   }
+    // } on StorageException catch (e) {
+    //   print('Error uploading file: $e');
+    // }
   }
 
   @override

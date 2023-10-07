@@ -2,6 +2,7 @@ import 'package:daleel/models/category.dart';
 import 'package:daleel/shimmers/explore-shimmers/home-shimmers/home_shimmer.dart';
 import 'package:daleel/widgets/home-widgets/filter_chip_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -126,18 +127,18 @@ class _PlacesGridState extends State<PlacesGrid> {
                               child: StaggeredGridView.countBuilder(
                                 crossAxisCount: 2,
                                 itemCount: snapshot.data!.length,
-                                itemBuilder: (context, index) => ImageCard(
+                                itemBuilder: (context, index) {
+                                  return ImageCard(
                                   onTap: () {
-                                    Navigator.of(context).pushNamed(
-                                        DetailsScreen.routeName,
-                                        arguments:
-                                            snapshot.data![index].place_id);
+                                    GoRouter.of(context).push(
+                                        '${DetailsScreen.routeName}/${snapshot.data![index].place_id}');
                                   },
                                   image: snapshot.data![index].images![0],
                                   title: snapshot.data![index].title,
                                   category:
                                       snapshot.data![index].category!.category,
-                                ),
+                                );
+                                },
                                 staggeredTileBuilder: (index) =>
                                     StaggeredTile.fit(1),
                                 mainAxisSpacing: 8.0,

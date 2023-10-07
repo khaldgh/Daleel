@@ -1,15 +1,26 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-wejhatapp-dev-194214-authRole",
-      "UnauthRoleArn": "arn:aws:iam::031266165810:role/amplify-wejhatapp-dev-194214-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::031266165810:role/amplify-wejhatapp-dev-194214-authRole",
+      "AuthRoleName": "amplify-wejhat-dev-00837-authRole",
+      "UnauthRoleArn": "arn:aws:iam::127154743802:role/amplify-wejhat-dev-00837-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::127154743802:role/amplify-wejhat-dev-00837-authRole",
       "Region": "me-south-1",
-      "DeploymentBucketName": "amplify-wejhatapp-dev-194214-deployment",
-      "UnauthRoleName": "amplify-wejhatapp-dev-194214-unauthRole",
-      "StackName": "amplify-wejhatapp-dev-194214",
-      "StackId": "arn:aws:cloudformation:me-south-1:031266165810:stack/amplify-wejhatapp-dev-194214/62792460-2239-11ed-9619-0602cc8066ea",
-      "AmplifyAppId": "d2ujyfxxpadhgc"
+      "DeploymentBucketName": "amplify-wejhat-dev-00837-deployment",
+      "UnauthRoleName": "amplify-wejhat-dev-00837-unauthRole",
+      "StackName": "amplify-wejhat-dev-00837",
+      "StackId": "arn:aws:cloudformation:me-south-1:127154743802:stack/amplify-wejhat-dev-00837/e9fa1be0-b6e2-11ed-8356-0e9bbd2750a8",
+      "AmplifyAppId": "d2fprzcsxgyc9s"
+    },
+    "categories": {
+      "auth": {
+        "wejhat810a95a4": {}
+      },
+      "storage": {
+        "wejhatfaeb9e38": {
+          "bucketName": "wejhatapplication",
+          "region": "me-south-1"
+        }
+      }
     }
   }
 }

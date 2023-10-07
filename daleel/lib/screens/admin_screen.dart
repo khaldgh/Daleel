@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'dart:math' as math;
 
 class AdminScreen extends StatefulWidget {
-  static const routeName = 'AdminScreen';
+  static const routeName = '/admin-screen';
   const AdminScreen({Key? key}) : super(key: key);
 
   @override

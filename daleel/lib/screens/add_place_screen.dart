@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class AddPlaceScreen extends StatefulWidget {
   const AddPlaceScreen({Key? key}) : super(key: key);
-  static const routeName = 'add-place-screen';
+  static const routeName = '/add-place-screen';
 
   @override
   State<AddPlaceScreen> createState() => _AddPlaceScreenState();

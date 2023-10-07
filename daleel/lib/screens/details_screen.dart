@@ -7,6 +7,7 @@ import 'package:daleel/widgets/details-widgets/comments_widget.dart';
 import 'package:daleel/widgets/details-widgets/details_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/places.dart';
@@ -15,7 +16,7 @@ import '../providers/places.dart';
 
 class DetailsScreen extends StatefulWidget {
   DetailsScreen({this.arguments, Key? key}) : super(key: key);
-  static const routeName = 'details-screen';
+  static const routeName = '/details-screen';
   int? arguments;
 
   @override
@@ -110,6 +111,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               : place.removeFavorite(homeArgs);
                         },
                       ),
+                      // IconButton(onPressed: (){
+                      //   GoRouter.of(context).pop();
+                      // }, icon: Icon(Icons.arrow_back))
                     ],
                   ),
                   // backgroundColor: Theme.of(context).primaryColor,
@@ -125,7 +129,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     Container(
                       alignment: Alignment.topCenter,
                       height: 2300,
-                      child: Image.network(snapsht[0].images![1]),
+                      child: Image.network(snapsht[0].images![0]),
                     ),
                     Positioned(
                       top: 130.0,

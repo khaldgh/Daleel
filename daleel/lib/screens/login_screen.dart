@@ -13,7 +13,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
-  static const routeName = '/loginScreen';
+  static const routeName = '/login-screen';
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();

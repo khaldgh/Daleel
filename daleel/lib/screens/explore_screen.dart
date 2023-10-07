@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide SearchBar;
 
 import 'package:daleel/widgets/explore-widgets/week_list.dart';
 import 'package:daleel/widgets/places-collection/places_collection_widget.dart';
@@ -9,7 +9,7 @@ import '../widgets/explore-widgets/image_slider.dart';
 import '../widgets/explore-widgets/search_bar.dart';
 
 class ExploreScreen extends StatelessWidget {
-  static const routeName = '/explore_screen';
+  static const routeName = '/explore-screen';
 
 void openSnackBar(BuildContext context){
   final snackBar = SnackBar(

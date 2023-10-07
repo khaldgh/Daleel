@@ -5,6 +5,7 @@ import 'package:daleel/widgets/explore-widgets/image_slider.dart';
 import 'package:daleel/widgets/home-widgets/image_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class PlacesCollectionScreen extends StatefulWidget {
@@ -96,8 +97,7 @@ class _PlacesCollectionScreenState extends State<PlacesCollectionScreen> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) => ImageCard(
                   onTap: () {
-                    Navigator.of(context).pushNamed(DetailsScreen.routeName,
-                        arguments: snapshot.data![index].place_id);
+                    GoRouter.of(context).go('${DetailsScreen.routeName}/${snapshot.data![index].place_id}');
                     // print(count);
                     // print(snapshot.data![index].place_id);
                     print(snapshot.data![index].images);

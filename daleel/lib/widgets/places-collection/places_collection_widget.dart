@@ -4,6 +4,7 @@ import 'package:daleel/screens/places_collection_screen.dart';
 import 'package:daleel/screens/test_screen2.dart';
 import 'package:daleel/shimmers/places_collection_shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'package:shimmer/shimmer.dart';
@@ -45,8 +46,8 @@ class _PlacesCollectionWidgetState extends State<PlacesCollectionWidget> {
         itemBuilder: (BuildContext context, int index) => Padding(
           padding: const EdgeInsets.all(5.0),
           child: GestureDetector(
-            onTap: () => Navigator.of(context)
-                .pushNamed(TestScreen2.routeName),
+            onTap: () => GoRouter.of(context)
+                .go(TestScreen2.routeName),
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(

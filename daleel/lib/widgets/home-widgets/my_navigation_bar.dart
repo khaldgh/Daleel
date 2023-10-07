@@ -37,7 +37,7 @@ class MyNavigationBar extends StatelessWidget {
                    label: 'الملف الشخصي'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.favorite), label: 'المفضلة'),
-            // BottomNavigationBarItem(icon: Icon(Icons.add), label: 'مكان جديد'),
+            BottomNavigationBarItem(icon: Icon(Icons.add), label: 'اختبار'),
             BottomNavigationBarItem(icon: Icon(Icons.search), label: 'البحث'),
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
 

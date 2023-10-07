@@ -7,6 +7,7 @@ import 'package:daleel/screens/preferences_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dio/dio.dart' as dioo;
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class Users with ChangeNotifier {
@@ -27,7 +28,7 @@ class Users with ChangeNotifier {
   Future<void> signup(String email, String username, String password,
       BuildContext context) async {
     try {
-      var url = 'https://daleel-app.herokuapp.com/users/signup';
+      var url = 'http://192.168.68.107:3000/users/signup';
       var dio = dioo.Dio();
       var storage = FlutterSecureStorage();
       var response = await dio.post(
@@ -46,7 +47,7 @@ class Users with ChangeNotifier {
 
       response;
       loggedIn = true;
-      Navigator.of(context).pushReplacementNamed(PreferencesScreen.routeName);
+      GoRouter.of(context).go(PreferencesScreen.routeName);
     } catch (err) {
       throw err;
     }
@@ -56,7 +57,7 @@ class Users with ChangeNotifier {
       String username, String password, BuildContext context) async {
     try {
       // String cookie = '';
-      var url = 'https://daleel-app.herokuapp.com/users/signin';
+      var url = 'http://192.168.68.107:3000/users/signin';
       var storage = FlutterSecureStorage();
       var dio = dioo.Dio();
       var response =
@@ -66,7 +67,6 @@ class Users with ChangeNotifier {
       String sub2 = cookies[1].substring(0, 45);
       cookie = sub1 + sub2;
 
-      print(cookie);
 
       await storage.write(key: 'cookie', value: cookie);
 
@@ -74,7 +74,8 @@ class Users with ChangeNotifier {
 
       loggedIn = true;
       // [express:sess=eyJ1c2VySWQiOjU1fQ==; path=/; httpsonly, express:sess.sig=Zy_Lc7kXM1BqZKIZRRt7ygpCTrM; path=/; httpsonly]
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      // Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      GoRouter.of(context).go(HomeScreen.routeName);
     } catch (err) {
       throw err;
     }
@@ -83,7 +84,7 @@ class Users with ChangeNotifier {
 
   Future<User> whoami() async {
     try {
-      var url = 'https://daleel-app.herokuapp.com/users/whoami';
+      var url = 'http://192.168.68.107:3000/users/whoami';
       var dio = dioo.Dio();
       var fStorage = FlutterSecureStorage();
       var header = await fStorage.read(key: 'cookie');
@@ -97,13 +98,13 @@ class Users with ChangeNotifier {
 
   Future<void> signout(BuildContext context) async {
     try {
-      var url = 'https://daleel-app.herokuapp.com/users/signout';
-      var dio = dioo.Dio();
+      // var url = 'http://192.168.68.107:3000/users/signout';
+      // var dio = dioo.Dio();
       var fStorage = FlutterSecureStorage();
-      var header = await fStorage.read(key: 'cookie');
+      // var header = await fStorage.read(key: 'cookie');
       // await dio.post(url, options: dioo.Options(headers: {'cookie': header}));
       await fStorage.delete(key: 'cookie');
-      Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+      GoRouter.of(context).go(LoginScreen.routeName);
     } catch (err) {
       throw err;
     }

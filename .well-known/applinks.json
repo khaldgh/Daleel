@@ -1,0 +1,10 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.example.daleel",
+      "sha256_cert_fingerprints":
+      ["C9:2A:AA:9E:1A:6E:B0:F9:49:61:CF:8A:57:9B:9B:A4:3D:17:70:02:09:00:74:70:79:6A:0B:72:E1:48:6A:5D"]
+    }
+  }]
+  

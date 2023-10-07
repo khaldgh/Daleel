@@ -1,5 +1,6 @@
 import 'package:daleel/screens/details_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
@@ -53,8 +54,7 @@ class _SearchBarState extends State<SearchBar> {
                     // autofocus: true,
                     ),
                 onSuggestionSelected: (suggestion) {
-                  Navigator.of(context).pushNamed(DetailsScreen.routeName,
-                      arguments: suggestion.place_id);
+                  GoRouter.of(context).go('${DetailsScreen.routeName}/${suggestion.place_id}');
                 },
                 itemBuilder: (context, suggestion) {
                   return ListTile(

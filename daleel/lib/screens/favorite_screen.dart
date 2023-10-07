@@ -6,6 +6,7 @@ import 'package:daleel/shimmers/favorites-shimmers/favorite_screen_shimmer.dart'
 import 'package:daleel/widgets/favorite-screen-widgets/favorite_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_indicator/carousel_indicator.dart';
 
@@ -13,6 +14,7 @@ import 'package:daleel/models/place.dart';
 import 'package:daleel/providers/places.dart';
 
 class FavoriteScreen extends StatefulWidget {
+  static const routName = '/favorites-screen';
   const FavoriteScreen({Key? key}) : super(key: key);
 
   @override
@@ -54,9 +56,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             itemCount: snapshot.data!.length,
                             itemBuilder: ((context, i) => InkWell(
                                   onTap: () {
-                                    Navigator.of(context).pushNamed(
-                                        DetailsScreen.routeName,
-                                        arguments: snapshot.data![i].place_id);
+                                    // Navigator.of(context).pushNamed(
+                                    //     DetailsScreen.routeName,
+                                    //     arguments: snapshot.data![i].place_id);
+                                    GoRouter.of(context).go('${DetailsScreen.routeName}/${snapshot.data![i].place_id}');
                                   },
                                   child: Container(
                                     height: 300,

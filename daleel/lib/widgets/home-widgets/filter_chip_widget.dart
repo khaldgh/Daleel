@@ -2,7 +2,7 @@ import 'package:daleel/models/category.dart';
 import 'package:flutter/material.dart';
 
 class FilterChipWidget extends StatefulWidget {
-  static const routeName = 'FilterChipWidget';
+  static const routeName = '/Filter-Chip-Widget';
     FilterChipWidget({this.categories, this.fccFunction, Key? key }) : super(key: key);
 
   final List<Category?>? categories;

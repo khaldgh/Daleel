@@ -30,6 +30,7 @@ class _FavoriteSliderState extends State<FavoriteSlider> {
                 });
               }),
           items: widget.places![widget.index!].images!.map((place) {
+            print('$place, I\'m from slider');
             return Builder(
               builder: (BuildContext context) {
                 return Container(

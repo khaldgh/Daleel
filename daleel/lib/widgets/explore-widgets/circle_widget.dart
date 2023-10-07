@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:daleel/widgets/explore-widgets/category_detail_item.dart';
+import 'package:go_router/go_router.dart';
 
 class CircleWidget extends StatelessWidget {
   final String title;
@@ -13,7 +14,7 @@ class CircleWidget extends StatelessWidget {
     double width = size.width;
     return InkWell(
       onTap: (){
-        Navigator.of(context).pushNamed(CategoryDetailItem.routeName);
+        GoRouter.of(context).go(CategoryDetailItem.routeName);
       },
       child: Column(
         children: [

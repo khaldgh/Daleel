@@ -7,8 +7,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:dio/dio.dart' as dioo;
+import 'package:go_router/go_router.dart';
 
-import 'package:daleel/models/category.dart';
+import 'package:daleel/models/category.dart' as dc;
 import 'package:daleel/models/city.dart';
 import 'package:daleel/models/comment.dart';
 import 'package:daleel/models/neighborhood.dart';
@@ -57,7 +58,7 @@ class Places with ChangeNotifier {
   }
 
   Future<Place> findById(int id) async {
-    String url = 'https://daleel-app.herokuapp.com/places/findone/$id';
+    String url = 'http://192.168.68.107:3000/places/findone/$id';
     String? cookie = await FlutterSecureStorage().read(key: 'cookie');
     List<String> urls = [];
     final ListResult result1 = await Amplify.Storage.list();
@@ -88,11 +89,6 @@ class Places with ChangeNotifier {
           for (int index3 = 0; index3 < keys.length; index3++) {
             String downloadUrl = await imagesDownloadUrl(keys[index3]);
             if (urls.length < keys.length) urls.add(downloadUrl);
-            /** future task: urls from aws s3 might change, which will add the same image to (urls).
-               observed problem: when one of placeGrid's items was chosesn, returned to PlacesGrid then chose the same item again, the same images were repeated in
-               the place.images List, ie. if the images were 2 they become 4. Two duplicates are added to place.images */
-
-               //task done
           }
         }
       }
@@ -122,11 +118,11 @@ class Places with ChangeNotifier {
   }
 
   Future<List<Place>> getPlaces(
-      {List<Category?> filteredList = const []}) async {
+      {List<dc.Category?> filteredList = const []}) async {
     dioo.Dio dio = dioo.Dio();
     String? header = await fStorage.read(key: 'cookie');
     String categoriesUrl = '';
-    List<Category?> categories = await getUserPreferences();
+    List<dc.Category?> categories = await getUserPreferences();
     List<int?> userPrefs = filteredList.isNotEmpty
         ? filteredList.map((e) => e!.categoryId).toList()
         : categories.map((e) => e!.categoryId).toList();
@@ -146,7 +142,7 @@ class Places with ChangeNotifier {
       categoriesUrl = first + categoriesUrl + last;
     }
     String url =
-        'https://daleel-app.herokuapp.com/places/queryPlaces?categories=$categoriesUrl';
+        'http://192.168.68.107:3000/places/queryPlaces?categories=$categoriesUrl';
 
     try {
       final ListResult result = await Amplify.Storage.list(path: 'images');
@@ -155,13 +151,16 @@ class Places with ChangeNotifier {
           options: dioo.Options(headers: {'cookie': header},));
       List places = response.data as List;
       List<Place> list = places.map((place) => Place.fromJson(place)).toList();
+
+      print(categories);
+      
       final awsIds = items // finds ids of images from AWS
           .map((e) =>
               e.key.split('/').length < 4 ? 0 : int.parse(e.key.split('/')[2])).toSet()
           .toList();
       awsIds.removeWhere(
           (element) => element == 0); // removes all 0s from the previous step
-          
+
          // looping through all places to attach every image from AWS to the right place
       for (int index1 = 0; index1 < list.length; index1++) {
         List<String> urls = [];
@@ -192,7 +191,7 @@ class Places with ChangeNotifier {
   }
 
   Future<List<Place>> searchPlaces(String? phrase) async {
-    String url = 'https://daleel-app.herokuapp.com/places/search/$phrase';
+    String url = 'http://192.168.68.107:3000/places/search/$phrase';
     dioo.Dio dio = dioo.Dio();
     final ListResult result = await Amplify.Storage.list(path: 'images');
       final List<StorageItem> items = result.items;
@@ -309,7 +308,7 @@ class Places with ChangeNotifier {
   //     String username, String password, BuildContext context) async {
   //   try {
   //     // String cookie = '';
-  //     var url = 'https://daleel-app.herokuapp.com/users/signin';
+  //     var url = 'http://192.168.68.107:3000/users/signin';
   //     var storage = FlutterSecureStorage();
   //     var dio = dioo.Dio();
   //     var response =
@@ -321,7 +320,7 @@ class Places with ChangeNotifier {
 
   //     var write = await storage.write(key: 'cookie', value: cookie);
   //     loggedIn = true;
-  //     // [express:sess=eyJ1c2VySWQiOjU1fQ==; path=/; httpsonly, express:sess.sig=Zy_Lc7kXM1BqZKIZRRt7ygpCTrM; path=/; httpsonly]
+  //     // [express:sess=eyJ1c2VySWQiOjU1fQ==; path=/; httponly, express:sess.sig=Zy_Lc7kXM1BqZKIZRRt7ygpCTrM; path=/; httponly]
   //     Navigator.of(context).pushNamed(HomeScreen.routeName);
   //   } catch (err) {
   //     throw err;
@@ -331,7 +330,7 @@ class Places with ChangeNotifier {
   // Future<void> signup(String email, String username, String password,
   //     BuildContext context) async {
   //   try {
-  //     var url = 'https://daleel-app.herokuapp.com/users/signup';
+  //     var url = 'http://192.168.68.107:3000/users/signup';
   //     var dio = dioo.Dio();
   //     var storage = FlutterSecureStorage();
   //     var response = await dio.post(
@@ -356,7 +355,7 @@ class Places with ChangeNotifier {
 
   // Future<User> whoami() async {
   //   try {
-  //     var url = 'https://daleel-app.herokuapp.com/users/whoami';
+  //     var url = 'http://192.168.68.107:3000/users/whoami';
   //     var dio = dioo.Dio();
   //     var fStorage = FlutterSecureStorage();
   //     var header = await fStorage.read(key: 'cookie');
@@ -370,7 +369,7 @@ class Places with ChangeNotifier {
 
   // Future<void> signout(BuildContext context) async {
   //   try {
-  //     var url = 'https://daleel-app.herokuapp.com/users/signout';
+  //     var url = 'http://192.168.68.107:3000/users/signout';
   //     var dio = dioo.Dio();
   //     var fStorage = FlutterSecureStorage();
   //     var header = await fStorage.read(key: 'cookie');
@@ -389,7 +388,7 @@ class Places with ChangeNotifier {
   // }
 
   Future<List<Place>> getPreApprovedPlaces() async {
-    String url = 'https://daleel-app.herokuapp.com/places/pre-approved-places';
+    String url = 'http://192.168.68.107:3000/places/pre-approved-places';
     try {
       dioo.Dio dio = dioo.Dio();
       dioo.Response response = await dio.get(url);
@@ -403,7 +402,7 @@ class Places with ChangeNotifier {
   }
 
   Future<List<Place>> getDayMostVisitedPlaces() async {
-    String url = 'https://daleel-app.herokuapp.com/places/mostdayvisited';
+    String url = 'http://192.168.68.107:3000/places/mostdayvisited';
     try {
       dioo.Dio dio = dioo.Dio();
       dioo.Response response = await dio.get(url);
@@ -417,7 +416,7 @@ class Places with ChangeNotifier {
   }
 
   Future<List<Place>> getWeekMostVisitedPlaces() async {
-    String url = 'https://daleel-app.herokuapp.com/places/mostweekvisited';
+    String url = 'http://192.168.68.107:3000/places/mostweekvisited';
     try {
       dioo.Dio dio = dioo.Dio();
       dioo.Response response = await dio.get(url);
@@ -431,13 +430,14 @@ class Places with ChangeNotifier {
   }
 
   Future<List<Place>>? getFavoritePlaces() async {
-    String url = 'https://daleel-app.herokuapp.com/places/favorite-places';
+    String url = 'http://192.168.68.107:3000/places/favorite-places';
     dioo.Dio dio = dioo.Dio();
     FlutterSecureStorage fStorage = FlutterSecureStorage();
     final ListResult result = await Amplify.Storage.list(path: 'images');
       final List<StorageItem> items = result.items;
       items.forEach((element) {
         print(element.key);
+        print(element.key.split('/'));
       });
     var header = await fStorage.read(key: 'cookie');
     try {
@@ -452,6 +452,7 @@ class Places with ChangeNotifier {
           .toList();
           awsIds.removeWhere(
           (element) => element == 0); // removes all 0s from the previous step
+          print(awsIds);
       for (int index1 = 0; index1 < favoritesList.length; index1++) {
         List<String> urls = [];
         for (int index2 = 0; index2 < awsIds.length; index2++) {
@@ -478,7 +479,7 @@ class Places with ChangeNotifier {
   }
 
   Future<void> postComment(String? comment, int? id) async {
-    String url = 'https://daleel-app.herokuapp.com/comments';
+    String url = 'http://192.168.68.107:3000/comments';
     dioo.Dio dio = dioo.Dio();
     FlutterSecureStorage storage = FlutterSecureStorage();
     String? cookie = await storage.read(key: 'cookie');
@@ -492,7 +493,7 @@ class Places with ChangeNotifier {
   }
 
   Future<List<Comment>> getComments(int placeId) async {
-    String url = 'https://daleel-app.herokuapp.com/comments/$placeId';
+    String url = 'http://192.168.68.107:3000/comments/$placeId';
     List<Comment> comments = [];
     dioo.Dio dio = dioo.Dio();
     final ListResult result = await Amplify.Storage.list(path: 'profilePics/');
@@ -538,7 +539,7 @@ class Places with ChangeNotifier {
   }
 
   Future<void> changeApprovalStatus(Place place) async {
-    String url = 'https://daleel-app.herokuapp.com/places/${place.place_id}';
+    String url = 'http://192.168.68.107:3000/places/${place.place_id}';
     try {
       dioo.Dio dio = dioo.Dio();
       await dio.patch(url, data: place);
@@ -550,9 +551,9 @@ class Places with ChangeNotifier {
   // List<Category> userPreferences = [];
 
   Future<void>  setUserPreferences(
-      List<Category?> categories, BuildContext context, {bool? settingsScreen}) async {
+      List<dc.Category?> categories, BuildContext context, {bool? settingsScreen}) async {
     List<Map<String, Object>> jsonCategories = [];
-    String url = 'https://daleel-app.herokuapp.com/users/preferences';
+    String url = 'http://192.168.68.107:3000/users/preferences';
     dioo.Dio dio = dioo.Dio();
     var fStorage = FlutterSecureStorage();
     var header = await fStorage.read(key: 'cookie');
@@ -564,18 +565,17 @@ class Places with ChangeNotifier {
           data: jsonCategories,
           options: dioo.Options(headers: {'cookie': header}));
           if(settingsScreen!) {
-      Navigator.of(context).pop();      
+      GoRouter.of(context).pop();      
           }
-      Navigator.of(context).pushNamed(HomeScreen.routeName);
-      // return response;
+      GoRouter.of(context).go(HomeScreen.routeName);
     } catch (e) {
       throw e;
     }
   }
 
-  Future<List<Category>> getUserPreferences() async {
-    List<Category> fromJsonCategories = [];
-    String url = 'https://daleel-app.herokuapp.com/users/preferences';
+  Future<List<dc.Category>> getUserPreferences() async {
+    List<dc.Category> fromJsonCategories = [];
+    String url = 'http://192.168.68.107:3000/users/preferences';
     dioo.Dio dio = dioo.Dio();
     var fStorage = FlutterSecureStorage();
     var header = await fStorage.read(key: 'cookie');
@@ -584,7 +584,7 @@ class Places with ChangeNotifier {
           options: dioo.Options(headers: {'cookie': header}));
       List<dynamic> resData = response.data;
       resData.forEach(
-          ((element) => fromJsonCategories.add(Category().fromJson(element))));
+          ((element) => fromJsonCategories.add(dc.Category().fromJson(element))));
       return fromJsonCategories;
     } catch (e) {
       throw e;
@@ -592,7 +592,7 @@ class Places with ChangeNotifier {
   }
 
   Future<dynamic> postPlace(Place place) async {
-    String url = 'https://daleel-app.herokuapp.com/places';
+    String url = 'http://192.168.68.107:3000/places';
     var jsonObj = place.toJson();
     var fStorage = FlutterSecureStorage();
     var header = await fStorage.read(key: 'cookie');
@@ -607,7 +607,7 @@ class Places with ChangeNotifier {
   }
 
   Future<void> userFavorite(int id) async {
-    String url = 'https://daleel-app.herokuapp.com/users/favoritePlace/$id';
+    String url = 'http://192.168.68.107:3000/users/favoritePlace/$id';
     dioo.Dio dio = dioo.Dio();
     var fStorage = FlutterSecureStorage();
     var header = await fStorage.read(key: 'cookie');
@@ -619,7 +619,7 @@ class Places with ChangeNotifier {
   }
 
   Future<void> removeFavorite(int id) async {
-    String url = 'https://daleel-app.herokuapp.com/users/favoritePlace/$id';
+    String url = 'http://192.168.68.107:3000/users/favoritePlace/$id';
     dioo.Dio dio = dioo.Dio();
     var fStorage = FlutterSecureStorage();
     var header = await fStorage.read(key: 'cookie');
@@ -631,7 +631,7 @@ class Places with ChangeNotifier {
   }
 
   Future<void> deletePlace(int id) async {
-    String url = 'https://daleel-app.herokuapp.com/places/$id';
+    String url = 'http://192.168.68.107:3000/places/$id';
     try {
       dioo.Dio dio = dioo.Dio();
       await dio.delete(url);
@@ -641,7 +641,7 @@ class Places with ChangeNotifier {
   }
 
   Future<List<City>> getCities() async {
-    String url = 'https://daleel-app.herokuapp.com/cities';
+    String url = 'http://192.168.68.107:3000/cities';
     dioo.Dio dio = dioo.Dio();
     List<City> cities = [];
     try {
@@ -663,11 +663,11 @@ class Places with ChangeNotifier {
     }
   }
 
-  Future<List<Category>> getCategories() async {
-    String url = 'https://daleel-app.herokuapp.com/categories';
-    Category category = Category();
+  Future<List<dc.Category>> getCategories() async {
+    String url = 'http://192.168.68.107:3000/categories';
+    dc.Category category = dc.Category();
     dioo.Dio dio = dioo.Dio();
-    List<Category> categories = [];
+    List<dc.Category> categories = [];
     try {
       dioo.Response response = await dio.get(url);
       List<dynamic> data = response.data;
@@ -678,11 +678,11 @@ class Places with ChangeNotifier {
     }
   }
 
-  Future<List<Category>> getBigCategories() async {
-    String url = 'https://daleel-app.herokuapp.com/categories/bigCategories';
-    Category category = Category();
+  Future<List<dc.Category>> getBigCategories() async {
+    String url = 'http://192.168.68.107:3000/categories/bigCategories';
+    dc.Category category = dc.Category();
     dioo.Dio dio = dioo.Dio();
-    List<Category> categories = [];
+    List<dc.Category> categories = [];
     try {
       dioo.Response response = await dio.get(url);
       List<dynamic> data = response.data;
@@ -695,7 +695,7 @@ class Places with ChangeNotifier {
 
   List<Neighborhood>? neighborhoods = [];
   Future<List<Neighborhood>> neighborhoodQuery(int city) async {
-    String url = 'https://daleel-app.herokuapp.com/neighborhoods?city_id=$city';
+    String url = 'http://192.168.68.107:3000/neighborhoods?city_id=$city';
     dioo.Dio dio = dioo.Dio();
     try {
       if (neighborhoods!.isNotEmpty) neighborhoods!.clear();

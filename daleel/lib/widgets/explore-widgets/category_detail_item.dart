@@ -2,6 +2,7 @@ import 'package:daleel/models/place.dart';
 import 'package:daleel/screens/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'package:daleel/providers/places.dart';
@@ -40,10 +41,7 @@ class _CategoryDetailItemState extends State<CategoryDetailItem> {
             category: snapshot.data![index].category!.category ,
             image: snapshot.data![index].images![0],
             onTap: () {
-                                    Navigator.of(context).pushNamed(
-                                        DetailsScreen.routeName,
-                                        arguments:
-                                            snapshot.data![index].place_id);
+                                    GoRouter.of(context).go('${DetailsScreen.routeName}/${snapshot.data![index].place_id}');
                                   },
           ),
           staggeredTileBuilder: (index) => StaggeredTile.count(
