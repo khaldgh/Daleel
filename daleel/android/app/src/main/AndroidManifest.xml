@@ -23,7 +23,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="192.168.68.107" />
+                <data android:scheme="http" android:host="khaldgh.github.io" />
                 <data android:scheme="https" />
             </intent-filter>
 
