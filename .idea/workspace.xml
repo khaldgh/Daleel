@@ -6,43 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="88391197-72f1-43cd-8789-9adbf3ed2e8a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/amplify/.config/project-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/amplify/.config/project-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/amplify/cli.json" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/amplify/cli.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/amplify/team-provider-info.json" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/amplify/team-provider-info.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/daleel/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/android/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/providers/places.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/providers/places.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/providers/subcategories.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/providers/subcategories.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/providers/users.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/providers/users.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/add_place_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/add_place_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/admin_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/admin_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/details_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/details_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/explore_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/explore_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/favorite_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/favorite_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/home_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/login_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/login_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/offers_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/offers_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/places_collection_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/places_collection_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/preferences_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/preferences_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/settings_preferences_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/settings_preferences_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/settings_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/settings_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/test_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/test_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/screens/test_screen2.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/screens/test_screen2.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/widgets/add-place-widgets/add_place_form.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/widgets/add-place-widgets/add_place_form.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/widgets/admin-page-widgets/admin_new_place.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/widgets/admin-page-widgets/admin_new_place.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/widgets/explore-widgets/category_detail_item.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/widgets/explore-widgets/category_detail_item.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/widgets/explore-widgets/circle_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/widgets/explore-widgets/circle_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/widgets/explore-widgets/search_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/widgets/explore-widgets/search_bar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/widgets/favorite-screen-widgets/favorite_slider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/widgets/favorite-screen-widgets/favorite_slider.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/widgets/home-widgets/filter_chip_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/widgets/home-widgets/filter_chip_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/widgets/home-widgets/my_navigation_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/widgets/home-widgets/my_navigation_bar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/widgets/home-widgets/places_grid.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/widgets/home-widgets/places_grid.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/lib/widgets/places-collection/places_collection_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/lib/widgets/places-collection/places_collection_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daleel/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/daleel/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +29,7 @@
     "RunOnceActivity.cidr.known.project.marker": "true",
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
+    "last_opened_file_path": "C:/xampp/htdocs/.well-known/assetlinks.json",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
     "show.migrate.to.gradle.popup": "false"
   }
