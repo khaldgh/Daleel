@@ -19,5 +19,5 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 **.sample
-*mykeystore.jks
+mykeystore.jks
 #amplify-do-not-edit-end
